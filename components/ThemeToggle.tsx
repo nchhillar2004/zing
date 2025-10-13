@@ -52,7 +52,7 @@ export default function ThemeToggle() {
             <CardContent>
                 <div className="mb-4">
                     <strong className="">Select color</strong>
-                    <div className="flex items-center flex-nowrap space-x-2 pt-2">
+                    <div className="flex items-center flex-nowrap space-x-2 pt-2 max-md:flex-wrap max-md:gap-2">
                         {colors.map((color) => (
                             <Checkbox key={color.id} className={`cursor-pointer primary-${color.value} bg-[var(--primary)] rounded-full w-[40px] h-[40px] border-border`} 
                                 onCheckedChange={() => setColor(color.value)}
@@ -67,7 +67,7 @@ export default function ThemeToggle() {
                             <Label
                                 key={item.id}
                                 htmlFor={item.id}
-                                className={`flex items-center justify-around space-x-2 py-4 px-8 border border-border rounded-sm cursor-pointer transition-colors 
+                                className={`flex items-center justify-around space-x-2 max-md:py-2 max-md:px-4 max-md:flex-wrap py-4 px-8 border border-border rounded-sm cursor-pointer transition-colors 
 ${item.bg} ${theme === item.value ? "ring-2 ring-primary" : ""}`}>
                                 <Checkbox
                                     id={item.id}

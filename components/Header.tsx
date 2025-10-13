@@ -17,8 +17,8 @@ export default function Header({children, variant, title, fallback}:
             <div className="hidden max-md:flex">
                 <Drawer direction="left">
                     <DrawerTrigger asChild>
-                        <Button size={"icon-lg"} variant="link">
-                            <MdOutlineMenu/>
+                        <Button size={"icon-lg"} variant={"ghost"}>
+                            <MdOutlineMenu className="h-[1.5em]! w-[1.5em]!" />
                         </Button>
                     </DrawerTrigger>
                     <DrawerContent>
@@ -28,7 +28,7 @@ export default function Header({children, variant, title, fallback}:
                             </DrawerTitle>
                             <DrawerClose asChild>
                                 <Button size={"icon-lg"} variant="link">
-                                    <MdClose/>
+                                    <MdClose className="h-[1.5em]! w-[1.5em]!" />
                                 </Button>
                             </DrawerClose>
                         </DrawerHeader>
