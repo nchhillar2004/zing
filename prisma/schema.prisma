@@ -1,9 +1,224 @@
-generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/prisma"
+datasource db {
+    provider = "mongodb"
+        url      = env("DATABASE_URL")
 }
 
-datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+generator client {
+    provider = "prisma-client-js"
+}
+
+enum UserRole {
+    USER
+        ADMIN
+        MOD
+}
+
+enum PremiumTier {
+    NONE
+        BASIC
+        PRO
+        ENTERPRISE
+}
+
+enum AccountType {
+    PERSONAL
+        NEWS
+        POLITICS
+        EDUCATION
+        TECHNOLOGY
+        ENTERTAINMENT
+        ORGANIZATION
+        OTHER
+}
+
+enum PostType {
+    POST
+        REPLY
+        REPOST
+}
+
+enum ModerationStatus {
+    ACTIVE
+        TIMED_OUT
+        BANNED
+}
+
+model User {
+    id                     String            @id @default(auto()) @map("_id") @db.ObjectId
+        username               String            @unique
+        email                  String?
+        password               String
+        bio                    String?
+        dob                    String?
+        country                String?
+        isVerified             Boolean           @default(false)
+        role                   UserRole          @default(USER)
+        premiumTier            PremiumTier       @default(NONE)
+        accountType            AccountType       @default(PERSONAL)
+        moderationStatus       ModerationStatus  @default(ACTIVE)
+        moderationReason       String?
+        moderationExpiresAt    DateTime?
+        createdAt              DateTime          @default(now())
+        updatedAt              DateTime          @updatedAt
+
+        time                   String?
+        geodata                String?
+
+        posts                  Post[]
+        likes                  Like[]
+        bookmarks              Bookmark[]
+        follows                Follow[]          @relation("follower")
+        followers              Follow[]          @relation("following")
+        reports                Report[]          @relation("reporter")
+        reportedReports        Report[]          @relation("reportedUser")
+        moderationLogs         ModerationLog[]   @relation("targetUser")
+        performedModerations   ModerationLog[]   @relation("moderator")
+        interests              UserInterest[]
+
+        @@index([moderationStatus])
+}
+
+model Tag {
+    id        String         @id @default(auto()) @map("_id") @db.ObjectId
+        name      String         @unique
+        createdAt DateTime       @default(now())
+
+        posts     PostTag[]
+        users     UserInterest[]
+}
+
+model PostTag {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+        postId String @db.ObjectId
+        tagId  String @db.ObjectId
+
+        post   Post   @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+        tag    Tag    @relation(fields: [tagId], references: [id])
+
+        @@unique([postId, tagId])
+        @@index([postId])
+        @@index([tagId])
+}
+
+model UserInterest {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+        userId String @db.ObjectId
+        tagId  String @db.ObjectId
+
+        user   User   @relation(fields: [userId], references: [id])
+        tag    Tag    @relation(fields: [tagId], references: [id])
+
+        @@unique([userId, tagId])
+        @@index([userId])
+        @@index([tagId])
+}
+
+model Post {
+    id         String     @id @default(auto()) @map("_id") @db.ObjectId
+        content    String
+        authorId   String     @db.ObjectId
+        parentId   String?    @db.ObjectId
+        createdAt  DateTime   @default(now())
+        updatedAt  DateTime   @updatedAt
+
+        likeCount  Int        @default(0)
+        replyCount Int        @default(0)
+        viewCount  Int        @default(0)
+        postType   PostType   @default(POST)
+
+        author     User       @relation(fields: [authorId], references: [id])
+        parent     Post?      @relation("replies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+        replies    Post[]     @relation("replies")
+        likes      Like[]
+        bookmarks  Bookmark[]
+        reports    Report[]   @relation("reportedPost")
+        tags       PostTag[]
+
+        @@index([authorId])
+        @@index([parentId])
+        @@index([createdAt(sort: Desc)])
+}
+
+model Follow {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+        followerId   String   @db.ObjectId
+        followingId  String   @db.ObjectId
+        createdAt    DateTime @default(now())
+
+        follower     User     @relation("follower", fields: [followerId], references: [id])
+        following    User     @relation("following", fields: [followingId], references: [id])
+
+        @@unique([followerId, followingId])
+        @@index([followerId])
+        @@index([followingId])
+}
+
+model Like {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+        userId    String   @db.ObjectId
+        postId    String   @db.ObjectId
+        createdAt DateTime @default(now())
+
+        user      User     @relation(fields: [userId], references: [id])
+        post      Post     @relation(fields: [postId], references: [id])
+
+        @@unique([userId, postId])
+        @@index([userId])
+        @@index([postId])
+}
+
+model Bookmark {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+        userId    String   @db.ObjectId
+        postId    String   @db.ObjectId
+        createdAt DateTime @default(now())
+
+        user      User     @relation(fields: [userId], references: [id])
+        post      Post     @relation(fields: [postId], references: [id])
+
+        @@unique([userId, postId])
+        @@index([userId])
+        @@index([postId])
+}
+
+model Report {
+    id              String   @id @default(auto()) @map("_id") @db.ObjectId
+        reporterId      String   @db.ObjectId
+        reportedUserId  String?  @db.ObjectId
+        reportedPostId  String?  @db.ObjectId
+        reason          String
+        createdAt       DateTime @default(now())
+
+        reporter        User     @relation("reporter", fields: [reporterId], references: [id])
+        reportedUser    User?    @relation("reportedUser", fields: [reportedUserId], references: [id])
+        reportedPost    Post?    @relation("reportedPost", fields: [reportedPostId], references: [id])
+
+        @@index([reporterId])
+        @@index([reportedUserId])
+        @@index([reportedPostId])
+}
+
+model ModerationLog {
+    id             String   @id @default(auto()) @map("_id") @db.ObjectId
+        moderatorId    String   @db.ObjectId
+        targetUserId   String   @db.ObjectId
+        action         String
+        reason         String
+        duration       Int?
+        createdAt      DateTime @default(now())
+
+        moderator      User     @relation("moderator", fields: [moderatorId], references: [id])
+        targetUser     User     @relation("targetUser", fields: [targetUserId], references: [id])
+
+        @@index([moderatorId])
+        @@index([targetUserId])
+        @@index([createdAt(sort: Desc)])
+}
+
+model ContactMessage {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+        name      String
+        email     String
+        message   String
+        createdAt DateTime @default(now())
 }
