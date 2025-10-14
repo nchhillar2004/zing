@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -11,16 +12,35 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { siteConfig } from "@/config/site-config"
 import SiteLogo from "../SiteLogo"
+import { useActionState, useState } from "react";
+import { registerAction } from "@/actions/register";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export default function RegisterForm({
-    className,
-    ...props
-}: React.ComponentProps<"div">) {
+export default function RegisterForm() {
+    const [state, action, pending] = useActionState(registerAction, undefined);
+    const router = useRouter();
+
+    const [formData, setFormData] = useState({
+        fname: "",
+        username: "",
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData(prev => ({...prev, [e.target.name]: e.target.value }));
+    }
+
+    useEffect(() => {
+        if (state?.username) {
+            router.push("/login");
+        }
+    }, [state, router]);
+
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className={cn("flex flex-col gap-6")}>
             <Card className="overflow-hidden p-0">
                 <CardContent className="grid p-0 md:grid-cols-2">
-                    <form className="p-6 md:p-8">
+                    <form action={action} className="p-6 md:p-8">
                         <FieldGroup>
                             <div className="flex flex-col items-center gap-2 text-center">
                                 <h1 className="text-2xl font-bold">Welcome to {siteConfig.name}</h1>
@@ -33,35 +53,51 @@ export default function RegisterForm({
                                 <Input
                                     id="fname"
                                     type="text"
+                                    name="fname"
+                                    value={formData.fname}
+                                    onChange={handleChange}
                                     placeholder="Full Name"
                                     required
                                 />
+                                {state?.errors?.fname && <small className="text-destructive">{state.errors.fname}</small>}
                             </Field>
                             <Field>
                                 <FieldLabel htmlFor="username">Username</FieldLabel>
                                 <Input
                                     id="username"
                                     type="text"
-                                    placeholder="example"
+                                    name="username"
+                                    value={formData.username}
+                                    onChange={handleChange}
+                                    placeholder="test_user"
                                     required
-                                />
+                                /> // TODO: implement realtime username validations before submitting
+                                {state?.errors?.username && <small className="text-destructive">{state.errors.username}</small>}
                             </Field>
                             <Field>
                                 <FieldLabel htmlFor="password">Create a Password</FieldLabel>
-                                <Input id="password" type="password" placeholder="Password" required />
+                                <Input 
+                                    id="password" 
+                                    name="password" 
+                                    type="password" 
+                                    placeholder="Password" 
+                                    required />
+                                {state?.errors?.password && <small className="text-destructive">{state.errors.password}</small>}
                             </Field>
                             <Field>
                                 <FieldLabel htmlFor="cpassword">Confirm password</FieldLabel>
                                 <Input
                                     id="cpassword"
                                     type="password"
+                                    name="cpassword"
                                     placeholder="Confirm password"
                                     required
                                 />
+                                {state?.errors?.cpassword && <small className="text-destructive">{state.errors.cpassword}</small>}
                             </Field>
 
                             <Field>
-                                <Button type="submit">Register</Button>
+                                <Button type="submit" disabled={pending}>{pending ? "Registering..." : "Register"}</Button>
                             </Field>
                             <FieldDescription className="text-center">
                                 Already have an account? <Link href="/login">Login</Link>

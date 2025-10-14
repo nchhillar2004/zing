@@ -45,13 +45,15 @@ enum ModerationStatus {
 
 model User {
     id                     String            @id @default(auto()) @map("_id") @db.ObjectId
+        name                   String
         username               String            @unique
         email                  String?
         password               String
         bio                    String?
         dob                    String?
-        country                String?
+        country                String
         isVerified             Boolean           @default(false)
+        isSpam                 Boolean           @default(false)
         role                   UserRole          @default(USER)
         premiumTier            PremiumTier       @default(NONE)
         accountType            AccountType       @default(PERSONAL)
@@ -61,8 +63,9 @@ model User {
         createdAt              DateTime          @default(now())
         updatedAt              DateTime          @updatedAt
 
-        time                   String?
-        geodata                String?
+        time                   String
+        timezone               String
+        geodata                String
 
         posts                  Post[]
         likes                  Like[]
@@ -120,6 +123,7 @@ model Post {
         parentId   String?    @db.ObjectId
         createdAt  DateTime   @default(now())
         updatedAt  DateTime   @updatedAt
+        time       String?
 
         likeCount  Int        @default(0)
         replyCount Int        @default(0)
@@ -144,6 +148,7 @@ model Follow {
         followerId   String   @db.ObjectId
         followingId  String   @db.ObjectId
         createdAt    DateTime @default(now())
+        time         String?
 
         follower     User     @relation("follower", fields: [followerId], references: [id])
         following    User     @relation("following", fields: [followingId], references: [id])
@@ -158,6 +163,7 @@ model Like {
         userId    String   @db.ObjectId
         postId    String   @db.ObjectId
         createdAt DateTime @default(now())
+        time      String?
 
         user      User     @relation(fields: [userId], references: [id])
         post      Post     @relation(fields: [postId], references: [id])
@@ -188,6 +194,7 @@ model Report {
         reportedPostId  String?  @db.ObjectId
         reason          String
         createdAt       DateTime @default(now())
+        time            String?
 
         reporter        User     @relation("reporter", fields: [reporterId], references: [id])
         reportedUser    User?    @relation("reportedUser", fields: [reportedUserId], references: [id])
@@ -206,6 +213,7 @@ model ModerationLog {
         reason         String
         duration       Int?
         createdAt      DateTime @default(now())
+        time           String?
 
         moderator      User     @relation("moderator", fields: [moderatorId], references: [id])
         targetUser     User     @relation("targetUser", fields: [targetUserId], references: [id])
@@ -221,4 +229,5 @@ model ContactMessage {
         email     String
         message   String
         createdAt DateTime @default(now())
+        time      String?
 }
