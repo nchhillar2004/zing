@@ -48,15 +48,15 @@ export function Code({children}: {children: React.ReactNode}) {
     )
 }
 
-export function Small({children}: {children: React.ReactNode}) {
+export function Small({className, children}: {className?: string, children: React.ReactNode}) {
     return (
-        <small className="text-[12px] leading-none font-medium">{children}</small>
+        <small className={`text-[12px] leading-none font-medium ${className || ''}`}>{children}</small>
     )
 }
 
-export function Muted({children}: {children: React.ReactNode}) {
+export function Muted({className, children}: {className?: string, children: React.ReactNode}) {
     return (
-        <p className="text-muted-foreground">{children}</p>
+        <p className={`text-muted-foreground ${className || ''}`}>{children}</p>
     )
 }
 
