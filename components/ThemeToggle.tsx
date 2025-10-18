@@ -9,7 +9,7 @@ import Loading from "./Loading";
 import { BgColor, Color, useColor } from "./ThemeProvider";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { Muted, P } from "./ui/typography";
+import { Muted } from "./ui/typography";
 
 interface ColorsList {
     id: string;

@@ -71,7 +71,7 @@ export default function RegisterForm() {
                                     onChange={handleChange}
                                     placeholder="test_user"
                                     required
-                                /> // TODO: implement realtime username validations before submitting
+                                /> {/* TODO: implement realtime username validations before submitting */}
                                 {state?.errors?.username && <small className="text-destructive">{state.errors.username}</small>}
                             </Field>
                             <Field>

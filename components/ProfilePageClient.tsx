@@ -253,7 +253,7 @@ export default function ProfilePageClient({
                                 <div className="text-center py-12">
                                     <MessageCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                                     <P className="text-muted-foreground">No posts yet</P>
-                                    <Small className="text-muted-foreground">When {user.name} posts, you'll see them here.</Small>
+                                    <Small className="text-muted-foreground">When {user.name} posts, you&apos;ll see them here.</Small>
                                 </div>
                             ) : (
                                 posts.map((post) => (
@@ -310,7 +310,7 @@ export default function ProfilePageClient({
                                 <div className="text-center py-12">
                                     <Reply className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                                     <P className="text-muted-foreground">No replies yet</P>
-                                    <Small className="text-muted-foreground">When {user.name} replies to posts, you'll see them here.</Small>
+                                    <Small className="text-muted-foreground">When {user.name} replies to posts, you&apos;ll see them here.</Small>
                                 </div>
                             ) : (
                                 replies.map((reply) => (

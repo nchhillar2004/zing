@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { H1, H2, H3, P, Small } from "@/components/ui/typography";
+import { H1, H3, P, Small } from "@/components/ui/typography";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, Shield, Users, AlertTriangle } from "lucide-react";
 
@@ -46,8 +45,8 @@ export default function TermsPage() {
                     <CardContent className="space-y-4">
                         <P>
                             Welcome to Zing, a modern social media platform designed to connect people and share meaningful content. 
-                            These Terms of Service ("Terms") govern your use of our website, mobile application, and related services 
-                            (collectively, the "Service") operated by Zing ("us", "we", or "our").
+                            These Terms of Service (&quot;Terms&quot;) govern your use of our website, mobile application, and related services 
+                            (collectively, the &quot;Service&quot;) operated by Zing (&quot;us&quot;, &quot;we&quot;, or &quot;our&quot;).
                         </P>
                         <P>
                             By accessing or using our Service, you agree to be bound by these Terms. If you disagree with any part 

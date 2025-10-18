@@ -78,7 +78,7 @@ export default function AboutPage() {
                             </div>
                             <H3 className="mb-3">Community Driven</H3>
                             <P className="text-muted-foreground">
-                                Built by the community, for the community. Every feature is designed with our users' 
+                                Built by the community, for the community. Every feature is designed with our users&apos; 
                                 needs and feedback in mind.
                             </P>
                         </CardContent>
@@ -118,7 +118,7 @@ export default function AboutPage() {
                     <div className="text-center mb-12">
                         <H2 className="text-3xl font-bold mb-4">What Makes Zing Different</H2>
                         <P className="text-lg text-muted-foreground">
-                            We're reimagining social media with features that actually benefit users
+                            We&apos;re reimagining social media with features that actually benefit users
                         </P>
                     </div>
 
@@ -346,7 +346,7 @@ export default function AboutPage() {
                                 </div>
                                 <H3 className="mb-2">Innovation</H3>
                                 <Small className="text-muted-foreground">
-                                    Constantly improving and pushing the boundaries of what's possible
+                                    Constantly improving and pushing the boundaries of what&apos;s possible
                                 </Small>
                             </CardContent>
                         </Card>

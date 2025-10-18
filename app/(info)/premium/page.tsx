@@ -5,13 +5,10 @@ import { Button } from "@/components/ui/button";
 import { H1, H2, H3, P, Small } from "@/components/ui/typography";
 import { 
     Crown, 
-    Zap, 
     Shield, 
     Star, 
     Check, 
-    X, 
     ArrowRight,
-    Users,
     BarChart3,
     Palette,
     Headphones,
@@ -409,7 +406,7 @@ export default function PremiumPage() {
                             <CardContent>
                                 <P className="text-muted-foreground">
                                     Yes! You can cancel your subscription at any time from your account settings. 
-                                    You'll continue to have access to premium features until the end of your billing period.
+                                    You&apos;ll continue to have access to premium features until the end of your billing period.
                                 </P>
                             </CardContent>
                         </Card>
@@ -420,7 +417,7 @@ export default function PremiumPage() {
                             </CardHeader>
                             <CardContent>
                                 <P className="text-muted-foreground">
-                                    Your data is always safe. When you downgrade, you'll lose access to premium features, 
+                                    Your data is always safe. When you downgrade, you&apos;ll lose access to premium features, 
                                     but all your content, connections, and account information remain intact.
                                 </P>
                             </CardContent>
@@ -433,7 +430,7 @@ export default function PremiumPage() {
                             <CardContent>
                                 <P className="text-muted-foreground">
                                     We offer a 30-day money-back guarantee for all new subscriptions. 
-                                    If you're not satisfied with your premium experience, contact our support team for a full refund.
+                                    If you&apos;re not satisfied with your premium experience, contact our support team for a full refund.
                                 </P>
                             </CardContent>
                         </Card>
@@ -445,7 +442,7 @@ export default function PremiumPage() {
                             <CardContent>
                                 <P className="text-muted-foreground">
                                     Absolutely! You can upgrade or downgrade your plan at any time. 
-                                    Changes take effect immediately, and we'll prorate any billing differences.
+                                    Changes take effect immediately, and we&apos;ll prorate any billing differences.
                                 </P>
                             </CardContent>
                         </Card>
@@ -456,7 +453,7 @@ export default function PremiumPage() {
             <div className="bg-muted/50 py-8">
                 <div className="max-w-6xl mx-auto px-6 text-center">
                     <P className="text-muted-foreground mb-4">
-                        Questions about pricing or features? We're here to help.
+                        Questions about pricing or features? We&apos;re here to help.
                     </P>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Button variant="outline" disabled>

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { H1, H2, H3, P, Small } from "@/components/ui/typography";
+import { H1, H3, P, Small } from "@/components/ui/typography";
 import { 
     Shield, 
     Eye, 
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
                             </div>
                             <Small className="text-green-700 dark:text-green-300">
                                 We will never sell your personal data to third parties. Your data belongs to you, 
-                                and we're here to help you control it.
+                                and we&apos;re here to help you control it.
                             </Small>
                         </div>
                     </CardContent>
@@ -437,7 +437,7 @@ export default function PrivacyPage() {
                 {/* Children's Privacy */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>7. Children's Privacy</CardTitle>
+                        <CardTitle>7. Children&apos;s Privacy</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <P>
@@ -446,7 +446,7 @@ export default function PrivacyPage() {
                         </P>
                         
                         <div className="bg-yellow-50 dark:bg-yellow-950/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                            <H3 className="text-yellow-800 dark:text-yellow-200 mb-2">If You're Under 13</H3>
+                            <H3 className="text-yellow-800 dark:text-yellow-200 mb-2">If You&apos;re Under 13</H3>
                             <Small className="text-yellow-700 dark:text-yellow-300">
                                 Please do not create an account or provide any personal information. If we discover that 
                                 we have collected information from a child under 13, we will delete it immediately.
@@ -492,7 +492,7 @@ export default function PrivacyPage() {
                     <CardContent className="space-y-4">
                         <P>
                             We may update this Privacy Policy from time to time. We will notify you of any material changes 
-                            by posting the new Privacy Policy on this page and updating the "Last updated" date.
+                            by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date.
                         </P>
                         
                         <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">

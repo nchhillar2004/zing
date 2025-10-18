@@ -4,13 +4,13 @@ import ProfilePageClient from "@/components/ProfilePageClient";
 import Header from "@/components/Header";
 
 interface UserProfilePageProps {
-    params: {
+    params: Promise<{
         username: string;
-    };
+    }>;
 }
 
 export default async function UserProfilePage({ params }: UserProfilePageProps) {
-    const { username } = params;
+    const { username } = await params;
     
     const [user, postsData, repliesData] = await Promise.all([
         getUserByUsername(username),
