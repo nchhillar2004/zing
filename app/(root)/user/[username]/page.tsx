@@ -1,4 +1,4 @@
-import { getUserByUsername, getUserPosts, getUserReplies } from "@/lib/dal";
+import { getUserByUsername, getUserPosts, getUserReplies, getCurrentUser } from "@/lib/dal";
 import { notFound } from "next/navigation";
 import ProfilePageClient from "@/components/ProfilePageClient";
 import Header from "@/components/Header";
@@ -12,10 +12,11 @@ interface UserProfilePageProps {
 export default async function UserProfilePage({ params }: UserProfilePageProps) {
     const { username } = await params;
     
-    const [user, postsData, repliesData] = await Promise.all([
+    const [user, postsData, repliesData, currentUser] = await Promise.all([
         getUserByUsername(username),
         getUserPosts(username),
-        getUserReplies(username)
+        getUserReplies(username),
+        getCurrentUser()
     ]);
 
     if (!user) {
@@ -31,6 +32,7 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
             replies={repliesData.replies}
             postsTotal={postsData.total}
             repliesTotal={repliesData.total}
+            currentUser={currentUser}
         />
         </>
     );

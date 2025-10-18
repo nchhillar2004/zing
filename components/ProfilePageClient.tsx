@@ -8,7 +8,7 @@ import { Card, CardContent } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { P, Small, Muted } from "./ui/typography";
 import { 
-    CalendarDays, 
+    CalendarDays,
     MapPin, 
     Users, 
     UserPlus, 
@@ -16,7 +16,8 @@ import {
     BadgeCheck,
     BadgeDollarSign,
     Eye,
-    Reply
+    Reply,
+    Edit
 } from "lucide-react";
 import { MessageCircle } from "lucide-react";
 
@@ -89,12 +90,25 @@ interface ReplyWithParent extends PostWithAuthor {
     } | null;
 }
 
+interface CurrentUser {
+    id: string;
+    name: string;
+    username: string;
+    email: string | null;
+    bio: string | null;
+    isVerified: boolean;
+    premiumTier: string;
+    accountType: string;
+    createdAt: Date;
+}
+
 interface ProfilePageClientProps {
     user: UserWithCounts;
     posts: PostWithAuthor[];
     replies: ReplyWithParent[];
     postsTotal: number;
     repliesTotal: number;
+    currentUser: CurrentUser | null;
 }
 
 export default function ProfilePageClient({ 
@@ -102,7 +116,8 @@ export default function ProfilePageClient({
     posts, 
     replies, 
     postsTotal, 
-    repliesTotal 
+    repliesTotal,
+    currentUser
 }: ProfilePageClientProps) {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState("posts");
@@ -177,10 +192,17 @@ export default function ProfilePageClient({
                                 </div>
                                 
                                 <div className="flex gap-2">
-                                    <Button variant="outline" size="sm">
-                                        <UserPlus className="w-4 h-4 mr-2" />
-                                        Follow
-                                    </Button>
+                                    {currentUser && currentUser.id === user.id ? (
+                                        <Button variant="outline" size="sm" onClick={() => router.push('/settings')}>
+                                            <Edit className="w-4 h-4 mr-2" />
+                                            Edit Profile
+                                        </Button>
+                                    ) : (
+                                        <Button variant="outline" size="sm">
+                                            <UserPlus className="w-4 h-4 mr-2" />
+                                            Follow
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
 
