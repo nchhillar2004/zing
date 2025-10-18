@@ -7,9 +7,7 @@ import ProfileTabs from "@/components/profile/ProfileTabs";
 
 interface UserProfilePageProps {
     params: Promise<{
-    params: Promise<{
         username: string;
-    }>;
     }>;
 }
 
