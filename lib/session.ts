@@ -4,7 +4,7 @@ import { randomBytes } from "crypto";
 
 const SESSION_TTL = siteConfig.CAP_SESSION_AGE;
 
-export async function createSession(userId: number) {
+export async function createSession(userId: string) {
     const sessionId = randomBytes(64).toString("hex");
 
     await redis.set(`session:${sessionId}`,

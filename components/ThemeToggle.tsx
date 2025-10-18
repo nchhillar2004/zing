@@ -8,6 +8,8 @@ import { siteConfig } from "@/config/site-config";
 import Loading from "./Loading";
 import { BgColor, Color, useColor } from "./ThemeProvider";
 import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { Muted, P } from "./ui/typography";
 
 interface ColorsList {
     id: string;
@@ -137,7 +139,7 @@ export default function ThemeToggle() {
                     </div>
                 </div>
                 <div>
-                    <strong>Other themes</strong>
+                    <strong>Other themes</strong><Badge variant={"default"} className="text-[12px] bg-destructive text-white ml-2 select-none" title="Beta testing feature">Beta</Badge>
                     <div className="flex items-center flex-nowrap space-x-2 pt-2 max-md:flex-wrap max-md:gap-2">
                         {bgColors.map((color) => {
                             const isCompatible = color.type === "default" || color.type === currentExpectedType;
@@ -154,6 +156,10 @@ export default function ThemeToggle() {
                             );
                         })}
                     </div>
+                </div>
+                <div>
+                    <strong>Gradient themes</strong>
+                    <Muted>Feature comming soon...</Muted>
                 </div>
             </CardContent>
         </Card>

@@ -31,10 +31,21 @@ enum AccountType {
         OTHER
 }
 
+enum AccountPrivacy {
+    PUBLIC
+        PRIVATE
+}
+
 enum PostType {
     POST
         REPLY
         REPOST
+}
+
+enum PostPrivacy {
+    PUBLIC
+        PRIVATE
+        FOLLOWERS
 }
 
 enum ModerationStatus {
@@ -56,6 +67,7 @@ model User {
         isSpam                 Boolean           @default(false)
         role                   UserRole          @default(USER)
         premiumTier            PremiumTier       @default(NONE)
+        accountPrivacy         AccountPrivacy    @default(PUBLIC)
         accountType            AccountType       @default(PERSONAL)
         moderationStatus       ModerationStatus  @default(ACTIVE)
         moderationReason       String?
@@ -129,6 +141,7 @@ model Post {
         replyCount Int        @default(0)
         viewCount  Int        @default(0)
         postType   PostType   @default(POST)
+        postPrivacy PostPrivacy @default(PUBLIC)
 
         author     User       @relation(fields: [authorId], references: [id])
         parent     Post?      @relation("replies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)

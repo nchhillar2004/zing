@@ -12,13 +12,13 @@ import {
     MapPin, 
     Users, 
     UserPlus, 
-    MessageCircle, 
     Heart,
     BadgeCheck,
     BadgeDollarSign,
     Eye,
     Reply
 } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
 interface UserWithCounts {
     id: string;
@@ -180,10 +180,6 @@ export default function ProfilePageClient({
                                     <Button variant="outline" size="sm">
                                         <UserPlus className="w-4 h-4 mr-2" />
                                         Follow
-                                    </Button>
-                                    <Button variant="outline" size="sm" className="select-none" disabled>
-                                        <MessageCircle className="w-4 h-4 mr-2" />
-                                        Message
                                     </Button>
                                 </div>
                             </div>
