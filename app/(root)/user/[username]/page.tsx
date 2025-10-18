@@ -1,23 +1,22 @@
-import { getUserByUsername, getUserPosts, getUserReplies, getCurrentUser } from "@/lib/dal";
 import { notFound } from "next/navigation";
-import ProfilePageClient from "@/components/ProfilePageClient";
 import Header from "@/components/Header";
+import { getUserByUsername } from "@/lib/api/getUserByUsername";
+import UserBanner from "@/components/profile/UserBanner";
+import UserDetails from "@/components/profile/UserDetails";
+import ProfileTabs from "@/components/profile/ProfileTabs";
 
 interface UserProfilePageProps {
     params: Promise<{
+    params: Promise<{
         username: string;
+    }>;
     }>;
 }
 
 export default async function UserProfilePage({ params }: UserProfilePageProps) {
     const { username } = await params;
-    
-    const [user, postsData, repliesData, currentUser] = await Promise.all([
-        getUserByUsername(username),
-        getUserPosts(username),
-        getUserReplies(username),
-        getCurrentUser()
-    ]);
+
+    const user = await getUserByUsername(username);
 
     if (!user) {
         notFound();
@@ -25,15 +24,12 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
 
     return (
         <>
-        <Header variant="title" title={`@${user.username}`} />
-        <ProfilePageClient 
-            user={user}
-            posts={postsData.posts}
-            replies={repliesData.replies}
-            postsTotal={postsData.total}
-            repliesTotal={repliesData.total}
-            currentUser={currentUser}
-        />
+            <Header variant="title" title={`@${user.username}`} />
+            <UserBanner/>
+            <UserDetails user={user} />
+            <ProfileTabs
+                user={user}
+            />
         </>
     );
 }
