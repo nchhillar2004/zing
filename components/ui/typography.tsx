@@ -34,7 +34,7 @@ export function H4({children}: {children: React.ReactNode}) {
 
 export function P({className, children}: {className?: string, children: React.ReactNode}) {
     return (
-        <p className={`${className} leading-6 [&:not(:first-child)]:mt-6`}>
+        <p className={`${className} leading-4 [&:not(:first-child)]:mt-4`}>
             {children}
         </p>
     )

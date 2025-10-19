@@ -10,6 +10,7 @@ export interface UserWithCounts {
     isSpam: boolean;
     role: string;
     premiumTier: string;
+    accountPrivacy: string;
     accountType: string;
     moderationStatus: string;
     createdAt: Date;
@@ -19,4 +20,17 @@ export interface UserWithCounts {
         followers: number;
         follows: number;
     };
+}
+
+export interface CurrentUser {
+    id: string;
+    name: string;
+    username: string;
+    email: string | null;
+    bio: string | null;
+    dob: string | null;
+    isVerified: boolean;
+    premiumTier: string;
+    accountType: string;
+    createdAt: string;
 }

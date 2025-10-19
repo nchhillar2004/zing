@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers'
 import { getSession } from './session';
 import prisma from './db';
+import { CurrentUser } from '@/interfaces/user';
 
 export async function verifySession() {
     const cookieStore = await cookies();
@@ -31,6 +32,7 @@ export async function getCurrentUser() {
                 username: true,
                 email: true,
                 bio: true,
+                dob: true,
                 isVerified: true,
                 premiumTier: true,
                 accountType: true,

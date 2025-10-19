@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from './lib/session';
-import { rateLimiter } from './lib/ratelimit';
 
 const protectedRoutes = [
     '/',
@@ -33,28 +32,14 @@ export async function middleware(request: NextRequest) {
     const sessionId = request.cookies.get('sessionId')?.value;
 
     let isAuthenticated = false;
-    let userId: string | undefined;
     if (sessionId) {
         try {
             const session = await getSession(sessionId);
             isAuthenticated = !!session;
-            if (session) {
-                userId = session.userId;
-            }
         } catch (error) {
             console.error('Error checking session:', error);
             isAuthenticated = false;
         }
-    }
-
-    const identifier = userId || 'anonymous';
-
-    const rateResult = await rateLimiter.limit(identifier);
-    if (!rateResult.success) {
-        const blockedUrl = new URL("/blocked?reason=rate-limit", request.url);
-        const response = NextResponse.redirect(blockedUrl);
-        response.headers.set("Retry-After", Math.floor((reset - Date.now()) / 1000).toString());
-        return response;
     }
 
     const isHomePage = pathname === '/';
@@ -90,6 +75,7 @@ export async function middleware(request: NextRequest) {
 
     // Allow access to public routes and dynamic routes
     if (isPublicRoute || pathname.startsWith('/user/') || pathname.startsWith('/post/')) {
+        return NextResponse.next();
     }
 
     // For any other routes, allow access

@@ -54,6 +54,7 @@ export async function getUserByUsername(username: string) {
                 role: true,
                 premiumTier: true,
                 accountType: true,
+                accountPrivacy: true,
                 moderationStatus: true,
                 createdAt: true,
                 updatedAt: true,
