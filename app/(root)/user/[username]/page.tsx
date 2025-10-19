@@ -5,8 +5,6 @@ import UserBanner from "@/components/profile/UserBanner";
 import UserDetails from "@/components/profile/UserDetails";
 import ProfileTabs from "@/components/profile/ProfileTabs";
 import { getCurrentUser } from "@/lib/dal";
-import { Lock } from "lucide-react";
-import { CurrentUser } from "@/interfaces/user";
 
 interface UserProfilePageProps {
     params: Promise<{

@@ -52,7 +52,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
         } else if (activeTab === "likes") {
             setLoading(false);
         }
-    }, [activeTab]);
+    }, [activeTab, user.username]);
 
     if (user.accountPrivacy==="PRIVATE" && (currentUser && !(currentUser.id===user.id))) {
         return(
@@ -69,7 +69,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                 <div className="pt-2">
                     <TabsList className={`grid w-full ${currentUser && currentUser.id === user.id ? "grid-cols-3" : "grid-cols-2"}`}>
                         <TabsTrigger value="posts" className="py-2">
-                            Posts {!(posts) ? "" : `(${posts?.total})`}
+                            Posts {!(posts) ? <></> : `(${posts?.total})`}
                         </TabsTrigger>
                         <TabsTrigger value="replies">
                             Replies
@@ -88,7 +88,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                             <div className="text-center py-12">
                                 <MessageCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                                 <P className="text-muted-foreground">No posts yet</P>
-                                <Small className="text-muted-foreground">When {user.name} posts, you'll see them here.</Small>
+                                <Small className="text-muted-foreground">When {user.name} posts, you&apos;ll see them here.</Small>
                             </div>
                         ) : (
                                 <div>
@@ -108,11 +108,11 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                             <div className="text-center py-12">
                                 <Reply className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                                 <P className="text-muted-foreground">No replies yet</P>
-                                <Small className="text-muted-foreground">When {user.name} replies to posts, you'll see them here.</Small>
+                                <Small className="text-muted-foreground">When {user.name} replies to posts, you&apos;ll see them here.</Small>
                             </div>
                         ) : (
                                 replies?.replies.map((reply) => (
-                                    <PostCard variant="reply" post={reply} /> 
+                                    <PostCard key={reply.id} variant="reply" post={reply} /> 
                                 ))
                             )}
                     </>}
@@ -130,7 +130,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                                 </div>
                             ) : (
                                     replies?.replies.map((reply) => (
-                                        <PostCard variant="reply" post={reply} /> 
+                                        <PostCard key={reply.id} variant="reply" post={reply} /> 
                                     ))
                                 )}
                         </>}

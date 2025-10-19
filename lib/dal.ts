@@ -40,7 +40,7 @@ export async function getCurrentUser() {
             }
         });
 
-        return user;
+        return user as CurrentUser;
     } catch (error) {
         console.error('Error fetching user:', error);
         return null;

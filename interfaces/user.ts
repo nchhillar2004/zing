@@ -10,8 +10,8 @@ export interface UserWithCounts {
     isSpam: boolean;
     role: string;
     premiumTier: string;
-    accountPrivacy: string;
     accountType: string;
+    accountPrivacy: string;
     moderationStatus: string;
     createdAt: Date;
     updatedAt: Date;
@@ -32,5 +32,5 @@ export interface CurrentUser {
     isVerified: boolean;
     premiumTier: string;
     accountType: string;
-    createdAt: string;
+    createdAt: Date;
 }
