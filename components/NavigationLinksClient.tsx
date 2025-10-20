@@ -11,6 +11,7 @@ import { Muted, P, Small } from "./ui/typography";
 import { logout } from "@/actions/logout";
 import { User } from "@prisma/client";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { toast } from "sonner";
 
 interface NavigationLinksClientProps {
     user: User | null;
@@ -31,8 +32,21 @@ export default function NavigationLinksClient({ user }: NavigationLinksClientPro
     ];
 
     const handleLogout = async () => {
-        await logout();
-        router.push("/login");
+        toast.promise<{message: string}>(
+            () => new Promise((resolve, reject) => {
+                logout().then(res => {
+                    if (res?.success) {
+                        resolve({message: res?.message});
+                        router.push("/login");
+                    }
+                    else reject({ message: res?.message });
+                })
+            }), {
+                loading: "Logging out...",
+                success: (data) => `${data.message}`,
+                error: (data) => `${data.message}`
+            }
+        );
     };
 
     return (
@@ -81,7 +95,7 @@ export default function NavigationLinksClient({ user }: NavigationLinksClientPro
                                 >
                                     Profile
                                 </Button>
-                                </DropdownMenuItem>
+                            </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <Button
                                     variant="ghost"
@@ -91,19 +105,19 @@ export default function NavigationLinksClient({ user }: NavigationLinksClientPro
                                 >
                                     Logout
                                 </Button>
-                                </DropdownMenuItem>
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 ) : (
-                    <Button
-                        variant="default"
-                        size="lg"
-                        className="w-full"
-                        onClick={() => router.push("/login")}
-                    >
-                        Login
-                    </Button>
-                )}
+                        <Button
+                            variant="default"
+                            size="lg"
+                            className="w-full"
+                            onClick={() => router.push("/login")}
+                        >
+                            Login
+                        </Button>
+                    )}
             </div>
         </>
     );

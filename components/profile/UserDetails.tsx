@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigge
 import Link from "next/link";
 
 export default function UserDetails({user, currentUser}: {user: UserWithCounts, currentUser: CurrentUser | null}) {
+    const currentUserOwner = currentUser && currentUser.id===user.id;
     return(
         <div>
             <div className="p-4">
@@ -23,9 +24,9 @@ export default function UserDetails({user, currentUser}: {user: UserWithCounts, 
                                 {user.name.charAt(0).toUpperCase()}
                             </AvatarFallback>
                         </Avatar>
-                        {currentUser && currentUser.id===user.id ?
+                        {currentUserOwner ?
                             <div className="flex items-center">
-                                {currentUser && (!currentUser.bio || !currentUser.dob || !currentUser.email) && 
+                                {!currentUser.dob || !currentUser.email && 
                                     <P className="text-[12px] border border-border px-2 rounded-sm mx-2 w-fit flex items-center bg-[var(--warning)] max-md:hidden">
                                         <TriangleAlert size={12} className="mr-1" /> Complete your profile
                                     </P>}
@@ -70,7 +71,7 @@ export default function UserDetails({user, currentUser}: {user: UserWithCounts, 
                                         <Badge variant="default" title="Verified" className="select-none">
                                             Verified <BadgeCheck/>
                                         </Badge>
-                                    ) : (<>{currentUser && currentUser.id===user.id && 
+                                    ) : (<>{currentUserOwner && 
                                             <Button variant={"outline"} size={"sm"} className="text-[13px]">
                                                 Get verified <BadgeCheck className="text-primary" size={10}/>
                                             </Button>}</>)
@@ -108,7 +109,7 @@ export default function UserDetails({user, currentUser}: {user: UserWithCounts, 
                             </div>
                         </div>
 
-                        {user.accountPrivacy==="PUBLIC" || (currentUser && currentUser.id===user.id) ?
+                        {user.accountPrivacy==="PUBLIC" || currentUserOwner ?
                             <>
                                 <div className="flex flex-wrap gap-4 text-sm">
                                     {user.dob && (
@@ -145,7 +146,7 @@ export default function UserDetails({user, currentUser}: {user: UserWithCounts, 
                                 </div>
                             </div>
                         }
-                        {currentUser && !(currentUser.id===user.id) && user.isSpam && 
+                        {!currentUserOwner && user.isSpam && 
                             <P className="text-[12px] border border-border px-2 rounded-sm w-fit flex items-center bg-[var(--warning)] max-md:hidden">
                                 <TriangleAlert size={12} className="mr-1" /> This profile is marked as spam!
                             </P>}

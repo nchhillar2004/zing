@@ -12,20 +12,26 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { siteConfig } from "@/config/site-config"
 import SiteLogo from "../SiteLogo"
-import { useRouter } from "next/navigation";
 import { loginAction } from "@/actions/login";
-import { useActionState } from "react";
-import { useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
     const [ state, action, pending ] = useActionState(loginAction, undefined);
+    const [redirecting, setRedirecting] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
-        if (state?.user) {
+        if (state?.error) {
+            toast.error(state.error);
+        }
+        else if (state?.user) {
+            setRedirecting(true);
+            toast.success(state.message);
             router.push("/");
         }
     }, [state, router]);
@@ -60,7 +66,7 @@ export function LoginForm({
                                 {state?.error && <small className="text-destructive">{state?.error}</small>}
                             </Field>
                             <Field>
-                                <Button type="submit" disabled={pending}>{pending ? "Logging in..." : "Login"}</Button>
+                                <Button type="submit" disabled={pending || redirecting}>{pending || redirecting ? "Logging in..." : "Login"}</Button>
                             </Field>
                             <FieldDescription className="text-center">
                                 Don&apos;t have an account? <Link href="/register">Register</Link>

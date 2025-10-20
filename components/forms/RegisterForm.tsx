@@ -16,10 +16,12 @@ import { useActionState, useState } from "react";
 import { registerAction } from "@/actions/register";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function RegisterForm() {
     const [state, action, pending] = useActionState(registerAction, undefined);
     const router = useRouter();
+    const [redirecting, setRedirecting] = useState(false);
 
     const [formData, setFormData] = useState({
         fname: "",
@@ -32,6 +34,8 @@ export default function RegisterForm() {
 
     useEffect(() => {
         if (state?.username) {
+            setRedirecting(true);
+            toast.success("Registered successfully, login to continue");
             router.push("/login");
         }
     }, [state, router]);
@@ -97,7 +101,7 @@ export default function RegisterForm() {
                             </Field>
 
                             <Field>
-                                <Button type="submit" disabled={pending}>{pending ? "Registering..." : "Register"}</Button>
+                                <Button type="submit" disabled={pending || redirecting}>{pending || redirecting ? "Registering..." : "Register"}</Button>
                             </Field>
                             <FieldDescription className="text-center">
                                 Already have an account? <Link href="/login">Login</Link>

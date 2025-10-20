@@ -31,6 +31,8 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
     const [replies, setReplies] = useState<RepliesData>();
     const [loading, setLoading] = useState(false);
 
+    const currentUserOwner = currentUser && currentUser.id===user.id;
+
     useEffect(() => {
         setLoading(true);
         const fetchPosts = async () => {
@@ -54,9 +56,9 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
         }
     }, [activeTab, user.username]);
 
-    if (user.accountPrivacy==="PRIVATE" && (currentUser && !(currentUser.id===user.id))) {
+    if (user.accountPrivacy==="PRIVATE" && (!currentUserOwner || !currentUser)) {
         return(
-        <div className="text-center py-12">
+            <div className="text-center py-12">
                 <Lock className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                 <P className="text-muted-foreground">This account is private.</P>
             </div>
@@ -67,14 +69,14 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
         <div className="p-0">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <div className="pt-2">
-                    <TabsList className={`grid w-full ${currentUser && currentUser.id === user.id ? "grid-cols-3" : "grid-cols-2"}`}>
+                    <TabsList className={`grid w-full ${currentUserOwner ? "grid-cols-3" : "grid-cols-2"}`}>
                         <TabsTrigger value="posts" className="py-2">
                             Posts {!(posts) ? <></> : `(${posts?.total})`}
                         </TabsTrigger>
                         <TabsTrigger value="replies">
                             Replies
                         </TabsTrigger>
-                        {currentUser && currentUser.id===user.id &&
+                        {currentUserOwner &&
                             <TabsTrigger value="likes">
                                 Likes
                             </TabsTrigger>
@@ -118,7 +120,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                     </>}
                 </TabsContent>
 
-                {currentUser && currentUser.id===user.id && 
+                {currentUserOwner && 
                     <TabsContent value="likes" className="p-6 space-y-4">
                         <Small className="text-muted-foreground">Liked posts are private to you.</Small>
                         {loading ? <Loading/> : <>
