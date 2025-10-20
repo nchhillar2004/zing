@@ -1,32 +1,21 @@
-"use client"
+import CreatePostForm from "@/components/forms/CreatePostForm";
 import Header from "@/components/Header";
-import Loading from "@/components/Loading";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { useState, useEffect } from "react";
+import HomePageTabsClient from "@/components/HomePageTabsClient";
+import { TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { getCurrentUser } from "@/lib/dal";
+import { toast } from "sonner";
 
-export default function HomePage() {
-    const [tab, setTab] = useState("feed");
-    const [mounted, setMounted] = useState(false);
+export default async function HomePage() {
 
-    useEffect(() => {
-        const savedTab = (typeof window !== 'undefined') && localStorage.getItem("selectedTab");
-        if (savedTab) setTab(savedTab);
-        setMounted(true);
-    }, []);
+    const currentUser = await getCurrentUser();
 
-    const handleTabChange = (value: string) => {
-        setTab(value);
-        localStorage.setItem("selectedTab", value);
-    };
-
-    if (!mounted) {
-        return (
-        <Loading/>
-        );
+    if (!currentUser) {
+        toast.error("Log in to access your feed");
+        return;
     }
 
     return (
-        <Tabs defaultValue="feed" value={tab} onValueChange={handleTabChange} className="w-full">
+        <HomePageTabsClient>
             <Header variant="tabs">
                 <TabsList className="h-full flex items-center w-full justify-start max-md:overflow-x-scroll overflow-hidden">
                     <TabsTrigger value="feed">For you</TabsTrigger>
@@ -37,13 +26,11 @@ export default function HomePage() {
             </Header>
             <div>
                 <TabsContent value="feed">
-                    <div className="h-[200vh]">No posts to show</div>
+                    <CreatePostForm user={currentUser} />
                 </TabsContent>
 
                 <TabsContent value="following">
-                    <div className="h-[200vh]">
-                        Please login and follow someone to see posts.
-                    </div>
+                    <CreatePostForm user={currentUser} />
                 </TabsContent>
 
                 <TabsContent value="news">
@@ -58,6 +45,6 @@ export default function HomePage() {
                     </div>
                 </TabsContent>
             </div>
-        </Tabs>
+        </HomePageTabsClient>
     );
 }

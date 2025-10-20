@@ -1,5 +1,4 @@
 import { CurrentUser, UserWithCounts } from "@/interfaces/user";
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { BadgeCheck, BadgeDollarSign, Users, UserPlus, MessageCircle, MapPin, CalendarDays, Ellipsis, Link as LinkIcon, Ban, Flag, Edit, TriangleAlert, Lock } from "lucide-react";
 import { formatDate } from "@/utils/time";
@@ -7,6 +6,7 @@ import { P, Muted } from "../ui/typography";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
+import UserAvatar from "../common/UserAvatar";
 
 export default function UserDetails({user, currentUser}: {user: UserWithCounts, currentUser: CurrentUser | null}) {
     const currentUserOwner = currentUser && currentUser.id===user.id;
@@ -15,15 +15,7 @@ export default function UserDetails({user, currentUser}: {user: UserWithCounts, 
             <div className="p-4">
                 <div className="flex flex-col gap-4">
                     <div className="flex justify-between flex-shrink-0">
-                        <Avatar className="w-24 h-24 -mt-16 border-6 select-none border-background">
-                            <AvatarImage
-                                src="https://github.com/evilrabbi.png"
-                                alt={`@${user.username}`}
-                            />
-                            <AvatarFallback className="text-2xl">
-                                {user.name.charAt(0).toUpperCase()}
-                            </AvatarFallback>
-                        </Avatar>
+                        <UserAvatar user={user} size="md" />
                         {currentUserOwner ?
                             <div className="flex items-center">
                                 {!currentUser.dob || !currentUser.email && 
