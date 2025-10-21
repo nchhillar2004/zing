@@ -45,7 +45,8 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                     _count: {
                         select: {
                             likes: true,
-                            replies: true
+                            replies: true,
+                            bookmarks: true,
                         }
                     }
                 },

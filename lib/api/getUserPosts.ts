@@ -32,7 +32,8 @@ export async function getUserPosts(username: string, page: number = 1, limit: nu
                     _count: {
                         select: {
                             likes: true,
-                            replies: true
+                            replies: true,
+                            bookmarks: true,
                         }
                     }
                 },

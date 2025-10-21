@@ -1,3 +1,4 @@
+import { PostWithAuthor } from "@/interfaces/post";
 import prisma from "../db";
 
 export async function getPostById(postId: string) {
@@ -9,9 +10,20 @@ export async function getPostById(postId: string) {
                 content: true,
                 likeCount: true,
                 replyCount: true,
+                viewCount: true,
                 authorId: true,
                 createdAt: true,
                 updatedAt: true,
+                parentId: true,
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                        profilePic: true,
+                        isVerified: true,
+                    }
+                },
                 _count: {
                     select: {
                         bookmarks: true,
@@ -20,7 +32,7 @@ export async function getPostById(postId: string) {
             }
         });
 
-        return post;
+        return post as PostWithAuthor;
     } catch (error) {
         console.error('Error fetching post by id:', error);
         return null;

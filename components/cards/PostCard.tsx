@@ -2,7 +2,7 @@ import { Card, CardContent } from "../ui/card";
 import { P, Muted } from "../ui/typography";
 import { Heart, Eye, Reply } from "lucide-react";
 import { redirect } from "next/navigation";
-import { Badge } from "../ui/badge";
+import { BadgeCheck } from "lucide-react";
 import { formatRelativeTime } from "@/utils/time";
 import { PostWithAuthor, ReplyWithParent } from "@/interfaces/post";
 import UserAvatar from "../common/UserAvatar";
@@ -22,19 +22,19 @@ export default function PostCard({variant, post}: PostCard) {
                     <UserAvatar user={post.author} size="sm" />
                     <div className="flex-1 space-y-2">
                         <div className="flex items-center gap-2">
-                            <P className="font-medium">{post.author.name}</P>
-                            {post.author.isVerified && (
-                                <Badge variant="secondary">
-                                    ✓
-                                </Badge>
-                            )}
+                            <P className="font-semibold flex items-center">
+                                {post.author.name}
+                                {post.author.isVerified && (
+                                    <BadgeCheck className="ml-1 text-primary" strokeWidth={2} size={14} />
+                                )}
+                            </P>
                             <Muted className="text-sm">@{post.author.username}</Muted>
                             <Muted className="text-sm">·</Muted>
                             <Muted className="text-sm">{formatRelativeTime(post.createdAt)}</Muted>
                         </div>
-                        <P className="line-clamp-4 text-ellipsis leading-[1.2]! mt-0! tracking-[0.02em]!">
+                        <pre className="line-clamp-4 text-ellipsis text-sm leading-[1.2]! mt-0! tracking-[0.02em]!">
                             {post.content} 
-                        </P>
+                        </pre>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
                                 <Heart className="w-4 h-4" />

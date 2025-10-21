@@ -3,7 +3,6 @@ export interface PostWithAuthor {
     content: string;
     createdAt: Date;
     updatedAt: Date;
-    time: string | null;
     authorId: string;
     parentId: string | null;
     likeCount: number;
@@ -20,6 +19,7 @@ export interface PostWithAuthor {
     _count: {
         likes: number;
         replies: number;
+        bookmarks: number;
     };
 }
 
@@ -29,7 +29,6 @@ export interface ReplyWithParent extends PostWithAuthor {
         content: string;
         createdAt: Date;
         updatedAt: Date;
-        time: string | null;
         authorId: string;
         parentId: string | null;
         likeCount: number;
