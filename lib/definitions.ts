@@ -1,5 +1,4 @@
-import { User } from "@prisma/client";
-import { errors } from "@upstash/redis";
+import { Post, User } from "@prisma/client";
 import { z } from "zod";
 
 export const LoginFormSchema = z.object({
@@ -50,3 +49,10 @@ export type RegisterFormState = | {
     message?: string,
     username?: string
 } | undefined;
+
+export type CreatePostFormState = | {
+    error?: string,
+    message?: string,
+    post?: Post
+} | undefined;
+

@@ -15,12 +15,12 @@ import { getUserPosts } from "@/lib/api/getUserPosts";
 import { getUserReplies } from "@/lib/api/getUserReplies";
 import Loading from "../Loading";
 
-interface PostData {
+export interface PostData {
     posts: PostWithAuthor[];
     total: number;
 }
 
-interface RepliesData {
+export interface RepliesData {
     replies: ReplyWithParent[];
     total: number;
 }
@@ -69,7 +69,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
         <div className="p-0">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <div className="pt-2">
-                    <TabsList className={`grid w-full ${currentUserOwner ? "grid-cols-3" : "grid-cols-2"}`}>
+                    <TabsList className={`grid h-fit w-full ${currentUserOwner ? "grid-cols-3" : "grid-cols-2"}`}>
                         <TabsTrigger value="posts" className="py-2">
                             Posts {!(posts) ? <></> : `(${posts?.total})`}
                         </TabsTrigger>
@@ -84,7 +84,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                     </TabsList>
                 </div> 
 
-                <TabsContent value="posts" className="p-6 space-y-4">
+                <TabsContent value="posts" className="space-y-4">
                     {loading ? <Loading/> : <>
                         {posts?.total === 0 ? (
                             <div className="text-center py-12">
@@ -104,7 +104,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                 </TabsContent>
 
 
-                <TabsContent value="replies" className="p-6 space-y-4">
+                <TabsContent value="replies" className="space-y-4">
                     {loading ? <Loading/> : <>
                         {replies?.total === 0 ? (
                             <div className="text-center py-12">
@@ -121,7 +121,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                 </TabsContent>
 
                 {currentUserOwner && 
-                    <TabsContent value="likes" className="p-6 space-y-4">
+                    <TabsContent value="likes" className="space-y-4">
                         <Small className="text-muted-foreground">Liked posts are private to you.</Small>
                         {loading ? <Loading/> : <>
                             {replies?.total === 0 ? (

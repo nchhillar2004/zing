@@ -1,11 +1,11 @@
 import { Card, CardContent } from "../ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { P, Muted } from "../ui/typography";
 import { Heart, Eye, Reply } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Badge } from "../ui/badge";
 import { formatRelativeTime } from "@/utils/time";
 import { PostWithAuthor, ReplyWithParent } from "@/interfaces/post";
+import UserAvatar from "../common/UserAvatar";
 
 interface PostCard {
     variant: "post" | "reply";
@@ -14,20 +14,12 @@ interface PostCard {
 
 export default function PostCard({variant, post}: PostCard) {
     return(
-        <Card key={post.id} className="hover:bg-accent/50 transition-colors cursor-pointer"
+        <Card key={post.id} className="hover:bg-accent/50 border-x-0 border-t-0 p-0 rounded-none transition-colors cursor-pointer"
             onClick={() => redirect(`/post/${post.id}`)}>
             {variant==="reply" && <P>reply</P>}
             <CardContent className="p-4">
                 <div className="flex gap-3">
-                    <Avatar className="w-10 h-10">
-                        <AvatarImage
-                            src="https://github.com/evilrabbit.png"
-                            alt={`@${post.author.username}`}
-                        />
-                        <AvatarFallback>
-                            {post.author.name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                    </Avatar>
+                    <UserAvatar user={post.author} size="sm" />
                     <div className="flex-1 space-y-2">
                         <div className="flex items-center gap-2">
                             <P className="font-medium">{post.author.name}</P>
@@ -40,7 +32,10 @@ export default function PostCard({variant, post}: PostCard) {
                             <Muted className="text-sm">·</Muted>
                             <Muted className="text-sm">{formatRelativeTime(post.createdAt)}</Muted>
                         </div>
-                        <P>{post.content}</P>
+                        <P>{post.content} 
+                            hello here is some sample content to test how the post responsds when the content overflows. this content certainly overflows one line
+                            i want it to be eclipessed after 4th line. and i am still at third line. do not waste your time reading this. its just to increadse the post content. i guess its 5 lines now bye bye see you.
+                        </P>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
                                 <Heart className="w-4 h-4" />

@@ -9,7 +9,6 @@ import {
     Gift
 } from "lucide-react";
 import { getCurrentUser } from "@/lib/dal";
-import { toast } from "sonner";
 
 export default async function PremiumPlans() {
     const currentUser = await getCurrentUser();

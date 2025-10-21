@@ -14,6 +14,7 @@ export interface PostWithAuthor {
         id: string;
         name: string;
         username: string;
+        profilePic: string;
         isVerified: boolean;
     };
     _count: {
@@ -39,6 +40,7 @@ export interface ReplyWithParent extends PostWithAuthor {
             id: string;
             name: string;
             username: string;
+            profilePic: string;
             isVerified: boolean;
         };
     } | null;

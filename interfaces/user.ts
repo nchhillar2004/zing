@@ -6,6 +6,7 @@ export interface UserWithCounts {
     bio: string | null;
     dob: string | null;
     country: string;
+    profilePic: string;
     isVerified: boolean;
     isSpam: boolean;
     role: string;
@@ -26,6 +27,7 @@ export interface CurrentUser {
     id: string;
     name: string;
     username: string;
+    profilePic: string;
     email: string | null;
     bio: string | null;
     dob: string | null;

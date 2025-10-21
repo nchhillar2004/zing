@@ -3,14 +3,18 @@ import Link from "next/link";
 import UserAvatar from "../common/UserAvatar";
 import { CurrentUser } from "@/interfaces/user";
 import { Textarea } from "../ui/textarea";
-import { useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
-import { Image, List, MapPin, Smile } from "lucide-react";
+import { Image as ImageIcon, List, MapPin, Smile } from "lucide-react";
 import { Muted, P } from "../ui/typography";
 import EmojiPicker, { EmojiStyle, Theme } from 'emoji-picker-react';
 import CreatePoll, { PollValue } from "./CreatePoll";
+import createPostAction from "@/actions/post";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function CreatePostForm({user}: {user: CurrentUser}) {
+    const [state, action, pending] = useActionState(createPostAction, undefined);
     const [text, setText] = useState("");
     const [poll, setPoll] = useState(false);
     const [pollValue, setPollValue] = useState<PollValue>();
@@ -18,8 +22,18 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
     const pickerRef = useRef<HTMLDivElement | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const MAX_POST_CHARACTERS: number = user.premiumTier==="NONE" ? 300 : (user.premiumTier==="BASIC" ? 600 : 2000);
+    const router = useRouter();
 
     const pendingPoll = poll && (!pollValue?.option1 || !pollValue.option2 || !pollValue.pollLength);
+
+    useEffect(() => {
+        if(state?.success) {
+            toast.success("Post created");
+            router.push(`/post/${state.post?.id}`)
+        }else if (state?.error) {
+            toast.error(state.error);
+        }
+    }, [state, router]);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -52,7 +66,7 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
     }; 
 
     return(
-        <form className="py-2 px-3 border-b border-b-border">
+        <form action={action} className="py-2 px-3 border-b border-b-border">
             <div className="flex gap-1 mb-2">
                 <Link href={`/user/${user.username}`} className="hover:no-underline! h-fit">
                     <UserAvatar user={user} size="sm" />
@@ -63,10 +77,11 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
                         rows={poll ? 1 : 2}
                         onChange={(e) => setText(e.target.value.slice(0, MAX_POST_CHARACTERS))} 
                         ref={textareaRef} 
+                        name="content"
                         onInput={handleInput} 
                         maxLength={MAX_POST_CHARACTERS} 
                         placeholder={poll ? "Ask a question..." : "Create a post..."}
-                        className="bg-transparent! border-none! text-xl! max-h-[60vh]"
+                        className={`bg-transparent! border-none! text-xl! ${poll ? "max-h-[30vh]" : "max-h-[60vh]"}`}
                         required/>
                     {poll && 
                         <CreatePoll setPoll={setPoll} setPollValue={setPollValue} />
@@ -82,7 +97,7 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
             </div>
             <div className="flex justify-between gap-4 max-md:gap-2 max-md:overflow-x-scroll">
                 <div className="flex items-center gap-1">
-                    <Button type="button" size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Upload Image"><Image className="h-[1.25rem]! w-[1.25rem]!"/></Button>
+                    <Button type="button" size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Upload Image"><ImageIcon className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" onClick={addPoll} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Create Poll"><List className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" onClick={() => {setEmojiPicker(!emojiPicker)}}  size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Add Emoji"><Smile className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Share Location"><MapPin className="h-[1.25rem]! w-[1.25rem]!"/></Button>
@@ -94,8 +109,8 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
                         size={"sm"} 
                         type="submit"
                         className="font-semibold bg-[var(--foreground)] hover:bg-[var(--foreground)]/90" 
-                        disabled={!text || pendingPoll}>
-                        Post
+                        disabled={!text || pendingPoll || pending}>
+                        {pending ? "Posting..." : "Post"}
                     </Button>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 "use server";
+import { PostData } from "@/components/profile/ProfileTabs";
 import prisma from "../db";
 
 export async function getUserPosts(username: string, page: number = 1, limit: number = 10) {
@@ -24,6 +25,7 @@ export async function getUserPosts(username: string, page: number = 1, limit: nu
                             id: true,
                             name: true,
                             username: true,
+                            profilePic: true,
                             isVerified: true
                         }
                     },
@@ -46,7 +48,7 @@ export async function getUserPosts(username: string, page: number = 1, limit: nu
             })
         ]);
 
-        return { posts, total };
+        return { posts, total } as PostData;
     } catch (error) {
         console.error('Error fetching user posts:', error);
         return { posts: [], total: 0 };

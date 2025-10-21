@@ -1,4 +1,5 @@
 "use server";
+import { RepliesData } from "@/components/profile/ProfileTabs";
 import prisma from "../db";
 
 export async function getUserReplies(username: string, page: number = 1, limit: number = 10) {
@@ -24,6 +25,7 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                             id: true,
                             name: true,
                             username: true,
+                            profilePic: true,
                             isVerified: true
                         }
                     },
@@ -34,6 +36,7 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                                     id: true,
                                     name: true,
                                     username: true,
+                                    profilePic: true,
                                     isVerified: true
                                 }
                             }
@@ -58,7 +61,7 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
             })
         ]);
 
-        return { replies, total };
+        return { replies, total } as RepliesData;
     } catch (error) {
         console.error('Error fetching user replies:', error);
         return { replies: [], total: 0 };

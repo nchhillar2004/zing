@@ -69,7 +69,7 @@ export default function CreatePoll({setPoll, setPollValue}: CreatePollInterface)
                 pollLength,
             });
         }
-    }, [option1, option2, option3, option4, pollLength]);
+    }, [option1, option2, option3, option4, pollLength, setPollValue]);
 
     useEffect(() => {
         const time = getPollEndTime(pollLength);
