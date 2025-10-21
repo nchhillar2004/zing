@@ -32,9 +32,8 @@ export default function PostCard({variant, post}: PostCard) {
                             <Muted className="text-sm">·</Muted>
                             <Muted className="text-sm">{formatRelativeTime(post.createdAt)}</Muted>
                         </div>
-                        <P>{post.content} 
-                            hello here is some sample content to test how the post responsds when the content overflows. this content certainly overflows one line
-                            i want it to be eclipessed after 4th line. and i am still at third line. do not waste your time reading this. its just to increadse the post content. i guess its 5 lines now bye bye see you.
+                        <P className="line-clamp-4 text-ellipsis leading-[1.2]! mt-0! tracking-[0.02em]!">
+                            {post.content} 
                         </P>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
