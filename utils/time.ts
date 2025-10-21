@@ -1,3 +1,5 @@
+import { PollLength } from "@/components/forms/CreatePoll";
+
 export function getCurrentTime(): string {
     return new Date().toISOString();
 }
@@ -39,3 +41,16 @@ export function formatRelativeTime(date: Date) {
     return formatDate(date);
 };
 
+export function getPollEndTime(pollLength: PollLength | null) {
+    if (!pollLength) return null;
+    const now = new Date();
+
+    const end = new Date(
+        now.getTime() + 
+            pollLength.days * 24 * 60 * 60 * 1000 +
+            pollLength.hours * 60 * 60 * 1000 +
+            pollLength.minutes * 60 * 1000
+    );
+
+    return end;
+}
