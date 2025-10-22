@@ -29,7 +29,7 @@ export default function PostView({post}: {post: PostWithAuthor}) {
                     </Button>
                 </div>
             </div>
-            <pre className="py-2">
+            <pre className="py-2 text-wrap wrap-break-word">
                 {post.content}
             </pre>
             <Separator orientation="horizontal" />

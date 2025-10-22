@@ -20,7 +20,7 @@ export default function PostCard({variant, post}: PostCard) {
             <CardContent className="p-4">
                 <div className="flex gap-3">
                     <UserAvatar user={post.author} size="sm" />
-                    <div className="flex-1 space-y-2">
+                    <div className="flex-1 space-y-2 overflow-auto">
                         <div className="flex items-center gap-2">
                             <P className="font-semibold flex items-center">
                                 {post.author.name}
@@ -32,7 +32,7 @@ export default function PostCard({variant, post}: PostCard) {
                             <Muted className="text-sm">·</Muted>
                             <Muted className="text-sm">{formatRelativeTime(post.createdAt)}</Muted>
                         </div>
-                        <pre className="line-clamp-4 text-ellipsis text-sm leading-[1.2]! mt-0! tracking-[0.02em]!">
+                        <pre className="line-clamp-4 text-wrap wrap-break-word text-ellipsis text-sm leading-[1.2]! mt-0! tracking-[0.02em]!">
                             {post.content} 
                         </pre>
                         <div className="flex items-center gap-4 text-sm text-muted-foreground">

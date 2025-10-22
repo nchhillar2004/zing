@@ -12,11 +12,13 @@ import CreatePoll, { PollValue } from "./CreatePoll";
 import createPostAction from "@/actions/post";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import AddFilesInPost from "./AddFilesInPost";
 
 export default function CreatePostForm({user}: {user: CurrentUser}) {
     const [state, action, pending] = useActionState(createPostAction, undefined);
     const [text, setText] = useState("");
     const [poll, setPoll] = useState(false);
+    const [addFiles, setAddFiles] = useState(false);
     const [pollValue, setPollValue] = useState<PollValue>();
     const [emojiPicker, setEmojiPicker] = useState(false);
     const pickerRef = useRef<HTMLDivElement | null>(null);
@@ -83,6 +85,7 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
                         placeholder={poll ? "Ask a question..." : "Create a post..."}
                         className={`bg-transparent! border-none! text-xl! ${poll ? "max-h-[30vh]" : "max-h-[60vh]"}`}
                         required/>
+                    {addFiles && <AddFilesInPost/>}
                     {poll && 
                         <CreatePoll setPoll={setPoll} setPollValue={setPollValue} />
                     }
@@ -97,7 +100,7 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
             </div>
             <div className="flex justify-between gap-4 max-md:gap-2 max-md:overflow-x-scroll">
                 <div className="flex items-center gap-1">
-                    <Button type="button" size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Upload Image"><ImageIcon className="h-[1.25rem]! w-[1.25rem]!"/></Button>
+                    <Button type="button" onClick={() => setAddFiles(!addFiles)} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Upload Image"><ImageIcon className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" onClick={addPoll} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Create Poll"><List className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" onClick={() => {setEmojiPicker(!emojiPicker)}}  size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Add Emoji"><Smile className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Share Location"><MapPin className="h-[1.25rem]! w-[1.25rem]!"/></Button>

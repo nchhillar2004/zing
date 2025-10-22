@@ -30,7 +30,7 @@ export default function RootLayout({
                     themes={['light', 'dark', 'dim']}
                     scriptProps={{ 'data-cfasync': 'false' }}
                     disableTransitionOnChange>
-                    <main className="container relative">
+                    <main className="relative">
                         {children}
                     </main>
                     <Toaster/>
