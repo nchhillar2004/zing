@@ -1,3 +1,4 @@
+"use client";
 import { PostWithAuthor } from "@/interfaces/post";
 import UserAvatar from "./UserAvatar";
 import { H4, Muted } from "../ui/typography";
@@ -6,8 +7,43 @@ import { BadgeCheck, Bookmark, ChartNoAxesColumn, Ellipsis, Heart, MessageCircle
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { formatNumber } from "@/utils/number";
+import { isPostLiked, likePost } from "@/lib/api/post/likePost";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import Loading from "../Loading";
+
+export type LikeType = "LIKED" | "UNLIKED" ;
 
 export default function PostView({post}: {post: PostWithAuthor}) {
+    const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
+    const [loading, setLoading] = useState(true);
+    const [isPending, setPending] = useState(false);
+
+    useEffect(() => {
+        async function fetchLiked() {
+            const res = await isPostLiked(post);
+            if (res) setLikedPost("LIKED");
+            setLoading(false);
+        };
+        fetchLiked();
+    }, [setLikedPost]);
+
+    const handleLike = async (post: PostWithAuthor) => {
+        setPending(true);
+        const res = await likePost(post);
+        if (res && res.success) {
+            setLikedPost(res.message as LikeType);
+            if (res.message==="LIKED") {
+                toast.success("Liked added");
+            }
+            else toast.success("Unliked");
+        }
+        else toast.error("Failed interaction");
+        setPending(false);
+    };
+
+    if (loading) return <Loading/>;
+
     return(
         <div className="py-2 px-4 space-y-2 border-b border-border">
             <div className="flex justify-between space-x-2">
@@ -36,10 +72,11 @@ export default function PostView({post}: {post: PostWithAuthor}) {
             <Separator orientation="horizontal" />
             <div className="flex items-center justify-between space-x-2 max-sm:overflow-x-scroll">
                 <div className="flex items-center space-x-[2px]">
-                    <Button variant={"ghost"} className="hover:bg-pink-500/20 group" size={"icon"} title="Like">
-                        <Heart className="group-hover:fill-pink-500 group-hover:text-pink-500" />
+                    <Button disabled={isPending} variant={"ghost"} className="hover:bg-pink-500/20 group" size={"icon"} title={likedPost==="LIKED" ? "Unlike" : "Like" } onClick={() => handleLike(post)}>
+                        {likedPost==="LIKED" ? <Heart className="fill-pink-500 text-pink-500" />:
+                            <Heart className="group-hover:fill-pink-500 group-hover:text-pink-500" />}
                     </Button>
-                    <Muted>{formatNumber(post.likeCount)}</Muted>
+                    <Muted>{formatNumber(post._count.likes)}</Muted>
                 </div>
                 <div className="flex items-center">
                     <Button variant={"ghost"} className="hover:bg-green-500/20 group" size={"icon"} title="Re-post">

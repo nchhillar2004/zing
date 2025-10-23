@@ -1,4 +1,5 @@
 export function formatNumber(num: number): string {
+    if(!num) return '';
     if (num < 1000) return num.toString();
 
     const units = ["", "K", "M", "B", "T"];

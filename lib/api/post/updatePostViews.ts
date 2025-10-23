@@ -34,6 +34,6 @@ export async function updatePostView(post: PostWithAuthor) {
         });
         return { success: true, message: "updated post valid view" }
     } catch(err) {
-        return {success: false, message: err};
+        return {success: false, error: err};
     }
 }
