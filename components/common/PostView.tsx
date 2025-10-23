@@ -2,9 +2,10 @@ import { PostWithAuthor } from "@/interfaces/post";
 import UserAvatar from "./UserAvatar";
 import { H4, Muted } from "../ui/typography";
 import Link from "next/link";
-import { BadgeCheck, Bookmark, Ellipsis, Eye, Heart, MessageCircle, Repeat, Share } from "lucide-react";
+import { BadgeCheck, Bookmark, ChartNoAxesColumn, Ellipsis, Heart, MessageCircle, Repeat, Share } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import { formatNumber } from "@/utils/number";
 
 export default function PostView({post}: {post: PostWithAuthor}) {
     return(
@@ -29,7 +30,7 @@ export default function PostView({post}: {post: PostWithAuthor}) {
                     </Button>
                 </div>
             </div>
-            <pre className="py-2">
+            <pre className="py-2 text-wrap wrap-break-word">
                 {post.content}
             </pre>
             <Separator orientation="horizontal" />
@@ -38,7 +39,7 @@ export default function PostView({post}: {post: PostWithAuthor}) {
                     <Button variant={"ghost"} className="hover:bg-pink-500/20 group" size={"icon"} title="Like">
                         <Heart className="group-hover:fill-pink-500 group-hover:text-pink-500" />
                     </Button>
-                    <Muted>{post.likeCount}</Muted>
+                    <Muted>{formatNumber(post.likeCount)}</Muted>
                 </div>
                 <div className="flex items-center">
                     <Button variant={"ghost"} className="hover:bg-green-500/20 group" size={"icon"} title="Re-post">
@@ -49,13 +50,13 @@ export default function PostView({post}: {post: PostWithAuthor}) {
                     <Button variant={"ghost"} className="hover:bg-blue-500/20 group" size={"icon"} title="Reply">
                         <MessageCircle className="group-hover:fill-blue-500 group-hover:text-blue-500" />
                     </Button>
-                    <Muted>{post.replyCount}</Muted>
+                    <Muted>{formatNumber(post.replyCount)}</Muted>
                 </div>
                 <div className="flex items-center space-x-[2px]">
-                    <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Views">
-                        <Eye className="group-hover:text-primary" />
+                    <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Total visits">
+                        <ChartNoAxesColumn className="group-hover:text-primary" />
                     </Button>
-                    <Muted>{post.viewCount}</Muted>
+                    <Muted>{formatNumber(post.viewCount)}</Muted>
                 </div>
                 <div className="flex items-center">
                     <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Bookmark">

@@ -1,0 +1,203 @@
+enum UserRole {
+  USER
+  ADMIN
+  MOD
+}
+
+enum PremiumTier {
+  NONE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum AccountType {
+  PERSONAL
+  PROFESSIONAL
+}
+
+enum AccountPrivacy {
+  PUBLIC
+  PRIVATE
+  STEALTH
+}
+
+enum FollowStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum NotificationType {
+  NEW_FOLLOWER
+  POST_LIKE
+  POST_REPLY
+  FOLLOW_REQUEST
+  ANNOUNCEMENT
+  MOD_ACTION
+  OTHER
+}
+
+enum Category {
+  TECHNOLOGY
+  SCIENCE
+  HEALTH_AND_FITNESS
+  BUSINESS_AND_FINANCE
+  EDUCATION
+  ENTERTAINMENT
+  SPORTS
+  TRAVEL
+  FOOD_AND_COOKING
+  FASHION_AND_BEAUTY
+  ART_AND_DESIGN
+  GAMING
+  POLITICS
+  ENVIRONMENT_AND_SUSTAINABILITY
+  BOOKS_AND_LITERATURE
+  HISTORY
+  PHILOSOPHY_AND_RELIGION
+  AUTOMOTIVE
+  PETS_AND_ANIMALS
+  HOME_AND_GARDEN
+}
+
+model User {
+  id                  String           @id @default(auto()) @map("_id") @db.ObjectId
+  name                String
+  username            String           @unique
+  email               String?
+  password            String
+  bio                 String?
+  dob                 String?
+  country             String
+  profilePic          String           @default("https://github.com/evilrabbit.png")
+  profileBanner       String?
+  isVerified          Boolean          @default(false)
+  isSpam              Boolean          @default(false)
+  role                UserRole         @default(USER)
+  premiumTier         PremiumTier      @default(NONE)
+  accountPrivacy      AccountPrivacy   @default(PUBLIC)
+  accountType         AccountType      @default(PERSONAL)
+  moderationStatus    ModerationStatus @default(ACTIVE)
+  moderationReason    String?
+  moderationExpiresAt DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  time         String
+  timezone     String
+  geodata      String
+  xp           Int     @default(0)
+  referredById String? @db.ObjectId
+
+  totalProfileVisits  Int @default(0)
+  uniqueProfileVisits Int @default(0)
+
+  professionalCategories Category[] @default([])
+  selectedCategories     Category[] @default([])
+
+  showOnlineStatus Boolean   @default(true)
+  lastActiveAt     DateTime?
+
+  posts                Post[]
+  likes                Like[]
+  bookmarks            Bookmark[]
+  follows              Follow[]        @relation("follower")
+  followers            Follow[]        @relation("following")
+  reports              Report[]        @relation("reporter")
+  reportedReports      Report[]        @relation("reportedUser")
+  moderationLogs       ModerationLog[] @relation("targetUser")
+  performedModerations ModerationLog[] @relation("moderator")
+  referredBy           User?           @relation("referrals", fields: [referredById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  referrals            User[]          @relation("referrals")
+  interests            UserInterest[]
+  votes                Vote[]
+  profileViews         ProfileView[]   @relation("viewedProfile")
+  viewedProfiles       ProfileView[]   @relation("viewer")
+  postViews            PostView[]      @relation("viewer")
+  notificationsSent    Notification[]  @relation("fromUser")
+  notifications        Notification[]  @relation("toUser")
+
+  blocks    UserBlock[] @relation("blocker")
+  blockedBy UserBlock[] @relation("blocked")
+
+  @@index([moderationStatus])
+  @@index([lastActiveAt])
+}
+
+model UserBlock {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  blockerId String   @db.ObjectId
+  blockedId String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  blocker     User @relation("blocker", fields: [blockerId], references: [id])
+  blockedUser User @relation("blocked", fields: [blockedId], references: [id])
+
+  @@unique([blockerId, blockedId])
+  @@index([blockerId])
+  @@index([blockedId])
+}
+
+model Follow {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  followerId  String       @db.ObjectId
+  followingId String       @db.ObjectId
+  status      FollowStatus @default(APPROVED)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  follower  User @relation("follower", fields: [followerId], references: [id])
+  following User @relation("following", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model ProfileView {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  viewerId String   @db.ObjectId
+  userId   String   @db.ObjectId
+  viewedAt DateTime @default(now())
+
+  viewer     User @relation("viewer", fields: [viewerId], references: [id])
+  viewedUser User @relation("viewedProfile", fields: [userId], references: [id])
+
+  @@index([viewerId])
+  @@index([userId])
+}
+
+model UserInterest {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String @db.ObjectId
+  tagId    String @db.ObjectId
+  priority Int    @default(1)
+
+  user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tag  Tag  @relation(fields: [tagId], references: [id])
+
+  @@unique([userId, tagId])
+  @@index([userId])
+  @@index([tagId])
+}
+
+model Notification {
+  id         String           @id @default(auto()) @map("_id") @db.ObjectId
+  toUserId   String           @db.ObjectId
+  fromUserId String?          @db.ObjectId
+  postId     String?          @db.ObjectId
+  type       NotificationType
+  message    String?
+  isRead     Boolean          @default(false)
+  createdAt  DateTime         @default(now())
+
+  toUser   User  @relation("toUser", fields: [toUserId], references: [id])
+  fromUser User? @relation("fromUser", fields: [fromUserId], references: [id])
+  post     Post? @relation(fields: [postId], references: [id])
+
+  @@index([toUserId])
+  @@index([fromUserId])
+  @@index([postId])
+  @@index([createdAt(sort: Desc)])
+}

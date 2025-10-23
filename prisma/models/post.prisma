@@ -1,0 +1,139 @@
+enum PostType {
+  POST
+  REPLY
+  REPOST
+}
+
+enum PostPrivacy {
+  PUBLIC
+  PRIVATE
+}
+
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  authorId  String   @db.ObjectId
+  parentId  String?  @db.ObjectId
+  files     String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  likeCount      Int @default(0)
+  replyCount     Int @default(0)
+  viewCount      Int @default(0)
+  validViewCount Int @default(0)
+
+  postType    PostType    @default(POST)
+  postPrivacy PostPrivacy @default(PUBLIC)
+
+  author       User           @relation(fields: [authorId], references: [id])
+  parent       Post?          @relation("replies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies      Post[]         @relation("replies")
+  poll         Poll?
+  likes        Like[]
+  bookmarks    Bookmark[]
+  reports      Report[]       @relation("reportedPost")
+  tags         PostTag[]
+  views        PostView[]
+  Notification Notification[]
+
+  @@index([authorId])
+  @@index([parentId])
+  @@index([createdAt(sort: Desc)])
+}
+
+model Like {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  postId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
+}
+
+model Bookmark {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  postId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
+}
+
+model PostTag {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  postId String @db.ObjectId
+  tagId  String @db.ObjectId
+
+  post Post @relation(fields: [postId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tag  Tag  @relation(fields: [tagId], references: [id])
+
+  @@unique([postId, tagId])
+  @@index([postId])
+  @@index([tagId])
+}
+
+model Poll {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  postId            String    @unique @db.ObjectId
+  option1           String
+  option2           String
+  option3           String?
+  option4           String?
+  pollLengthDays    Int?      @default(0)
+  pollLengthHours   Int?      @default(0)
+  pollLengthMinutes Int?      @default(0)
+  pollLengthSlug    String?
+  expiresAt         DateTime?
+  voteCount         Int       @default(0)
+  result            Int?
+
+  createdAt DateTime @default(now())
+
+  post  Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  votes Vote[]
+
+  @@index([expiresAt])
+}
+
+model Vote {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  pollId      String   @db.ObjectId
+  optionIndex Int
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  poll Poll @relation(fields: [pollId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pollId])
+  @@index([pollId])
+  @@index([userId])
+}
+
+model PostView {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  viewerId     String   @db.ObjectId
+  postId       String   @db.ObjectId
+  createdAt    DateTime @default(now())
+  lastViewedAt DateTime @updatedAt
+
+  viewCount Int @default(1)
+
+  viewer User @relation("viewer", fields: [viewerId], references: [id])
+  post   Post @relation(fields: [postId], references: [id])
+
+  @@unique([viewerId, postId])
+  @@index([viewerId])
+  @@index([postId])
+}

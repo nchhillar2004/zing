@@ -1,0 +1,50 @@
+enum ModerationStatus {
+  ACTIVE
+  TIMED_OUT
+  BANNED
+}
+
+model Report {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  reporterId     String   @db.ObjectId
+  reportedUserId String?  @db.ObjectId
+  reportedPostId String?  @db.ObjectId
+  reason         String
+  createdAt      DateTime @default(now())
+  time           String?
+
+  reporter     User  @relation("reporter", fields: [reporterId], references: [id])
+  reportedUser User? @relation("reportedUser", fields: [reportedUserId], references: [id])
+  reportedPost Post? @relation("reportedPost", fields: [reportedPostId], references: [id])
+
+  @@index([reporterId])
+  @@index([reportedUserId])
+  @@index([reportedPostId])
+}
+
+model ModerationLog {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  moderatorId  String   @db.ObjectId
+  targetUserId String   @db.ObjectId
+  action       String
+  reason       String
+  duration     Int?
+  createdAt    DateTime @default(now())
+  time         String?
+
+  moderator  User @relation("moderator", fields: [moderatorId], references: [id])
+  targetUser User @relation("targetUser", fields: [targetUserId], references: [id])
+
+  @@index([moderatorId])
+  @@index([targetUserId])
+  @@index([createdAt(sort: Desc)])
+}
+
+model ContactMessage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  time      String?
+}

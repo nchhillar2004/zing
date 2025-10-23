@@ -1,16 +1,15 @@
+import { logout } from "@/actions/logout";
 import CreatePostForm from "@/components/forms/CreatePostForm";
 import Header from "@/components/Header";
 import HomePageTabsClient from "@/components/HomePageTabsClient";
 import { TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { getCurrentUser } from "@/lib/dal";
-import { toast } from "sonner";
 
 export default async function HomePage() {
-
     const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-        toast.error("Log in to access your feed");
+        logout();
         return;
     }
 
