@@ -1,8 +1,8 @@
 import PostView from "@/components/common/PostView";
 import Header from "@/components/Header";
-import { getPostById } from "@/lib/api/getPostById";
+import { getPostById } from "@/lib/api/post/getPostById";
+import { updatePostView } from "@/lib/api/post/updatePostViews";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/db";
 
 interface PostIdPageProps {
     params: Promise<{
@@ -19,14 +19,7 @@ export default async function PostIdPage({params}: PostIdPageProps) {
         redirect("/");
     }
 
-    await prisma.post.update({
-        where: {
-            id: postId,
-        },
-        data: {
-            viewCount: post?.viewCount+1
-        }
-    });
+    await updatePostView(post);
 
     return(
         <>

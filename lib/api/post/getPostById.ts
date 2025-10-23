@@ -1,5 +1,5 @@
 import { PostWithAuthor } from "@/interfaces/post";
-import prisma from "../db";
+import prisma from "@/lib//db";
 
 export async function getPostById(postId: string) {
     try {
@@ -11,6 +11,7 @@ export async function getPostById(postId: string) {
                 likeCount: true,
                 replyCount: true,
                 viewCount: true,
+                validViewCount: true,
                 authorId: true,
                 createdAt: true,
                 updatedAt: true,
@@ -27,6 +28,7 @@ export async function getPostById(postId: string) {
                 _count: {
                     select: {
                         bookmarks: true,
+                        views: true,
                     }
                 }
             }

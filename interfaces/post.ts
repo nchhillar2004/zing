@@ -8,6 +8,7 @@ export interface PostWithAuthor {
     likeCount: number;
     replyCount: number;
     viewCount: number;
+    validViewCount: number;
     postType: string;
     author: {
         id: string;
@@ -20,6 +21,7 @@ export interface PostWithAuthor {
         likes: number;
         replies: number;
         bookmarks: number;
+        views: number;
     };
 }
 
