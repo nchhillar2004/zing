@@ -1,21 +1,11 @@
 import { PostWithAuthor } from "@/interfaces/post";
 import prisma from "@/lib//db";
 
-export async function getPostById(postId: string) {
+export async function getPostById(postId: string): Promise<PostWithAuthor | null> {
     try {
         const post = await prisma.post.findUnique({
             where: { id: postId },
-            select: {
-                id: true,
-                content: true,
-                likeCount: true,
-                replyCount: true,
-                viewCount: true,
-                validViewCount: true,
-                authorId: true,
-                createdAt: true,
-                updatedAt: true,
-                parentId: true,
+            include: {
                 author: {
                     select: {
                         id: true,
