@@ -5,7 +5,7 @@ import { CurrentUser } from "@/interfaces/user";
 import { Textarea } from "../ui/textarea";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
-import { Image as ImageIcon, List, MapPin, Smile } from "lucide-react";
+import { Image as ImageIcon, ImagePlay, List, MapPin, Smile } from "lucide-react";
 import { Muted, P } from "../ui/typography";
 import EmojiPicker, { EmojiStyle, Theme } from 'emoji-picker-react';
 import CreatePoll, { PollValue } from "./CreatePoll";
@@ -13,6 +13,7 @@ import createPostAction from "@/actions/post";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import AddFilesInPost from "./AddFilesInPost";
+import { Separator } from "@/components/ui/separator";
 
 export default function CreatePostForm({user}: {user: CurrentUser}) {
     const [state, action, pending] = useActionState(createPostAction, undefined);
@@ -21,9 +22,11 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
     const [addFiles, setAddFiles] = useState(false);
     const [pollValue, setPollValue] = useState<PollValue>();
     const [emojiPicker, setEmojiPicker] = useState(false);
+    const [gifPicker, setGIFPicker] = useState(false);
     const pickerRef = useRef<HTMLDivElement | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const MAX_POST_CHARACTERS: number = user.premiumTier==="NONE" ? 300 : (user.premiumTier==="BASIC" ? 600 : 2000);
+    const GIPHY_SDK_API_KEY = process.env.GIPHY_SDK_API_KEY;
     const router = useRouter();
 
     const pendingPoll = poll && (!pollValue?.option1 || !pollValue.option2 || !pollValue.pollLength);
@@ -69,11 +72,11 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
 
     return(
         <form action={action} className="py-2 px-3 border-b border-b-border">
-            <div className="flex gap-1 mb-2">
+            <div className="flex gap-1">
                 <Link href={`/user/${user.username}`} className="hover:no-underline! h-fit">
                     <UserAvatar user={user} size="sm" />
                 </Link>
-                <div className="flex-1">
+                <div className="flex-1 space-y-3">
                     <Textarea 
                         value={text} 
                         rows={poll ? 1 : 2}
@@ -83,7 +86,7 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
                         onInput={handleInput} 
                         maxLength={MAX_POST_CHARACTERS} 
                         placeholder={poll ? "Ask a question..." : "Create a post..."}
-                        className={`bg-transparent! border-none! text-xl! ${poll ? "max-h-[30vh]" : "max-h-[60vh]"}`}
+                        className={`bg-transparent! border-none! text-xl! ${poll ? "max-h-[40vh]" : "max-h-[60vh]"}`}
                         required/>
                     {addFiles && <AddFilesInPost/>}
                     {poll && 
@@ -98,9 +101,11 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
                         </div>}
                 </div>
             </div>
+            <Separator orientation="horizontal" className="my-4" />
             <div className="flex justify-between gap-4 max-md:gap-2 max-md:overflow-x-scroll">
                 <div className="flex items-center gap-1">
                     <Button type="button" onClick={() => setAddFiles(!addFiles)} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Upload Image"><ImageIcon className="h-[1.25rem]! w-[1.25rem]!"/></Button>
+                    <Button type="button" onClick={() => setGIFPicker(!gifPicker)} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Select GIF"><ImagePlay className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" onClick={addPoll} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Create Poll"><List className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" onClick={() => {setEmojiPicker(!emojiPicker)}}  size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Add Emoji"><Smile className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Share Location"><MapPin className="h-[1.25rem]! w-[1.25rem]!"/></Button>
@@ -124,7 +129,12 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
                     emojiStyle={EmojiStyle.NATIVE}
                     skinTonesDisabled
                 />
-            </div>}
+            </div>
+            }
+            {gifPicker && 
+                <div ref={pickerRef} className="absolute z-20">
+                </div>
+            }
         </form>
     );
 }

@@ -14,7 +14,7 @@ export default function Header({children, variant, title, fallback}:
 
     return (
         <header className="backdrop-blur-sm border-b border-[--border] sticky top-0 w-full z-10 h-[50px] px-2 flex items-center">
-            <div className="hidden max-md:flex">
+            <div className="hidden max-lg:flex">
                 <Drawer direction="left">
                     <DrawerTrigger asChild>
                         <Button size={"icon-lg"} variant={"ghost"}>

@@ -2,7 +2,6 @@ import PostView from "@/components/common/PostView";
 import Header from "@/components/Header";
 import { getPostById } from "@/lib/api/getPostById";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 import prisma from "@/lib/db";
 
 interface PostIdPageProps {
@@ -17,7 +16,6 @@ export default async function PostIdPage({params}: PostIdPageProps) {
     const post = await getPostById(postId);
 
     if (!post) {
-        toast.error("Post not found");
         redirect("/");
     }
 
