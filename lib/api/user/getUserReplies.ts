@@ -1,8 +1,8 @@
 "use server";
 import { RepliesData } from "@/components/profile/ProfileTabs";
-import prisma from "../db";
+import prisma from "@/lib/db";
 
-export async function getUserReplies(username: string, page: number = 1, limit: number = 10) {
+export async function getUserReplies(username: string, page: number = 1, limit: number = 10): Promise<RepliesData> {
     try {
         const user = await prisma.user.findUnique({
             where: { username },
@@ -30,7 +30,22 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                         }
                     },
                     parent: {
-                        include: {
+                        select: {
+                            parent: {
+                                select: {
+                                    id: true,
+                                    content: true,
+                                    files: true,
+                                    _count: {
+                                        select: {
+                                            likes: true,
+                                            views: true,
+                                            replies: true,
+                                            bookmarks: true,
+                                        }
+                                    }
+                                }
+                            },
                             author: {
                                 select: {
                                     id: true,
@@ -45,6 +60,7 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                     _count: {
                         select: {
                             likes: true,
+                            views: true,
                             replies: true,
                             bookmarks: true,
                         }

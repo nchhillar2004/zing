@@ -1,48 +1,22 @@
-export interface PostWithAuthor {
-    id: string;
-    content: string;
-    createdAt: Date;
-    updatedAt: Date;
-    authorId: string;
-    parentId: string | null;
-    likeCount: number;
-    replyCount: number;
-    viewCount: number;
-    validViewCount: number;
-    postType: string;
-    author: {
-        id: string;
-        name: string;
-        username: string;
-        profilePic: string;
-        isVerified: boolean;
-    };
+import { Like, Post, User } from "@prisma/client";
+
+export type PostWithAuthor = Post & {
+    author: User;
     _count: {
         likes: number;
+        views: number;
         replies: number;
         bookmarks: number;
-        views: number;
-    };
-}
+    }
+};
 
-export interface ReplyWithParent extends PostWithAuthor {
+export type RepliesWithParent = PostWithAuthor & {
     parent: {
-        id: string;
-        content: string;
-        createdAt: Date;
-        updatedAt: Date;
-        authorId: string;
-        parentId: string | null;
-        likeCount: number;
-        replyCount: number;
-        viewCount: number;
-        postType: string;
-        author: {
-            id: string;
-            name: string;
-            username: string;
-            profilePic: string;
-            isVerified: boolean;
-        };
-    } | null;
+        parent: PostWithAuthor;
+        author: User;
+    }
+};
+
+export type LikedPosts = Like & {
+    post: PostWithAuthor;
 }

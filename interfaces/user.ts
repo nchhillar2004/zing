@@ -1,26 +1,31 @@
-export interface UserWithCounts {
+export interface UserCounts {
+    posts: number;
+    followers: number;
+    follows: number;
+}
+
+export interface UserBase {
     id: string;
     name: string;
     username: string;
-    email: string | null;
-    bio: string | null;
-    dob: string | null;
-    country: string;
+    email?: string | null;
+    bio?: string | null;
+    dob?: string | null;
+    country?: string;
     profilePic: string;
     isVerified: boolean;
-    isSpam: boolean;
-    role: string;
-    premiumTier: string;
-    accountType: string;
-    accountPrivacy: string;
-    moderationStatus: string;
+    isSpam?: boolean;
+    role?: string;
+    premiumTier?: string;
+    accountType?: string;
+    accountPrivacy?: string;
+    moderationStatus?: string;
     createdAt: Date;
-    updatedAt: Date;
-    _count: {
-        posts: number;
-        followers: number;
-        follows: number;
-    };
+    updatedAt?: Date;
+}
+
+export interface UserWithCounts extends UserBase {
+    _count: UserCounts;
 }
 
 export interface CurrentUser {
@@ -28,11 +33,11 @@ export interface CurrentUser {
     name: string;
     username: string;
     profilePic: string;
-    email: string | null;
-    bio: string | null;
-    dob: string | null;
+    email?: string | null;
+    bio?: string | null;
+    dob?: string | null;
     isVerified: boolean;
-    premiumTier: string;
-    accountType: string;
+    premiumTier?: string;
+    accountType?: string;
     createdAt: Date;
 }

@@ -87,7 +87,7 @@ export default function PostView({post}: {post: PostWithAuthor}) {
                     <Button variant={"ghost"} className="hover:bg-blue-500/20 group" size={"icon"} title="Reply">
                         <MessageCircle className="group-hover:fill-blue-500 group-hover:text-blue-500" />
                     </Button>
-                    <Muted>{formatNumber(post.replyCount)}</Muted>
+                    <Muted>{formatNumber(post._count.replies)}</Muted>
                 </div>
                 <div className="flex items-center space-x-[2px]">
                     <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Total visits">
@@ -98,6 +98,7 @@ export default function PostView({post}: {post: PostWithAuthor}) {
                 <div className="flex items-center">
                     <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Bookmark">
                         <Bookmark className="group-hover:fill-primary group-hover:text-primary" />
+                        <Muted>{formatNumber(post._count.bookmarks)}</Muted>
                     </Button>
                 </div>
                 <div className="flex items-center">

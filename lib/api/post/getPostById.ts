@@ -27,6 +27,8 @@ export async function getPostById(postId: string) {
                 },
                 _count: {
                     select: {
+                        likes: true,
+                        replies: true,
                         bookmarks: true,
                         views: true,
                     }

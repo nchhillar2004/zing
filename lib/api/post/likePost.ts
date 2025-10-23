@@ -1,10 +1,10 @@
 "use server";
 import { LikeType } from "@/components/common/PostView";
-import { PostWithAuthor } from "@/interfaces/post";
 import { getCurrentUser } from "@/lib/dal";
 import prisma from "@/lib/db";
+import { Post } from "@prisma/client";
 
-export async function isPostLiked(post: PostWithAuthor) {
+export async function isPostLiked(post: Post) {
     const currentUser = await getCurrentUser();
     if (!currentUser) return false;
 
@@ -17,7 +17,7 @@ export async function isPostLiked(post: PostWithAuthor) {
     return false;
 }
 
-export async function likePost(post: PostWithAuthor) {
+export async function likePost(post: Post) {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) return { success: false, error: "login to like a post" };

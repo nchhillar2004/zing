@@ -1,8 +1,8 @@
 "use server";
 import { PostData } from "@/components/profile/ProfileTabs";
-import prisma from "../db";
+import prisma from "@/lib/db";
 
-export async function getUserPosts(username: string, page: number = 1, limit: number = 10) {
+export async function getUserPosts(username: string, page: number = 1, limit: number = 10): Promise<PostData> {
     try {
         const user = await prisma.user.findUnique({
             where: { username },
@@ -32,6 +32,7 @@ export async function getUserPosts(username: string, page: number = 1, limit: nu
                     _count: {
                         select: {
                             likes: true,
+                            views: true,
                             replies: true,
                             bookmarks: true,
                         }

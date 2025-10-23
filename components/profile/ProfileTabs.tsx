@@ -8,12 +8,13 @@ import {
     Reply
 } from "lucide-react";
 import PostCard from "../cards/PostCard";
-import { PostWithAuthor, ReplyWithParent } from "@/interfaces/post";
 import { MessageCircle } from "lucide-react";
 import { CurrentUser, UserWithCounts } from "@/interfaces/user";
-import { getUserPosts } from "@/lib/api/getUserPosts";
-import { getUserReplies } from "@/lib/api/getUserReplies";
+import { getUserPosts } from "@/lib/api/user/getUserPosts";
+import { getUserReplies } from "@/lib/api/user/getUserReplies";
 import Loading from "../Loading";
+import { getUserLikes } from "@/lib/api/user/getUserLikes";
+import { LikedPosts, PostWithAuthor, RepliesWithParent } from "@/interfaces/post";
 
 export interface PostData {
     posts: PostWithAuthor[];
@@ -21,7 +22,12 @@ export interface PostData {
 }
 
 export interface RepliesData {
-    replies: ReplyWithParent[];
+    replies: RepliesWithParent[];
+    total: number;
+}
+
+export interface LikesData{
+    likes: LikedPosts[];
     total: number;
 }
 
@@ -29,12 +35,12 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
     const [activeTab, setActiveTab] = useState("posts");
     const [posts, setPosts] = useState<PostData>();
     const [replies, setReplies] = useState<RepliesData>();
-    const [loading, setLoading] = useState(false);
+    const [likes, setLikes] = useState<LikesData>();
+    const [loading, setLoading] = useState(true);
 
     const currentUserOwner = currentUser && currentUser.id===user.id;
 
     useEffect(() => {
-        setLoading(true);
         const fetchPosts = async () => {
             const postData: PostData = await getUserPosts(user.username);
             setPosts(postData);
@@ -45,15 +51,19 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
             setReplies(repliesData);
         }
 
+        const fetchLikes = async () => {
+            const likesData: LikesData = await getUserLikes(user.username);
+            setLikes(likesData);
+        }
+
         if (activeTab === "posts"){
             fetchPosts();
-            setLoading(false);
         } else if (activeTab === "replies") {
             fetchReplies();
-            setLoading(false);
         } else if (activeTab === "likes") {
-            setLoading(false);
+            fetchLikes();
         }
+        setLoading(false);
     }, [activeTab, user.username]);
 
     if (user.accountPrivacy==="PRIVATE" && (!currentUserOwner || !currentUser)) {
@@ -83,9 +93,9 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                         }
                     </TabsList>
                 </div> 
-
                 <TabsContent value="posts" className="space-y-4">
-                    {loading ? <Loading/> : <>
+                    {loading ? <Loading className="h-24" /> :  
+                        <>
                         {posts?.total === 0 ? (
                             <div className="text-center py-12">
                                 <MessageCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
@@ -105,7 +115,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
 
 
                 <TabsContent value="replies" className="space-y-4">
-                    {loading ? <Loading/> : <>
+                    {loading ? <Loading className="h-24" /> : <>
                         {replies?.total === 0 ? (
                             <div className="text-center py-12">
                                 <Reply className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
@@ -123,16 +133,16 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                 {currentUserOwner && 
                     <TabsContent value="likes" className="space-y-4">
                         <Small className="text-muted-foreground">Liked posts are private to you.</Small>
-                        {loading ? <Loading/> : <>
-                            {replies?.total === 0 ? (
+                        {loading ? <Loading className="h-24" /> : <>
+                            {likes?.total === 0 ? (
                                 <div className="text-center py-12">
                                     <Heart className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                                     <P className="text-muted-foreground">No liked posts</P>
                                     <Small className="text-muted-foreground">Like a posts to see them here.</Small>
                                 </div>
                             ) : (
-                                    replies?.replies.map((reply) => (
-                                        <PostCard key={reply.id} variant="reply" post={reply} /> 
+                                    likes?.likes.map((like) => (
+                                        <PostCard key={like.id} variant="likes" post={like.post} /> 
                                     ))
                                 )}
                         </>}
