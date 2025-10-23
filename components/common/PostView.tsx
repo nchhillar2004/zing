@@ -26,7 +26,7 @@ export default function PostView({post}: {post: PostWithAuthor}) {
             setLoading(false);
         };
         fetchLiked();
-    }, [setLikedPost]);
+    }, [post, setLikedPost]);
 
     const handleLike = async (post: PostWithAuthor) => {
         setPending(true);

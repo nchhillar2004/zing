@@ -142,7 +142,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                                 </div>
                             ) : (
                                     likes?.likes.map((like) => (
-                                        <PostCard key={like.id} variant="likes" post={like.post} /> 
+                                        <PostCard key={like.id} variant="post" post={like.post} /> 
                                     ))
                                 )}
                         </>}

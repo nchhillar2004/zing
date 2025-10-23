@@ -6,6 +6,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { X, Download, FileText, Plus } from "lucide-react";
 import { Muted } from "../ui/typography";
+import Image from "next/image";
 
 interface PreviewItem {
     url: string;
@@ -90,7 +91,7 @@ export default function AddFilesInPost() {
                                         className="w-full h-full rounded-md object-cover"
                                     />
                                 ) : type.startsWith("image/") ? (
-                                        <img
+                                        <Image
                                             src={url}
                                             alt={`preview-${i}`}
                                             className="w-full h-full object-cover rounded-md"

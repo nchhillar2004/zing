@@ -40,7 +40,7 @@ export default function PostCard({variant, post}: PostCard) {
             setLoading(false);
         };
         fetchLiked();
-    }, [setLikedPost]);
+    }, [post, setLikedPost]);
 
     const handleLike = async (post: Post) => {
         setPending(true);

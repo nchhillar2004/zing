@@ -26,7 +26,7 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
     const pickerRef = useRef<HTMLDivElement | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const MAX_POST_CHARACTERS: number = user.premiumTier==="NONE" ? 300 : (user.premiumTier==="BASIC" ? 600 : 2000);
-    const GIPHY_SDK_API_KEY = process.env.GIPHY_SDK_API_KEY;
+// TODO:   const GIPHY_SDK_API_KEY = process.env.GIPHY_SDK_API_KEY;
     const router = useRouter();
 
     const pendingPoll = poll && (!pollValue?.option1 || !pollValue.option2 || !pollValue.pollLength);
