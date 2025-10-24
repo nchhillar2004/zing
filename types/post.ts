@@ -1,4 +1,13 @@
-import { Like, Post} from "@prisma/client";
+import { Bookmark, Like, Post} from "@prisma/client";
+
+export type BookmarkedPost = Bookmark & {
+    post: PostOrReply;
+}
+
+export interface BookmarksData{
+    bookmarks: BookmarkedPost[];
+    total: number;
+}
 
 export type AuthorLite = {
     id: string;
@@ -24,7 +33,6 @@ export type RepliesWithParent = PostWithAuthor & {
 
 export type PostOrReply = PostWithAuthor | RepliesWithParent;
 
-export type LikedPosts = Like & {
+export type LikedPost = Like & {
     post: PostOrReply;
 }
-

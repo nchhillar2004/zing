@@ -7,21 +7,25 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { formatNumber } from "@/utils/number";
 import { isPostLiked, likePost } from "@/lib/api/post/likePost";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import Loading from "../Loading";
 import PostCard from "../cards/PostCard";
 import { isReply } from "@/lib/isReply";
 import { PostOrReply } from "@/types/post";
 import { P } from "../ui/typography";
+import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
 
 export type LikeType = "LIKED" | "UNLIKED" ;
+export type BookType = "BOOK" | "UNBOOK" ;
 
 export default function PostView({post}: {post: PostOrReply}) {
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
+    const [bookedPost, setBookedPost] = useState<BookType>("UNBOOK");
     const [loading, setLoading] = useState(true);
     const [isPending, setPending] = useState(false);
     const [likeCount, setLikeCount] = useState(post._count.likes);
+    const [bookCount, setBookCount] = useState(post._count.bookmarks);
 
     useEffect(() => {
         async function fetchLiked() {
@@ -29,8 +33,14 @@ export default function PostView({post}: {post: PostOrReply}) {
             if (res) setLikedPost("LIKED");
             setLoading(false);
         };
+        async function fetchBooked() {
+            const res = await isPostBookmarked(post);
+            if (res) setBookedPost("BOOK");
+            setLoading(false);
+        };
         fetchLiked();
-    }, [post, setLikedPost]);
+        fetchBooked();
+    }, [post, setLikedPost, setBookedPost]);
 
     const handleLike = async (post: PostOrReply) => {
         setPending(true);
@@ -48,21 +58,36 @@ export default function PostView({post}: {post: PostOrReply}) {
         setPending(false);
     };
 
+    const handleBookmark = async (post: PostOrReply, e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setPending(true);
+        const res = await bookmarkPost(post);
+        if (res && res.success) {
+            setBookedPost(res.message as BookType);
+            if (res.message==="BOOK") {
+                setBookCount((prev) => prev + 1);
+            }
+            else setBookCount((prev) => Math.max(prev - 1, 0));
+        }
+        else toast.error("Failed interaction");
+        setPending(false);
+    };
+
     if (loading) return <Loading/>;
 
     return(
         <>
             {isReply(post) && post.parent && 
-            <div className="relative h-fit">
-                {isReply(post.parent) && post.parent.parent && <PostCard post={post.parent.parent} isParent={true} />}
-                <PostCard post={post.parent} isParent={true} />
-            </div>
+                <div className="relative h-fit">
+                    {isReply(post.parent) && post.parent.parent && <PostCard post={post.parent.parent} isParent={true} />}
+                    <PostCard post={post.parent} isParent={true} />
+                </div>
             }
             <div className="py-2 px-4 space-y-2 border-b border-border">
                 {isReply(post) && post.parent && <P className="flex space-x-1 items-center text-sm mb-1 pl-14">
                     <span>Replied to</span><Link className="text-primary" href={`/user/${post.parent.author.username}`}>
-                    @{post.parent.author.username}
-                </Link>
+                        @{post.parent.author.username}
+                    </Link>
                 </P>
                 }
                 <div className="flex justify-between space-x-2">
@@ -116,10 +141,13 @@ export default function PostView({post}: {post: PostOrReply}) {
                         <Muted>{formatNumber(post.viewCount)}</Muted>
                     </div>
                     <div className="flex items-center">
-                        <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Bookmark">
-                            <Bookmark className="group-hover:fill-primary group-hover:text-primary" />
-                            <Muted>{formatNumber(post._count.bookmarks)}</Muted>
+                        <Button disabled={isPending} variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} 
+                            title={bookedPost==="BOOK" ? "Remove bookmark" : "Add bookmark" } 
+                            onClick={(e: MouseEvent<HTMLButtonElement>) => handleBookmark(post, e)}>
+                            {bookedPost==="BOOK" ? <Bookmark className="fill-primary text-primary" />:
+                                <Bookmark className="group-hover:fill-primary group-hover:text-primary" />}
                         </Button>
+                        <span>{formatNumber(bookCount)}</span>
                     </div>
                     <div className="flex items-center">
                         <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Share">
