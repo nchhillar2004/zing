@@ -96,21 +96,21 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                 <TabsContent value="posts">
                     {loading ? <Loading className="h-24" /> :  
                         <>
-                        {posts?.total === 0 ? (
-                            <div className="text-center py-12">
-                                <MessageCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                                <P className="text-muted-foreground">No posts yet</P>
-                                <Small className="text-muted-foreground">When {user.name} posts, you&apos;ll see them here.</Small>
-                            </div>
-                        ) : (
-                                <div>
-                                    {posts?.posts.map((post) => (
-                                        <PostCard key={post.id} post={post} />
-                                    ))}
-                                    {loading && <Loading/>}
+                            {posts?.total === 0 ? (
+                                <div className="text-center py-12">
+                                    <MessageCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                                    <P className="text-muted-foreground">No posts yet</P>
+                                    <Small className="text-muted-foreground">When {user.name} posts, you&apos;ll see them here.</Small>
                                 </div>
-                            )}
-                    </>}
+                            ) : (
+                                    <div>
+                                        {posts?.posts.map((post) => (
+                                            <PostCard key={post.id} post={post} />
+                                        ))}
+                                        {loading && <Loading/>}
+                                    </div>
+                                )}
+                        </>}
                 </TabsContent>
 
 
@@ -124,7 +124,10 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                             </div>
                         ) : (
                                 replies?.replies.map((reply) => (
-                                    <PostCard key={reply.id} post={reply} /> 
+                                    <div key={reply.id}>
+                                        <PostCard post={reply.parent} isParent={true} /> 
+                                        <PostCard post={reply} /> 
+                                    </div>
                                 ))
                             )}
                     </>}

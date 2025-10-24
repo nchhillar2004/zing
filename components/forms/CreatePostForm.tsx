@@ -87,6 +87,10 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
 
     return(
         <form action={action} className="py-2 px-3 border-b border-b-border">
+            {isReply && <P className="text-sm">Replying to{" "}
+                <Link className="text-primary" href={`/user/${parent?.author.username}`}>
+                    @{parent?.author.username}
+                </Link></P>}
             <div className={`flex ${!isReply && "gap-1"}`}>
                 {!isReply &&
                     <Link href={`/user/${user.username}`} className={`hover:no-underline! h-fit`}>
@@ -98,7 +102,7 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
                 <div className="flex-1 space-y-3">
                     <Textarea 
                         value={text} 
-                        rows={poll ? 1 : 2}
+                        rows={(poll || isReply) ? 1 : 2}
                         onChange={(e) => setText(e.target.value.slice(0, MAX_POST_CHARACTERS))} 
                         ref={textareaRef} 
                         name="content"
@@ -125,7 +129,9 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
                 <div className="flex items-center gap-1">
                     <Button type="button" onClick={() => setAddFiles(!addFiles)} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Upload Image"><ImageIcon className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" onClick={() => setGIFPicker(!gifPicker)} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Select GIF"><ImagePlay className="h-[1.25rem]! w-[1.25rem]!"/></Button>
+                    {!isReply &&
                     <Button type="button" disabled={isReply} onClick={addPoll} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Create Poll"><List className="h-[1.25rem]! w-[1.25rem]!"/></Button>
+                    }
                     <Button type="button" onClick={() => {setEmojiPicker(!emojiPicker)}}  size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Add Emoji"><Smile className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Share Location"><MapPin className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                 </div>

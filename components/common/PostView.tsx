@@ -13,6 +13,7 @@ import Loading from "../Loading";
 import PostCard from "../cards/PostCard";
 import { isReply } from "@/lib/isReply";
 import { PostOrReply } from "@/types/post";
+import { P } from "../ui/typography";
 
 export type LikeType = "LIKED" | "UNLIKED" ;
 
@@ -50,73 +51,83 @@ export default function PostView({post}: {post: PostOrReply}) {
     if (loading) return <Loading/>;
 
     return(
-        <div className="py-2 px-4 space-y-2 border-b border-border">
-            {isReply(post) && post.parent && <>
-                <PostCard post={post.parent}/>
-            </>
+        <>
+            {isReply(post) && post.parent && 
+            <div className="relative h-fit">
+                {isReply(post.parent) && post.parent.parent && <PostCard post={post.parent.parent} isParent={true} />}
+                <PostCard post={post.parent} isParent={true} />
+            </div>
             }
-            <div className="flex justify-between space-x-2">
-                <div className="flex space-x-2">
-                    <UserAvatar user={post.author} size="sm" />
+            <div className="py-2 px-4 space-y-2 border-b border-border">
+                {isReply(post) && post.parent && <P className="flex space-x-1 items-center text-sm mb-1 pl-14">
+                    <span>Replied to</span><Link className="text-primary" href={`/user/${post.parent.author.username}`}>
+                    @{post.parent.author.username}
+                </Link>
+                </P>
+                }
+                <div className="flex justify-between space-x-2">
+                    <div className="flex space-x-2">
+                        <UserAvatar user={post.author} size="sm" />
+                        <div>
+                            <H4>
+                                <Link href={`/user/${post.author.username}`} className="flex text-nowrap items-center">
+                                    {post.author.name}{post.author.isVerified && <BadgeCheck className="ml-2 text-primary" strokeWidth={2.5} size={20} />}
+                                </Link>
+                            </H4>
+                            <Muted className="text-sm leading-2.5!">
+                                {"@"}{post.author.username}
+                            </Muted>
+                        </div>
+                    </div>
                     <div>
-                        <H4>
-                            <Link href={`/user/${post.author.username}`} className="flex text-nowrap items-center">
-                                {post.author.name}{post.author.isVerified && <BadgeCheck className="ml-2 text-primary" strokeWidth={2.5} size={20} />}
-                            </Link>
-                        </H4>
-                        <Muted className="text-sm leading-2.5!">
-                            {"@"}{post.author.username}
-                        </Muted>
+                        <Button variant={"ghost"} className="hover:bg-accent/50" size={"icon"}>
+                            <Ellipsis/>
+                        </Button>
                     </div>
                 </div>
-                <div>
-                    <Button variant={"ghost"} className="hover:bg-accent/50" size={"icon"}>
-                        <Ellipsis/>
-                    </Button>
+                <pre className="py-2 text-wrap wrap-break-word">
+                    {post.content}
+                </pre>
+                <Separator orientation="horizontal" />
+                <div className="flex items-center justify-between space-x-2 max-sm:overflow-x-scroll">
+                    <div className="flex items-center space-x-[2px]">
+                        <Button disabled={isPending} variant={"ghost"} className="hover:bg-pink-500/20 group" 
+                            size={"icon"} title={likedPost==="LIKED" ? "Unlike" : "Like" } onClick={() => handleLike(post)}>
+                            {likedPost==="LIKED" ? <Heart className="fill-pink-500 text-pink-500" />:
+                                <Heart className="group-hover:fill-pink-500 group-hover:text-pink-500" />}
+                        </Button>
+                        <Muted>{formatNumber(likeCount)}</Muted>
+                    </div>
+                    <div className="flex items-center">
+                        <Button variant={"ghost"} className="hover:bg-green-500/20 group" size={"icon"} title="Re-post">
+                            <Repeat className="group-hover:fill-green-500 group-hover:text-green-500" />
+                        </Button>
+                    </div>
+                    <div className="flex items-center space-x-[2px]">
+                        <Button variant={"ghost"} className="hover:bg-blue-500/20 group" size={"icon"} title="Reply">
+                            <MessageCircle className="group-hover:fill-blue-500 group-hover:text-blue-500" />
+                        </Button>
+                        <Muted>{formatNumber(post._count.replies)}</Muted>
+                    </div>
+                    <div className="flex items-center space-x-[2px]">
+                        <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Total visits">
+                            <ChartNoAxesColumn className="group-hover:text-primary" />
+                        </Button>
+                        <Muted>{formatNumber(post.viewCount)}</Muted>
+                    </div>
+                    <div className="flex items-center">
+                        <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Bookmark">
+                            <Bookmark className="group-hover:fill-primary group-hover:text-primary" />
+                            <Muted>{formatNumber(post._count.bookmarks)}</Muted>
+                        </Button>
+                    </div>
+                    <div className="flex items-center">
+                        <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Share">
+                            <Share className="group-hover:text-primary" />
+                        </Button>
+                    </div>
                 </div>
             </div>
-            <pre className="py-2 text-wrap wrap-break-word">
-                {post.content}
-            </pre>
-            <Separator orientation="horizontal" />
-            <div className="flex items-center justify-between space-x-2 max-sm:overflow-x-scroll">
-                <div className="flex items-center space-x-[2px]">
-                    <Button disabled={isPending} variant={"ghost"} className="hover:bg-pink-500/20 group" 
-                        size={"icon"} title={likedPost==="LIKED" ? "Unlike" : "Like" } onClick={() => handleLike(post)}>
-                        {likedPost==="LIKED" ? <Heart className="fill-pink-500 text-pink-500" />:
-                            <Heart className="group-hover:fill-pink-500 group-hover:text-pink-500" />}
-                    </Button>
-                    <Muted>{formatNumber(likeCount)}</Muted>
-                </div>
-                <div className="flex items-center">
-                    <Button variant={"ghost"} className="hover:bg-green-500/20 group" size={"icon"} title="Re-post">
-                        <Repeat className="group-hover:fill-green-500 group-hover:text-green-500" />
-                    </Button>
-                </div>
-                <div className="flex items-center space-x-[2px]">
-                    <Button variant={"ghost"} className="hover:bg-blue-500/20 group" size={"icon"} title="Reply">
-                        <MessageCircle className="group-hover:fill-blue-500 group-hover:text-blue-500" />
-                    </Button>
-                    <Muted>{formatNumber(post._count.replies)}</Muted>
-                </div>
-                <div className="flex items-center space-x-[2px]">
-                    <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Total visits">
-                        <ChartNoAxesColumn className="group-hover:text-primary" />
-                    </Button>
-                    <Muted>{formatNumber(post.viewCount)}</Muted>
-                </div>
-                <div className="flex items-center">
-                    <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Bookmark">
-                        <Bookmark className="group-hover:fill-primary group-hover:text-primary" />
-                        <Muted>{formatNumber(post._count.bookmarks)}</Muted>
-                    </Button>
-                </div>
-                <div className="flex items-center">
-                    <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Share">
-                        <Share className="group-hover:text-primary" />
-                    </Button>
-                </div>
-            </div>
-        </div>
+        </>
     );
 }

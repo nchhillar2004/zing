@@ -19,7 +19,7 @@ export type PostWithAuthor = Post & {
 };
 
 export type RepliesWithParent = PostWithAuthor & {
-    parent: PostWithAuthor;
+    parent: PostOrReply;
 };
 
 export type PostOrReply = PostWithAuthor | RepliesWithParent;

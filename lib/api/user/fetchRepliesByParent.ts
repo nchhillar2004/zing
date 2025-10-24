@@ -29,6 +29,30 @@ export async function fetchRepliesByParent(parentId: string, page: number = 1, l
                             id: true,
                             content: true,
                             files: true,
+                            createdAt: true,
+                            viewCount: true,
+                            parent: {
+                                include: {
+                                    _count: {
+                                        select: {
+                                            likes: true,
+                                            views: true,
+                                            replies: true,
+                                            bookmarks: true,
+                                        }
+                                    },
+                                    author: {
+                                        select: {
+                                            id: true,
+                                            name: true,
+                                            username: true,
+                                            profilePic: true,
+                                            isVerified: true
+                                        }
+                                    }
+
+                                }
+                            },
                             _count: {
                                 select: {
                                     likes: true,
