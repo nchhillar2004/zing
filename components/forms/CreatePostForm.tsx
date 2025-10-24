@@ -14,12 +14,12 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import AddFilesInPost from "./AddFilesInPost";
 import { Separator } from "@/components/ui/separator";
-import { PostWithAuthor } from "@/interfaces/post";
 import { PostType } from "@prisma/client";
+import { PostOrReply } from "@/types/post";
 
 interface ICreatePostForm{
     user: CurrentUser;
-    parent?: PostWithAuthor;
+    parent?: PostOrReply;
     type?: PostType;
 }
 

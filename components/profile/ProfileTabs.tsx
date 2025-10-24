@@ -14,7 +14,7 @@ import { getUserPosts } from "@/lib/api/user/getUserPosts";
 import { getUserReplies } from "@/lib/api/user/getUserReplies";
 import Loading from "../Loading";
 import { getUserLikes } from "@/lib/api/user/getUserLikes";
-import { LikedPosts, PostWithAuthor, RepliesWithParent } from "@/interfaces/post";
+import { LikedPosts, PostWithAuthor, RepliesWithParent } from "@/types/post";
 
 export interface PostData {
     posts: PostWithAuthor[];
@@ -105,7 +105,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                         ) : (
                                 <div>
                                     {posts?.posts.map((post) => (
-                                        <PostCard key={post.id} variant="POST" post={post} />
+                                        <PostCard key={post.id} post={post} />
                                     ))}
                                     {loading && <Loading/>}
                                 </div>
@@ -124,7 +124,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                             </div>
                         ) : (
                                 replies?.replies.map((reply) => (
-                                    <PostCard key={reply.id} variant="REPLY" post={reply} /> 
+                                    <PostCard key={reply.id} post={reply} /> 
                                 ))
                             )}
                     </>}
@@ -142,7 +142,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                                 </div>
                             ) : (
                                     likes?.likes.map((like) => (
-                                        <PostCard key={like.id} variant="POST" post={like.post} /> 
+                                        <PostCard key={like.id} post={like.post} /> 
                                     ))
                                 )}
                         </>}

@@ -18,12 +18,27 @@ export async function getUserLikes(username: string, page: number = 1, limit: nu
                 where: { userId: user.id },
                 include: {
                     post: {
-                        select: {
-                            id: true,
-                            content: true,
-                            files: true,
-                            viewCount: true,
-                            createdAt: true,
+                        include: {
+                            parent: {
+                                include:{
+                                    author: {
+                                        select: {
+                                            name: true,
+                                            username: true,
+                                            profilePic: true,
+                                            isVerified: true,
+                                        }
+                                    },
+                                    _count: {
+                                        select: {
+                                            likes: true,
+                                            views: true,
+                                            replies: true,
+                                            bookmarks: true,
+                                        }
+                                    }
+                                }
+                            },
                             author: {
                                 select: {
                                     name: true,

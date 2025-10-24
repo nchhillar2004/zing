@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { PostWithAuthor } from "@/interfaces/post";
+import { PostOrReply } from "@/types/post";
 import { RepliesData } from "../profile/ProfileTabs";
 import { fetchRepliesByParent } from "@/lib/api/user/fetchRepliesByParent";
 import { Reply } from "lucide-react";
@@ -8,7 +8,7 @@ import { P, Small } from "../ui/typography";
 import PostCard from "../cards/PostCard";
 import Loading from "../Loading";
 
-export default function LoadReplies({post}: {post: PostWithAuthor}) {
+export default function LoadReplies({post}: {post: PostOrReply}) {
     const [replies, setReplies] = useState<RepliesData>();
     const [loading, setLoading] = useState(true);
 
@@ -33,7 +33,7 @@ export default function LoadReplies({post}: {post: PostWithAuthor}) {
                 </div>
             ) : (
                     replies?.replies.map((reply) => (
-                        <PostCard key={reply.id} variant="REPLY" post={reply} /> 
+                        <PostCard key={reply.id} post={reply} /> 
                     ))
                 )}
         </div>

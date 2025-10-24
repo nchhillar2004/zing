@@ -1,5 +1,4 @@
 "use client";
-import { PostWithAuthor, RepliesWithParent } from "@/interfaces/post";
 import UserAvatar from "./UserAvatar";
 import { H4, Muted } from "../ui/typography";
 import Link from "next/link";
@@ -12,10 +11,12 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Loading from "../Loading";
 import PostCard from "../cards/PostCard";
+import { isReply } from "@/lib/isReply";
+import { PostOrReply } from "@/types/post";
 
 export type LikeType = "LIKED" | "UNLIKED" ;
 
-export default function PostView({post}: {post: PostWithAuthor | RepliesWithParent}) {
+export default function PostView({post}: {post: PostOrReply}) {
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
     const [loading, setLoading] = useState(true);
     const [isPending, setPending] = useState(false);
@@ -30,16 +31,16 @@ export default function PostView({post}: {post: PostWithAuthor | RepliesWithPare
         fetchLiked();
     }, [post, setLikedPost]);
 
-    const handleLike = async (post: PostWithAuthor) => {
+    const handleLike = async (post: PostOrReply) => {
         setPending(true);
         const res = await likePost(post);
         if (res && res.success) {
             setLikedPost(res.message as LikeType);
             if (res.message==="LIKED") {
-                setLikeCount((prev) => prev + 1);
+                setLikeCount((prev: number) => prev + 1);
             }
             else {
-                setLikeCount((prev) => Math.max(prev - 1, 0));
+                setLikeCount((prev: number) => Math.max(prev - 1, 0));
             }
         }
         else toast.error("Failed interaction");
@@ -50,9 +51,8 @@ export default function PostView({post}: {post: PostWithAuthor | RepliesWithPare
 
     return(
         <div className="py-2 px-4 space-y-2 border-b border-border">
-            {(post.postType==="REPLY" && post.parent) && <>
-            <PostCard post={post.parent} variant="POST" />
-                <div></div>
+            {isReply(post) && post.parent && <>
+                <PostCard post={post.parent}/>
             </>
             }
             <div className="flex justify-between space-x-2">
@@ -81,7 +81,8 @@ export default function PostView({post}: {post: PostWithAuthor | RepliesWithPare
             <Separator orientation="horizontal" />
             <div className="flex items-center justify-between space-x-2 max-sm:overflow-x-scroll">
                 <div className="flex items-center space-x-[2px]">
-                    <Button disabled={isPending} variant={"ghost"} className="hover:bg-pink-500/20 group" size={"icon"} title={likedPost==="LIKED" ? "Unlike" : "Like" } onClick={() => handleLike(post)}>
+                    <Button disabled={isPending} variant={"ghost"} className="hover:bg-pink-500/20 group" 
+                        size={"icon"} title={likedPost==="LIKED" ? "Unlike" : "Like" } onClick={() => handleLike(post)}>
                         {likedPost==="LIKED" ? <Heart className="fill-pink-500 text-pink-500" />:
                             <Heart className="group-hover:fill-pink-500 group-hover:text-pink-500" />}
                     </Button>

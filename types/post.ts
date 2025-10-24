@@ -11,12 +11,12 @@ export type PostWithAuthor = Post & {
 };
 
 export type RepliesWithParent = PostWithAuthor & {
-    parent: {
-        parent: PostWithAuthor;
-        author: User;
-    }
+    parent: PostWithAuthor;
 };
 
+export type PostOrReply = PostWithAuthor | RepliesWithParent;
+
 export type LikedPosts = Like & {
-    post: PostWithAuthor;
+    post: PostOrReply;
 }
+

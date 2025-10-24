@@ -13,16 +13,11 @@ import { isPostLiked } from "@/lib/api/post/likePost";
 import { likePost } from "@/lib/api/post/likePost";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { PostWithAuthor, RepliesWithParent } from "@/interfaces/post";
-import { PostType } from "@prisma/client";
 import { Skeleton } from "../ui/skeleton";
+import { isReply } from "@/lib/isReply";
+import { PostOrReply } from "@/types/post";
 
-interface PostCard {
-    variant: PostType;
-    post: PostWithAuthor | RepliesWithParent;
-}
-
-export default function PostCard({variant, post}: PostCard) {
+export default function PostCard({post}: {post: PostOrReply}) {
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
     const [loading, setLoading] = useState(true);
     const [isPending, setPending] = useState(false);
@@ -37,7 +32,7 @@ export default function PostCard({variant, post}: PostCard) {
         fetchLiked();
     }, [post, setLikedPost]);
 
-    const handleLike = async (post: PostWithAuthor, e: MouseEvent<HTMLButtonElement>) => {
+    const handleLike = async (post: PostOrReply, e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         setPending(true);
         const res = await likePost(post);
@@ -53,15 +48,14 @@ export default function PostCard({variant, post}: PostCard) {
     };
 
     if (loading) return <Skeleton className="h-32 rounded-none mb-1" />;
-
     return(
         <Card key={post.id} className="hover:bg-accent/50 border-x-0 border-t-0 p-0 rounded-none transition-colors cursor-pointer"
             onClick={() => redirect(`/post/${post.id}`)}>
             <CardContent className="py-1 px-2">
-                {variant==="REPLY" && <Muted className="flex space-x-1 items-center text-sm font-semibold mb-1"> 
+                {isReply(post) && post.parent && <Muted className="flex space-x-1 items-center text-sm font-semibold mb-1"> 
                     <MessageCircle size={14} strokeWidth={2.8} /> 
                     <span>
-                        Replied to: {post.author.username}
+                        Replied to: {post.parent.author?.username}
                     </span>
                 </Muted>}
                 <div className="flex gap-2">
