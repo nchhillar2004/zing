@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import { Card, CardContent } from "../ui/card";
 import { P, Muted } from "../ui/typography";
 import { Bookmark, ChartNoAxesColumn, Heart, MessageCircle, Repeat } from "lucide-react";
@@ -8,30 +8,25 @@ import { BadgeCheck } from "lucide-react";
 import { formatRelativeTime } from "@/utils/time";
 import UserAvatar from "../common/UserAvatar";
 import { formatNumber } from "@/utils/number";
-import { Post, User } from "@prisma/client";
 import { LikeType } from "../common/PostView";
 import { isPostLiked } from "@/lib/api/post/likePost";
 import { likePost } from "@/lib/api/post/likePost";
 import { toast } from "sonner";
-import Loading from "../Loading";
 import { Button } from "../ui/button";
+import { PostWithAuthor, RepliesWithParent } from "@/interfaces/post";
+import { PostType } from "@prisma/client";
+import { Skeleton } from "../ui/skeleton";
 
 interface PostCard {
-    variant: "post" | "reply";
-    post: Post & {
-        author: User;
-        _count: {
-            likes: number;
-            replies: number;
-            bookmarks: number;
-        };
-    };
+    variant: PostType;
+    post: PostWithAuthor | RepliesWithParent;
 }
 
 export default function PostCard({variant, post}: PostCard) {
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
     const [loading, setLoading] = useState(true);
     const [isPending, setPending] = useState(false);
+    const [likeCount, setLikeCount] = useState(post._count.likes);
 
     useEffect(() => {
         async function fetchLiked() {
@@ -42,27 +37,33 @@ export default function PostCard({variant, post}: PostCard) {
         fetchLiked();
     }, [post, setLikedPost]);
 
-    const handleLike = async (post: Post) => {
+    const handleLike = async (post: PostWithAuthor, e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         setPending(true);
         const res = await likePost(post);
         if (res && res.success) {
             setLikedPost(res.message as LikeType);
             if (res.message==="LIKED") {
-                toast.success("Liked added");
+                setLikeCount((prev) => prev + 1);
             }
-            else toast.success("Unliked");
+            else setLikeCount((prev) => Math.max(prev - 1, 0));
         }
         else toast.error("Failed interaction");
         setPending(false);
     };
 
-    if (loading) return <Loading/>;
+    if (loading) return <Skeleton className="h-32 rounded-none mb-1" />;
 
     return(
         <Card key={post.id} className="hover:bg-accent/50 border-x-0 border-t-0 p-0 rounded-none transition-colors cursor-pointer"
             onClick={() => redirect(`/post/${post.id}`)}>
-            {variant==="reply" && <P>reply</P>}
-            <CardContent className="py-2 px-4">
+            <CardContent className="py-1 px-2">
+                {variant==="REPLY" && <Muted className="flex space-x-1 items-center text-sm font-semibold mb-1"> 
+                    <MessageCircle size={14} strokeWidth={2.8} /> 
+                    <span>
+                        Replied to: {post.author.username}
+                    </span>
+                </Muted>}
                 <div className="flex gap-2">
                     <UserAvatar user={post.author} size="sm" />
                     <div className="flex-1 space-y-2 overflow-auto">
@@ -82,13 +83,13 @@ export default function PostCard({variant, post}: PostCard) {
                         </pre>
                         <div className="flex items-center gap-6 text-sm text-muted-foreground">
                             <div className="flex items-center">
-                                <Button
-                                    title={likedPost ? "Unlike" : "Like"}
-                                    disabled={isPending} className="hover:bg-pink-500/20 group" variant={"ghost"} size={"icon-sm"} 
-                                    onClick={() => handleLike(post)}>
-                                    <Heart className={`w-4 h-4 ${likedPost && "fill-pink-500 text-pink-500"}`}/>
+                                <Button disabled={isPending} variant={"ghost"} className="hover:bg-pink-500/20 group" size={"icon"} 
+                                    title={likedPost==="LIKED" ? "Unlike" : "Like" } 
+                                    onClick={(e: MouseEvent<HTMLButtonElement>) => handleLike(post, e)}>
+                                    {likedPost==="LIKED" ? <Heart className="fill-pink-500 text-pink-500" />:
+                                        <Heart className="group-hover:fill-pink-500 group-hover:text-pink-500" />}
                                 </Button>
-                                <span>{formatNumber(post._count.likes)}</span>
+                                <span>{formatNumber(likeCount)}</span>
                             </div>
                             <div className="flex items-center">
                                 <Button variant={"ghost"}

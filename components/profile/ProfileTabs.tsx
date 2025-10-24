@@ -93,7 +93,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                         }
                     </TabsList>
                 </div> 
-                <TabsContent value="posts" className="space-y-4">
+                <TabsContent value="posts">
                     {loading ? <Loading className="h-24" /> :  
                         <>
                         {posts?.total === 0 ? (
@@ -105,7 +105,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                         ) : (
                                 <div>
                                     {posts?.posts.map((post) => (
-                                        <PostCard key={post.id} variant="post" post={post} />
+                                        <PostCard key={post.id} variant="POST" post={post} />
                                     ))}
                                     {loading && <Loading/>}
                                 </div>
@@ -114,7 +114,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                 </TabsContent>
 
 
-                <TabsContent value="replies" className="space-y-4">
+                <TabsContent value="replies">
                     {loading ? <Loading className="h-24" /> : <>
                         {replies?.total === 0 ? (
                             <div className="text-center py-12">
@@ -124,14 +124,14 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                             </div>
                         ) : (
                                 replies?.replies.map((reply) => (
-                                    <PostCard key={reply.id} variant="reply" post={reply} /> 
+                                    <PostCard key={reply.id} variant="REPLY" post={reply} /> 
                                 ))
                             )}
                     </>}
                 </TabsContent>
 
                 {currentUserOwner && 
-                    <TabsContent value="likes" className="space-y-4">
+                    <TabsContent value="likes">
                         <Small className="text-muted-foreground">Liked posts are private to you.</Small>
                         {loading ? <Loading className="h-24" /> : <>
                             {likes?.total === 0 ? (
@@ -142,7 +142,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                                 </div>
                             ) : (
                                     likes?.likes.map((like) => (
-                                        <PostCard key={like.id} variant="post" post={like.post} /> 
+                                        <PostCard key={like.id} variant="POST" post={like.post} /> 
                                     ))
                                 )}
                         </>}

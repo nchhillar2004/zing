@@ -1,5 +1,5 @@
 "use client";
-import { PostWithAuthor } from "@/interfaces/post";
+import { PostWithAuthor, RepliesWithParent } from "@/interfaces/post";
 import UserAvatar from "./UserAvatar";
 import { H4, Muted } from "../ui/typography";
 import Link from "next/link";
@@ -11,13 +11,15 @@ import { isPostLiked, likePost } from "@/lib/api/post/likePost";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Loading from "../Loading";
+import PostCard from "../cards/PostCard";
 
 export type LikeType = "LIKED" | "UNLIKED" ;
 
-export default function PostView({post}: {post: PostWithAuthor}) {
+export default function PostView({post}: {post: PostWithAuthor | RepliesWithParent}) {
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
     const [loading, setLoading] = useState(true);
     const [isPending, setPending] = useState(false);
+    const [likeCount, setLikeCount] = useState(post._count.likes);
 
     useEffect(() => {
         async function fetchLiked() {
@@ -34,9 +36,11 @@ export default function PostView({post}: {post: PostWithAuthor}) {
         if (res && res.success) {
             setLikedPost(res.message as LikeType);
             if (res.message==="LIKED") {
-                toast.success("Liked added");
+                setLikeCount((prev) => prev + 1);
             }
-            else toast.success("Unliked");
+            else {
+                setLikeCount((prev) => Math.max(prev - 1, 0));
+            }
         }
         else toast.error("Failed interaction");
         setPending(false);
@@ -46,6 +50,11 @@ export default function PostView({post}: {post: PostWithAuthor}) {
 
     return(
         <div className="py-2 px-4 space-y-2 border-b border-border">
+            {(post.postType==="REPLY" && post.parent) && <>
+            <PostCard post={post.parent} variant="POST" />
+                <div></div>
+            </>
+            }
             <div className="flex justify-between space-x-2">
                 <div className="flex space-x-2">
                     <UserAvatar user={post.author} size="sm" />
@@ -76,7 +85,7 @@ export default function PostView({post}: {post: PostWithAuthor}) {
                         {likedPost==="LIKED" ? <Heart className="fill-pink-500 text-pink-500" />:
                             <Heart className="group-hover:fill-pink-500 group-hover:text-pink-500" />}
                     </Button>
-                    <Muted>{formatNumber(post._count.likes)}</Muted>
+                    <Muted>{formatNumber(likeCount)}</Muted>
                 </div>
                 <div className="flex items-center">
                     <Button variant={"ghost"} className="hover:bg-green-500/20 group" size={"icon"} title="Re-post">

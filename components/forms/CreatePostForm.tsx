@@ -14,8 +14,18 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import AddFilesInPost from "./AddFilesInPost";
 import { Separator } from "@/components/ui/separator";
+import { PostWithAuthor } from "@/interfaces/post";
+import { PostType } from "@prisma/client";
 
-export default function CreatePostForm({user}: {user: CurrentUser}) {
+interface ICreatePostForm{
+    user: CurrentUser;
+    parent?: PostWithAuthor;
+    type?: PostType;
+}
+
+export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
+    const postType: PostType = type ? type : "POST";
+    const isReply = postType==="REPLY";
     const [state, action, pending] = useActionState(createPostAction, undefined);
     const [text, setText] = useState("");
     const [poll, setPoll] = useState(false);
@@ -25,16 +35,21 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
     const [gifPicker, setGIFPicker] = useState(false);
     const pickerRef = useRef<HTMLDivElement | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const MAX_POST_CHARACTERS: number = user.premiumTier==="NONE" ? 300 : (user.premiumTier==="BASIC" ? 600 : 2000);
-// TODO:   const GIPHY_SDK_API_KEY = process.env.GIPHY_SDK_API_KEY;
+    let MAX_POST_CHARACTERS: number = user.premiumTier==="NONE" ? 300 : (user.premiumTier==="BASIC" ? 600 : 2000);
+    // TODO:   const GIPHY_SDK_API_KEY = process.env.GIPHY_SDK_API_KEY;
     const router = useRouter();
 
     const pendingPoll = poll && (!pollValue?.option1 || !pollValue.option2 || !pollValue.pollLength);
 
     useEffect(() => {
         if(state?.success) {
-            toast.success("Post created");
-            router.push(`/post/${state.post?.id}`)
+            if (postType === "POST"){
+                toast.success("Post created");
+                router.push(`/post/${state.post?.id}`)
+            } else if (postType==="REPLY"){
+                toast.success("Reply created");
+                window.location.reload();
+            }
         }else if (state?.error) {
             toast.error(state.error);
         }
@@ -72,10 +87,14 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
 
     return(
         <form action={action} className="py-2 px-3 border-b border-b-border">
-            <div className="flex gap-1">
-                <Link href={`/user/${user.username}`} className="hover:no-underline! h-fit">
-                    <UserAvatar user={user} size="sm" />
-                </Link>
+            <div className={`flex ${!isReply && "gap-1"}`}>
+                {!isReply &&
+                    <Link href={`/user/${user.username}`} className={`hover:no-underline! h-fit`}>
+                        <UserAvatar user={user} size="sm" />
+                    </Link>
+                }
+                <input type="hidden" name="postType" value={postType} />
+                {parent && <input type="hidden" name="parentId" value={parent.id} />}
                 <div className="flex-1 space-y-3">
                     <Textarea 
                         value={text} 
@@ -85,7 +104,7 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
                         name="content"
                         onInput={handleInput} 
                         maxLength={MAX_POST_CHARACTERS} 
-                        placeholder={poll ? "Ask a question..." : "Create a post..."}
+                        placeholder={isReply ? "Post a reply..." : (poll ? "Ask a question..." : "Create a post...")}
                         className={`bg-transparent! border-none! text-xl! ${poll ? "max-h-[40vh]" : "max-h-[60vh]"}`}
                         required/>
                     {addFiles && <AddFilesInPost/>}
@@ -106,7 +125,7 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
                 <div className="flex items-center gap-1">
                     <Button type="button" onClick={() => setAddFiles(!addFiles)} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Upload Image"><ImageIcon className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" onClick={() => setGIFPicker(!gifPicker)} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Select GIF"><ImagePlay className="h-[1.25rem]! w-[1.25rem]!"/></Button>
-                    <Button type="button" onClick={addPoll} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Create Poll"><List className="h-[1.25rem]! w-[1.25rem]!"/></Button>
+                    <Button type="button" disabled={isReply} onClick={addPoll} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Create Poll"><List className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" onClick={() => {setEmojiPicker(!emojiPicker)}}  size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Add Emoji"><Smile className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                     <Button type="button" size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Share Location"><MapPin className="h-[1.25rem]! w-[1.25rem]!"/></Button>
                 </div>
@@ -118,7 +137,8 @@ export default function CreatePostForm({user}: {user: CurrentUser}) {
                         type="submit"
                         className="font-semibold bg-[var(--foreground)] hover:bg-[var(--foreground)]/90" 
                         disabled={!text || pendingPoll || pending}>
-                        {pending ? "Posting..." : "Post"}
+                        {!isReply && (pending ? "Posting..." : "Post")}
+                        {isReply && (pending ? "Replying..." : "Reply")}
                     </Button>
                 </div>
             </div>
