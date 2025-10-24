@@ -7,7 +7,7 @@ export async function fetchRepliesByParent(parentId: string, page: number = 1, l
         if (!parentId) return { replies: [], total: 0 };
 
         const skip = (page - 1) * limit;
-        
+
         const [replies, total] = await Promise.all([
             prisma.post.findMany({
                 where: { 
@@ -26,19 +26,15 @@ export async function fetchRepliesByParent(parentId: string, page: number = 1, l
                     },
                     parent: {
                         select: {
-                            parent: {
+                            id: true,
+                            content: true,
+                            files: true,
+                            _count: {
                                 select: {
-                                    id: true,
-                                    content: true,
-                                    files: true,
-                                    _count: {
-                                        select: {
-                                            likes: true,
-                                            views: true,
-                                            replies: true,
-                                            bookmarks: true,
-                                        }
-                                    }
+                                    likes: true,
+                                    views: true,
+                                    replies: true,
+                                    bookmarks: true,
                                 }
                             },
                             author: {

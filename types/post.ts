@@ -1,7 +1,15 @@
-import { Like, Post, User } from "@prisma/client";
+import { Like, Post} from "@prisma/client";
+
+export type AuthorLite = {
+    id: string;
+    name: string;
+    username: string;
+    profilePic: string;
+    isVerified: boolean;
+};
 
 export type PostWithAuthor = Post & {
-    author: User;
+    author: AuthorLite;
     _count: {
         likes: number;
         views: number;

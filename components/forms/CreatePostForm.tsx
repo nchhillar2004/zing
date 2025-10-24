@@ -35,7 +35,7 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
     const [gifPicker, setGIFPicker] = useState(false);
     const pickerRef = useRef<HTMLDivElement | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    let MAX_POST_CHARACTERS: number = user.premiumTier==="NONE" ? 300 : (user.premiumTier==="BASIC" ? 600 : 2000);
+    const MAX_POST_CHARACTERS: number = user.premiumTier==="NONE" ? 300 : (user.premiumTier==="BASIC" ? 600 : 2000);
     // TODO:   const GIPHY_SDK_API_KEY = process.env.GIPHY_SDK_API_KEY;
     const router = useRouter();
 

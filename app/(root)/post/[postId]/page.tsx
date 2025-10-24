@@ -18,7 +18,7 @@ export default async function PostIdPage({params}: PostIdPageProps) {
     const { postId } = await params;
     const currentUser = await getCurrentUser();
 
-    const post: PostOrReply = await getPostById(postId);
+    const post: PostOrReply | null = await getPostById(postId);
 
     if (!post) {
         redirect("/");
