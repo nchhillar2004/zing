@@ -2,9 +2,9 @@
 import { LikeType } from "@/components/common/PostView";
 import { getCurrentUser } from "@/lib/dal";
 import prisma from "@/lib/db";
-import { Post } from "@prisma/client";
+import { PostOrReply } from "@/types/post";
 
-export async function isPostLiked(post: Post) {
+export async function isPostLiked(post: PostOrReply) {
     const currentUser = await getCurrentUser();
     if (!currentUser) return false;
 
@@ -17,7 +17,7 @@ export async function isPostLiked(post: Post) {
     return false;
 }
 
-export async function likePost(post: Post) {
+export async function likePost(post: PostOrReply) {
     const currentUser = await getCurrentUser();
 
     if (!currentUser) return { success: false, error: "login to like a post" };

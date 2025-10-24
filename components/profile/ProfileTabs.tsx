@@ -14,7 +14,7 @@ import { getUserPosts } from "@/lib/api/user/getUserPosts";
 import { getUserReplies } from "@/lib/api/user/getUserReplies";
 import Loading from "../Loading";
 import { getUserLikes } from "@/lib/api/user/getUserLikes";
-import { LikedPosts, PostWithAuthor, RepliesWithParent } from "@/interfaces/post";
+import { LikedPosts, PostWithAuthor, RepliesWithParent } from "@/types/post";
 
 export interface PostData {
     posts: PostWithAuthor[];
@@ -93,28 +93,28 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                         }
                     </TabsList>
                 </div> 
-                <TabsContent value="posts" className="space-y-4">
+                <TabsContent value="posts">
                     {loading ? <Loading className="h-24" /> :  
                         <>
-                        {posts?.total === 0 ? (
-                            <div className="text-center py-12">
-                                <MessageCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                                <P className="text-muted-foreground">No posts yet</P>
-                                <Small className="text-muted-foreground">When {user.name} posts, you&apos;ll see them here.</Small>
-                            </div>
-                        ) : (
-                                <div>
-                                    {posts?.posts.map((post) => (
-                                        <PostCard key={post.id} variant="post" post={post} />
-                                    ))}
-                                    {loading && <Loading/>}
+                            {posts?.total === 0 ? (
+                                <div className="text-center py-12">
+                                    <MessageCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                                    <P className="text-muted-foreground">No posts yet</P>
+                                    <Small className="text-muted-foreground">When {user.name} posts, you&apos;ll see them here.</Small>
                                 </div>
-                            )}
-                    </>}
+                            ) : (
+                                    <div>
+                                        {posts?.posts.map((post) => (
+                                            <PostCard key={post.id} post={post} />
+                                        ))}
+                                        {loading && <Loading/>}
+                                    </div>
+                                )}
+                        </>}
                 </TabsContent>
 
 
-                <TabsContent value="replies" className="space-y-4">
+                <TabsContent value="replies">
                     {loading ? <Loading className="h-24" /> : <>
                         {replies?.total === 0 ? (
                             <div className="text-center py-12">
@@ -124,14 +124,17 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                             </div>
                         ) : (
                                 replies?.replies.map((reply) => (
-                                    <PostCard key={reply.id} variant="reply" post={reply} /> 
+                                    <div key={reply.id}>
+                                        <PostCard post={reply.parent} isParent={true} /> 
+                                        <PostCard post={reply} /> 
+                                    </div>
                                 ))
                             )}
                     </>}
                 </TabsContent>
 
                 {currentUserOwner && 
-                    <TabsContent value="likes" className="space-y-4">
+                    <TabsContent value="likes">
                         <Small className="text-muted-foreground">Liked posts are private to you.</Small>
                         {loading ? <Loading className="h-24" /> : <>
                             {likes?.total === 0 ? (
@@ -142,7 +145,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                                 </div>
                             ) : (
                                     likes?.likes.map((like) => (
-                                        <PostCard key={like.id} variant="post" post={like.post} /> 
+                                        <PostCard key={like.id} post={like.post} /> 
                                     ))
                                 )}
                         </>}

@@ -1,9 +1,9 @@
-import { PostWithAuthor } from "@/interfaces/post";
 import { getCurrentUser } from "@/lib/dal";
 import prisma from "@/lib/db";
+import { PostOrReply } from "@/types/post";
 import { getCurrentTime } from "@/utils/time";
 
-export async function updatePostView(post: PostWithAuthor) {
+export async function updatePostView(post: PostOrReply) {
     const currentUser = await getCurrentUser();
 
     await prisma.post.update({

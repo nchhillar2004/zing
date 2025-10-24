@@ -2,9 +2,12 @@
 import prisma from "@/lib/db";
 import { getCurrentUser } from "@/lib/dal";
 import { CreatePostFormState } from "@/lib/definitions";
+import { PostType } from "@prisma/client";
 
 export default async function createPostAction(state: CreatePostFormState, formData: FormData) {
     const content = formData.get("content") as string;
+    const postType = formData.get("postType") as PostType;
+    const parentId = formData.get("parentId") as string;
     const user = await getCurrentUser();
 
     if (!content || !user) {
@@ -30,6 +33,8 @@ export default async function createPostAction(state: CreatePostFormState, formD
             data: {
                 content,
                 authorId: user.id,
+                postType,
+                parentId: parentId || null,
                 tags: {
                     create: tags.map((tag) => ({
                         tag: { connect: { id: tag.id } },

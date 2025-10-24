@@ -12,7 +12,7 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
         if (!user) return { replies: [], total: 0 };
 
         const skip = (page - 1) * limit;
-        
+
         const [replies, total] = await Promise.all([
             prisma.post.findMany({
                 where: { 
@@ -20,6 +20,12 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                     postType: 'REPLY'
                 },
                 include: {
+                    parent: {
+                        include: {
+                            author: true,
+                            _count: true,
+                        },
+                    },
                     author: {
                         select: {
                             id: true,
@@ -29,34 +35,6 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                             isVerified: true
                         }
                     },
-                    parent: {
-                        select: {
-                            parent: {
-                                select: {
-                                    id: true,
-                                    content: true,
-                                    files: true,
-                                    _count: {
-                                        select: {
-                                            likes: true,
-                                            views: true,
-                                            replies: true,
-                                            bookmarks: true,
-                                        }
-                                    }
-                                }
-                            },
-                            author: {
-                                select: {
-                                    id: true,
-                                    name: true,
-                                    username: true,
-                                    profilePic: true,
-                                    isVerified: true
-                                }
-                            }
-                        }
-                    },
                     _count: {
                         select: {
                             likes: true,
@@ -64,7 +42,7 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                             replies: true,
                             bookmarks: true,
                         }
-                    }
+                    },
                 },
                 orderBy: { createdAt: 'desc' },
                 skip,
