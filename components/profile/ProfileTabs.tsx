@@ -14,7 +14,7 @@ import { getUserPosts } from "@/lib/api/user/getUserPosts";
 import { getUserReplies } from "@/lib/api/user/getUserReplies";
 import Loading from "../Loading";
 import { getUserLikes } from "@/lib/api/user/getUserLikes";
-import { LikedPosts, PostWithAuthor, RepliesWithParent } from "@/types/post";
+import { LikedPost, PostWithAuthor, RepliesWithParent } from "@/types/post";
 
 export interface PostData {
     posts: PostWithAuthor[];
@@ -27,7 +27,7 @@ export interface RepliesData {
 }
 
 export interface LikesData{
-    likes: LikedPosts[];
+    likes: LikedPost[];
     total: number;
 }
 

@@ -8,7 +8,7 @@ import { BadgeCheck } from "lucide-react";
 import { formatRelativeTime } from "@/utils/time";
 import UserAvatar from "../common/UserAvatar";
 import { formatNumber } from "@/utils/number";
-import { LikeType } from "../common/PostView";
+import { BookType, LikeType } from "../common/PostView";
 import { isPostLiked } from "@/lib/api/post/likePost";
 import { likePost } from "@/lib/api/post/likePost";
 import { toast } from "sonner";
@@ -17,12 +17,15 @@ import { Skeleton } from "../ui/skeleton";
 import { isReply } from "@/lib/isReply";
 import { PostOrReply } from "@/types/post";
 import Link from "next/link";
+import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
 
 export default function PostCard({post, isParent}: {post: PostOrReply, isParent?: boolean}) {
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
+    const [bookedPost, setBookedPost] = useState<BookType>("UNBOOK");
     const [loading, setLoading] = useState(true);
     const [isPending, setPending] = useState(false);
     const [likeCount, setLikeCount] = useState(post._count.likes);
+    const [bookCount, setBookCount] = useState(post._count.bookmarks);
 
     useEffect(() => {
         async function fetchLiked() {
@@ -30,8 +33,14 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
             if (res) setLikedPost("LIKED");
             setLoading(false);
         };
+        async function fetchBooked() {
+            const res = await isPostBookmarked(post);
+            if (res) setBookedPost("BOOK");
+            setLoading(false);
+        };
         fetchLiked();
-    }, [post, setLikedPost]);
+        fetchBooked();
+    }, [post, setLikedPost, setBookedPost]);
 
     const handleLike = async (post: PostOrReply, e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
@@ -43,6 +52,21 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
                 setLikeCount((prev) => prev + 1);
             }
             else setLikeCount((prev) => Math.max(prev - 1, 0));
+        }
+        else toast.error("Failed interaction");
+        setPending(false);
+    };
+
+    const handleBookmark = async (post: PostOrReply, e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setPending(true);
+        const res = await bookmarkPost(post);
+        if (res && res.success) {
+            setBookedPost(res.message as BookType);
+            if (res.message==="BOOK") {
+                setBookCount((prev) => prev + 1);
+            }
+            else setBookCount((prev) => Math.max(prev - 1, 0));
         }
         else toast.error("Failed interaction");
         setPending(false);
@@ -115,12 +139,13 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
                                     <span>{formatNumber(post.viewCount)}</span>
                                 </div> 
                                 <div className="flex items-center">
-                                    <Button
-                                        title="Bookmarks"
-                                        variant={"ghost"} className="hover:bg-primary/20 group" size={"icon-sm"}>
-                                        <Bookmark className="group-hover:fill-primary group-hover:text-primary" />
+                                    <Button disabled={isPending} variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} 
+                                        title={bookedPost==="BOOK" ? "Remove bookmark" : "Add bookmark" } 
+                                        onClick={(e: MouseEvent<HTMLButtonElement>) => handleBookmark(post, e)}>
+                                        {bookedPost==="BOOK" ? <Bookmark className="fill-primary text-primary" />:
+                                            <Bookmark className="group-hover:fill-primary group-hover:text-primary" />}
                                     </Button>
-                                    <span>{formatNumber(post._count.bookmarks)}</span>
+                                    <span>{formatNumber(bookCount)}</span>
                                 </div>
                             </div>
                         </div>
