@@ -3,6 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Muted, Small } from "./ui/typography";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
+import UpdatesCard from "./cards/UpdatesCard";
+import StatusCard from "./cards/StatusCard";
+import TredingPosts from "./cards/TrendingPosts";
 
 export default function FloatingSidebar() {
     return (
@@ -21,44 +24,11 @@ export default function FloatingSidebar() {
                 </CardContent>
             </Card>
 
-            <Card title="Trending" className="bg-transparent rounded-md">
-                <CardHeader>
-                    <CardTitle>Trending right now</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    Trending
-                </CardContent>
-                <CardFooter>
-                    <Small><Link href={"/trending"} className="text-primary">View all</Link></Small>
-                </CardFooter>
-            </Card>
+            <TredingPosts/>
 
-            <Card title="For you" className="bg-transparent rounded-md">
-                <CardHeader>
-                    <CardTitle>You might like</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    Posts
-                </CardContent>
-            </Card>
+            <UpdatesCard/>
 
-            <Card title="Updates" className="bg-transparent rounded-md">
-                <CardHeader>
-                    <CardTitle>Updates</CardTitle>
-                    <CardDescription>Latest commits</CardDescription>
-                </CardHeader>
-                <CardContent>
-
-                </CardContent>
-                <CardFooter>
-                    <Small>
-                        <Link href={"/"} className="text-primary">
-                            View all
-                        </Link>
-                    </Small> 
-                </CardFooter>
-            </Card>
-
+            <StatusCard/>
 
             <footer className="text-center text-[12px]">
                 <ul className="flex flex-wrap items-center space-x-1">

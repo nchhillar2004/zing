@@ -16,11 +16,11 @@ export default function RootLayout({
     return (
         <div className="container">
             <SidebarLayout>
-                <Suspense fallback={<Loading/>}>
-                    <div className="min-lg:border-x min-lg:border-l border-border flex-1 max-w-[660px] max-md:min-w-[320px] max-lg:w-full">
+                <div className="min-lg:border-x min-lg:border-l border-border flex-1 max-w-[660px] max-md:min-w-[320px] max-lg:w-full">
+                    <Suspense fallback={<Loading/>}>
                         {children}
-                    </div>
-                </Suspense>
+                    </Suspense>
+                </div>
             </SidebarLayout>
         </div>
     );
