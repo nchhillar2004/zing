@@ -84,8 +84,8 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
                             {isParent && <div className="absolute w-[2px] left-8 h-full min-h-10 bg-border"></div>}
                         </div>
                         <div className="flex-1 space-y-2 overflow-auto">
-                            <div className="flex items-center gap-2">
-                                <P className="font-semibold flex items-center">
+                            <div className="flex items-center gap-2 flex-wrap">
+                                <P className="font-semibold flex items-center text-nowrap">
                                     {post.author.name}
                                     {post.author.isVerified && (
                                         <BadgeCheck className="ml-1 text-primary" strokeWidth={2} size={14} />

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "./ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Muted, Small } from "./ui/typography";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
@@ -9,7 +9,7 @@ import TredingPosts from "./cards/TrendingPosts";
 
 export default function FloatingSidebar() {
     return (
-        <aside className="top-4 max-lg:hidden max-w-[350px] sticky h-fit right-0 z-10 py-4 pl-6 flex flex-col space-y-4">
+        <aside className="top-4 max-lg:hidden max-w-[320px] sticky h-fit right-0 z-10 py-4 pl-6 flex flex-col space-y-4">
             <Card title="Subscribe" className="bg-transparent rounded-md">
                 <CardHeader>
                     <CardTitle>Subscribe to premium</CardTitle>
