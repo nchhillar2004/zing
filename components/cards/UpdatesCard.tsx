@@ -1,9 +1,13 @@
+"use client";
 import { getCommits } from "@/utils/github";
 import { formatISO } from "@/utils/time";
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardFooter, CardContent, CardDescription } from "../ui/card";
 import { Small } from "../ui/typography";
 import { siteConfig } from "@/config/site-config";
+import { ChevronsDown, ChevronsUp } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
 
 interface GitHubCommit {
     commit: {
@@ -13,15 +17,29 @@ interface GitHubCommit {
     html_url: string;
 }
 
-export default async function UpdatesCard(){
-    const commits = await getCommits();
+export default function UpdatesCard(){
+    const [commits, setCommits] = useState([]);
+    const [close, setClose] = useState(true);
+
+    useEffect(() => {
+        async function fetchCommits() {
+            const commits = await getCommits();
+            setCommits(commits);
+        }
+        fetchCommits();
+    }, [setCommits]);
 
     return(
         <Card title="Updates" className="bg-transparent rounded-md">
             <CardHeader>
-                <CardTitle>Updates</CardTitle>
-                <CardDescription>Latest commits</CardDescription>
+                <CardTitle className="flex items-center justify-between"><span>Updates</span>
+                    <Button title={close ? "Show updates" : "Hide updates"} onClick={() => setClose(!close)} variant={"ghost"} size={"icon"}>
+                        {close ? <ChevronsDown size={16}/> : <ChevronsUp size={16} />}
+                    </Button>
+                </CardTitle>
+                <CardDescription>{close ? "Click the arrow to see updates" : "Latest commits"}</CardDescription>
             </CardHeader>
+            {!close && <>
             <CardContent>
                 <ul>
                     {commits && commits.map((commitData: GitHubCommit) => (
@@ -36,7 +54,6 @@ export default async function UpdatesCard(){
                             </div>
                         </li>))}
                 </ul>
-
             </CardContent>
             <CardFooter>
                 <Small>
@@ -44,7 +61,7 @@ export default async function UpdatesCard(){
                         View all
                     </Link>
                 </Small> 
-            </CardFooter>
+            </CardFooter></>}
         </Card>
     );
 }

@@ -27,7 +27,7 @@ export default function FloatingSidebar() {
             <TredingPosts/>
 
             <UpdatesCard/>
-
+            
             <StatusCard/>
 
             <footer className="text-center text-[12px]">

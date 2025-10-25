@@ -16,6 +16,7 @@ import { loginAction } from "@/actions/login";
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { EyeOff, Eye } from "lucide-react";
 
 export function LoginForm({
     className,
@@ -24,6 +25,7 @@ export function LoginForm({
     const [ state, action, pending ] = useActionState(loginAction, undefined);
     const [redirecting, setRedirecting] = useState(false);
     const router = useRouter();
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     useEffect(() => {
         if (state?.error) {
@@ -58,11 +60,18 @@ export function LoginForm({
                                     required
                                 />
                             </Field>
-                            <Field>
+                            <Field className="relative">
                                 <div className="flex items-center">
                                     <FieldLabel htmlFor="password">Password</FieldLabel>
                                 </div>
-                                <Input placeholder="password" name="password" id="password" type="password" required />
+                                <Input placeholder="password" name="password" id="password" type={passwordVisible ? "text" : "password"} required />
+                                <Button variant={"ghost"} 
+                                    title={passwordVisible ? "Hide password" : "Show password"} 
+                                    size={"icon"} 
+                                    className="absolute block w-fit! right-3 top-[26px] cursor-pointerr"
+                                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {e.preventDefault(); setPasswordVisible(!passwordVisible)}}>
+                                    {passwordVisible ? <Eye/> : <EyeOff/>}
+                                </Button>
                                 {state?.error && <small className="text-destructive">{state?.error}</small>}
                             </Field>
                             <Field>

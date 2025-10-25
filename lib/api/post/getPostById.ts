@@ -1,3 +1,4 @@
+"use server"
 import { PostOrReply } from "@/types/post";
 import prisma from "@/lib/db";
 
