@@ -1,6 +1,5 @@
 import PostView from "@/components/common/PostView";
 import CreatePostForm from "@/components/forms/CreatePostForm";
-import Header from "@/components/Header";
 import { getPostById } from "@/lib/api/post/getPostById";
 import { updatePostView } from "@/lib/api/post/updatePostViews";
 import { redirect } from "next/navigation";
@@ -28,7 +27,6 @@ export default async function PostIdPage({params}: PostIdPageProps) {
 
     return(
         <>
-            <Header variant="title" title="Post" />
             <PostView post={post} />
             {currentUser && <CreatePostForm user={currentUser} parent={post} type="REPLY" />}
             <LoadReplies post={post} />

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
 import { getUserByUsername } from "@/lib/api/user/getUserByUsername";
 import UserBanner from "@/components/profile/UserBanner";
 import UserDetails from "@/components/profile/UserDetails";
@@ -24,7 +23,6 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
 
     return (
         <>
-            <Header variant="title" title={`@${user.username}`} />
             <UserBanner/>
             <UserDetails 
                 user={user} 

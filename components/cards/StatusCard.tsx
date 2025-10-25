@@ -23,7 +23,7 @@ export default async function StatusCard(){
     const lastestVersion: LatestVersion[] = await getLatestVersion();
 
     return(
-        <Card title="Current version and deployments" className="bg-transparent rounded-md">
+        <Card title="Current version and deployments">
             <CardHeader>
                 <CardTitle>{lastestVersion[0].tag_name}</CardTitle>
                 <CardDescription>Current version and deployments</CardDescription>

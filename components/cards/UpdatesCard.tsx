@@ -30,7 +30,7 @@ export default function UpdatesCard(){
     }, [setCommits]);
 
     return(
-        <Card title="Updates" className="bg-transparent rounded-md">
+        <Card title="Updates">
             <CardHeader>
                 <CardTitle className="flex items-center justify-between"><span>Updates</span>
                     <Button title={close ? "Show updates" : "Hide updates"} onClick={() => setClose(!close)} variant={"ghost"} size={"icon"}>

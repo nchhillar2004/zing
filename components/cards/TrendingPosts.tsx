@@ -7,7 +7,7 @@ import { PostWithAuthor } from "@/types/post";
 export default async function TredingPosts() {
     const posts: PostWithAuthor[] = await getTrendingPosts();
     return(
-        <Card title="Trending" className="bg-transparent rounded-md">
+        <Card title="Trending">
             <CardHeader>
                 <CardTitle>Trending right now</CardTitle>
                 <CardDescription>Posts trending right now.</CardDescription>

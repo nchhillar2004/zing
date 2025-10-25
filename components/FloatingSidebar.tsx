@@ -9,8 +9,8 @@ import TredingPosts from "./cards/TrendingPosts";
 
 export default function FloatingSidebar() {
     return (
-        <aside className="top-4 max-lg:hidden max-w-[320px] sticky h-fit right-0 z-10 py-4 pl-6 flex flex-col space-y-4">
-            <Card title="Subscribe" className="bg-transparent rounded-md">
+        <aside className="max-xl:hidden max-w-[320px] sticky h-fit right-0 z-10 flex flex-col space-y-[var(--space)]">
+            <Card title="Subscribe">
                 <CardHeader>
                     <CardTitle>Subscribe to premium</CardTitle>
                     <CardDescription>Subscribe to unlock new features, get access to beta version and grow your reach.</CardDescription>
@@ -30,7 +30,7 @@ export default function FloatingSidebar() {
             
             <StatusCard/>
 
-            <footer className="text-center text-[12px]">
+            <footer className="text-center text-muted text-[12px]">
                 <ul className="flex flex-wrap items-center space-x-1">
                     <li><Small><Muted><Link href='/terms'>Terms of Service</Link></Muted></Small></li>
                     <Separator orientation="vertical"/>
