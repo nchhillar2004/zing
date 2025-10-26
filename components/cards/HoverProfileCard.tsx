@@ -15,7 +15,8 @@ import React from "react";
 import { H4 } from "../ui/typography";
 import { BadgeCheck } from "lucide-react";
 
-export function HoverProfileCard({user}: {user: AuthorLite}) {
+export function HoverProfileCard({user}: {user: AuthorLite | undefined}) {
+    if (!user) return;
     return (
         <HoverCard>
             <HoverCardTrigger asChild>

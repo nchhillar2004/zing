@@ -15,6 +15,7 @@
     --color-border: var(--border);
     --space: 10px;
     --radius: 4px;
+    --font-arial: "Arial";
 }
 
 :root {

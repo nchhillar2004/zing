@@ -84,7 +84,7 @@ export default function PostView({post}: {post: PostOrReply}) {
                     <PostCard post={post.parent} isParent={true} />
                 </div>
             }
-            <div className="py-2 px-4 space-y-2 border-b border-border">
+            <div className="py-2 px-4 max-md:px-0 space-y-2 border-b border-border">
                 {isReply(post) && post.parent && <P className="flex space-x-1 items-center text-sm mb-1 pl-14">
                     <span>Replied to</span><Link href={`/user/${post.parent.author.username}`}>
                         <HoverProfileCard user={post.parent.author}/>
@@ -111,7 +111,7 @@ export default function PostView({post}: {post: PostOrReply}) {
                         </Button>
                     </div>
                 </div>
-                <pre className="py-2 text-wrap wrap-break-word">
+                <pre className="py-2 text-wrap wrap-break-word font-arial tracking-wide">
                     {post.content}
                 </pre>
                 <Separator orientation="horizontal" />

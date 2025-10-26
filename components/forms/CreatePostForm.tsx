@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import UserAvatar from "../common/UserAvatar";
-import { CurrentUser } from "@/interfaces/user";
+import { CurrentUser, UserWithCounts } from "@/interfaces/user";
 import { Textarea } from "../ui/textarea";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
@@ -16,9 +16,10 @@ import AddFilesInPost from "./AddFilesInPost";
 import { Separator } from "@/components/ui/separator";
 import { PostType } from "@prisma/client";
 import { PostOrReply } from "@/types/post";
+import { HoverProfileCard } from "../cards/HoverProfileCard";
 
 interface ICreatePostForm{
-    user: CurrentUser;
+    user: UserWithCounts;
     parent?: PostOrReply;
     type?: PostType;
 }
@@ -87,10 +88,10 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
     }; 
 
     return(
-        <form action={action} className="py-2 px-3 border-b border-b-border">
+        <form action={action} className="py-2 px-3 max-md:px-0 border-b border-b-border">
             {isReply && <P className="text-sm mb-[2px]">Replying to{" "}
-                <Link className="text-primary font-semibold" href={`/user/${parent?.author.username}`}>
-                    @{parent?.author.username}
+                <Link className="text-primary" href={`/user/${parent?.author.username}`}>
+                    <HoverProfileCard user={parent?.author} />
                 </Link></P>}
             <div className={`flex ${!isReply && "gap-1"}`}>
                 {!isReply &&
