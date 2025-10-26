@@ -12,7 +12,7 @@ import { MessageCircle } from "lucide-react";
 import { CurrentUser, UserWithCounts } from "@/interfaces/user";
 import { getUserPosts } from "@/lib/api/user/getUserPosts";
 import { getUserReplies } from "@/lib/api/user/getUserReplies";
-import Loading from "../Loading";
+import Loading from "@/components/common/Loading";
 import { getUserLikes } from "@/lib/api/user/getUserLikes";
 import { LikedPost, PostWithAuthor, RepliesWithParent } from "@/types/post";
 

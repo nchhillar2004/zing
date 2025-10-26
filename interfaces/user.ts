@@ -13,6 +13,7 @@ export interface UserBase {
     dob?: string | null;
     country?: string;
     profilePic: string;
+    profileBanner?: string;
     isVerified: boolean;
     isSpam?: boolean;
     role?: string;
@@ -33,6 +34,7 @@ export interface CurrentUser {
     name: string;
     username: string;
     profilePic: string;
+    profileBanner: string;
     email?: string | null;
     bio?: string | null;
     dob?: string | null;

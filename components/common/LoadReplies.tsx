@@ -6,7 +6,7 @@ import { fetchRepliesByParent } from "@/lib/api/user/fetchRepliesByParent";
 import { Reply } from "lucide-react";
 import { P, Small } from "../ui/typography";
 import PostCard from "../cards/PostCard";
-import Loading from "../Loading";
+import Loading from "@/components/common/Loading";
 
 export default function LoadReplies({post}: {post: PostOrReply}) {
     const [replies, setReplies] = useState<RepliesData>();

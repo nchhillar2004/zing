@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import PostCard from "./cards/PostCard";
 import { CurrentUser } from "@/interfaces/user";
-import Loading from "./Loading";
+import Loading from "@/components/common/Loading";
 import { BookmarksData } from "@/types/post";
 import { getUserBookmarks } from "@/lib/api/user/getUserBookmarks";
 

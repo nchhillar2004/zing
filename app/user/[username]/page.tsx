@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { getUserByUsername } from "@/lib/api/user/getUserByUsername";
-import UserBanner from "@/components/profile/UserBanner";
 import UserDetails from "@/components/profile/UserDetails";
 import ProfileTabs from "@/components/profile/ProfileTabs";
 import { getCurrentUser } from "@/lib/dal";
@@ -23,7 +22,6 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
 
     return (
         <>
-            <UserBanner/>
             <UserDetails 
                 user={user} 
                 currentUser={currentUser} />

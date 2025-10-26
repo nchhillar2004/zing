@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { getSession } from './session';
 import prisma from './db';
-import { CurrentUser } from '@/interfaces/user';
+import { CurrentUser, UserWithCounts } from '@/interfaces/user';
 
 export async function verifySession() {
     const cookieStore = await cookies();
@@ -36,11 +36,18 @@ export async function getCurrentUser() {
                 isVerified: true,
                 premiumTier: true,
                 accountType: true,
-                createdAt: true
+                createdAt: true,
+                _count: {
+                    select: {
+                        followers: true,
+                        follows: true,
+                        posts: true,
+                    }
+                }
             }
         });
 
-        return user as CurrentUser;
+        return user as UserWithCounts;
     } catch (error) {
         console.error('Error fetching user:', error);
         return null;

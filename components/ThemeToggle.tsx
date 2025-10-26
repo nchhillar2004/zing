@@ -5,7 +5,7 @@ import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import React, { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site-config";
-import Loading from "./Loading";
+import Loading from "@/components/common/Loading";
 import { Muted } from "./ui/typography";
 
 export default function ThemeToggle() {

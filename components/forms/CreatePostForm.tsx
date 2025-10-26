@@ -36,6 +36,7 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
     const pickerRef = useRef<HTMLDivElement | null>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const MAX_POST_CHARACTERS: number = user.premiumTier==="NONE" ? 300 : (user.premiumTier==="BASIC" ? 600 : 2000);
+    const MAX_REPLY_CHARACTERS: number = user.premiumTier==="NONE" ? 200 : (user.premiumTier==="BASIC" ? 500 : 1200);
     // TODO:   const GIPHY_SDK_API_KEY = process.env.GIPHY_SDK_API_KEY;
     const router = useRouter();
 
@@ -87,8 +88,8 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
 
     return(
         <form action={action} className="py-2 px-3 border-b border-b-border">
-            {isReply && <P className="text-sm">Replying to{" "}
-                <Link className="text-primary" href={`/user/${parent?.author.username}`}>
+            {isReply && <P className="text-sm mb-[2px]">Replying to{" "}
+                <Link className="text-primary font-semibold" href={`/user/${parent?.author.username}`}>
                     @{parent?.author.username}
                 </Link></P>}
             <div className={`flex ${!isReply && "gap-1"}`}>
@@ -107,24 +108,24 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
                         ref={textareaRef} 
                         name="content"
                         onInput={handleInput} 
-                        maxLength={MAX_POST_CHARACTERS} 
+                        maxLength={isReply ? MAX_REPLY_CHARACTERS : MAX_POST_CHARACTERS} 
                         placeholder={isReply ? "Post a reply..." : (poll ? "Ask a question..." : "Create a post...")}
-                        className={`bg-transparent! border-none! text-xl! ${poll ? "max-h-[40vh]" : "max-h-[60vh]"}`}
+                        className={`bg-dark-background! text-lg! tracking-wide border-border ${poll ? "max-h-[25vh]" : "max-h-[40vh]"}`}
                         required/>
                     {addFiles && <AddFilesInPost/>}
                     {poll && 
                         <CreatePoll setPoll={setPoll} setPollValue={setPollValue} />
                     }
-                    {text.length===MAX_POST_CHARACTERS && 
+                    {(text.length===(isReply ? MAX_REPLY_CHARACTERS : MAX_POST_CHARACTERS)) && 
                         <div 
-                            className="bg-primary/20 border border-border py-2 px-4 mb-2 mt-4 rounded-md">
-                            <P>You&apos;ve reached the maximum limit of {MAX_POST_CHARACTERS} characters. 
-                                {!(user.premiumTier==="PRO") && "Upgrade your plan to write larger posts."}
+                            className="bg-primary/20 border border-border py-2 px-4 mb-2 mt-4 rounded-[var(--radius)]">
+                            <P>You&apos;ve reached the maximum limit of {isReply ? MAX_REPLY_CHARACTERS : MAX_POST_CHARACTERS} characters. 
+                                {!(user.premiumTier==="PRO") && `Upgrade your plan to write larger ${isReply ? "replies" : "posts"}.`}
                             </P>
                         </div>}
                 </div>
             </div>
-            <Separator orientation="horizontal" className="my-4" />
+            <Separator orientation="horizontal" className="my-2" />
             <div className="flex justify-between gap-4 max-md:gap-2 max-md:overflow-x-scroll">
                 <div className="flex items-center gap-1">
                     <Button type="button" onClick={() => setAddFiles(!addFiles)} size={"icon"} variant={"ghost"} className="text-primary hover:bg-primary/10" title="Upload Image"><ImageIcon className="h-[1.25rem]! w-[1.25rem]!"/></Button>
@@ -137,11 +138,11 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
                 </div>
                 <div className="flex items-center gap-4 max-md:gap-2">
                     {text &&
-                        <Muted className="text-[16px]">{text.length}/{MAX_POST_CHARACTERS}</Muted>}
+                        <Muted className="text-[16px]">{text.length}/{isReply ? MAX_REPLY_CHARACTERS : MAX_POST_CHARACTERS}</Muted>}
                     <Button 
                         size={"sm"} 
                         type="submit"
-                        className="font-semibold bg-[var(--foreground)] hover:bg-[var(--foreground)]/90" 
+                        className="font-semibold text-secondary-fg" 
                         disabled={!text || pendingPoll || pending}>
                         {!isReply && (pending ? "Posting..." : "Post")}
                         {isReply && (pending ? "Replying..." : "Reply")}
@@ -154,6 +155,7 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
                     theme={Theme.AUTO}
                     emojiStyle={EmojiStyle.NATIVE}
                     skinTonesDisabled
+                    className="bg-dark-background! border-border!"
                 />
             </div>
             }

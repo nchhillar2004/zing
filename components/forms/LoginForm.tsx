@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { siteConfig } from "@/config/site-config"
-import SiteLogo from "../SiteLogo"
+import SiteLogo from "@/components/common/SiteLogo"
 import { loginAction } from "@/actions/login";
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";

@@ -107,19 +107,19 @@ export default function CreatePoll({setPoll, setPollValue}: CreatePollInterface)
         >
             <Card className="p-0 border-none gap-0 max-sm:max-w-[320px] max-sm:overflow-hidden">
                 <CardContent className="p-4 rounded-t-md border border-border space-y-2">
-                    <Input type="text" placeholder="Option 1" className="!text-lg py-2" maxLength={MAX_POLL_CHARACTERS}
+                    <Input type="text" placeholder="Option 1" className="py-2" maxLength={MAX_POLL_CHARACTERS}
                         value={option1}
                         onChange={(e) => setOption1(e.target.value)}
                         required />
-                    <Input type="text" placeholder="Option 2" className="!text-lg py-2" maxLength={MAX_POLL_CHARACTERS}
+                    <Input type="text" placeholder="Option 2" className="py-2" maxLength={MAX_POLL_CHARACTERS}
                         value={option2}
                         onChange={(e) => setOption2(e.target.value)}
                         required />
-                    <Input type="text" placeholder="Option 3 (Optional)" className="!text-lg py-2" maxLength={MAX_POLL_CHARACTERS}
+                    <Input type="text" placeholder="Option 3 (Optional)" className="py-2" maxLength={MAX_POLL_CHARACTERS}
                         value={option3}
                         onChange={(e) => setOption3(e.target.value)}
                     />
-                    <Input type="text" placeholder="Option 4 (Optional)" className="!text-lg py-2" maxLength={MAX_POLL_CHARACTERS}
+                    <Input type="text" placeholder="Option 4 (Optional)" className="py-2" maxLength={MAX_POLL_CHARACTERS}
                         value={option4}
                         onChange={(e) => setOption4(e.target.value)}
                     />

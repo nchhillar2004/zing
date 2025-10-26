@@ -38,7 +38,7 @@ export default async function StatusCard(){
                                 <div className="w-px flex-1 bg-[var(--border)]"></div>
                             </div>
                             <div className="flex flex-col justify-start pb-2">
-                                <small className="leading-tight">{formatISO(deployment.created_at)}</small>
+                                <small className="leading-tight text-muted">{formatISO(deployment.created_at)}</small>
                                 <Link href={deployment.url} target="_blank" className="line-clamp-2 text-[16px] text-primary overflow-ellipsis">{deployment.environment}{deployment.description}</Link>
                             </div>
                         </li>))}

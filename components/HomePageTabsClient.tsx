@@ -1,7 +1,7 @@
 "use client";
 import { Tabs } from "./ui/tabs";
 import { useEffect, useState } from "react";
-import Loading from "./Loading";
+import Loading from "@/components/common/Loading";
 
 // I made this components because the home page need to be server side and i need to handle the currect tab state on client
 export default function HomePageTabsClient({children}: {children: React.ReactNode}) {   

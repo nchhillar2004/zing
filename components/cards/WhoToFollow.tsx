@@ -4,12 +4,12 @@ import { Small } from "../ui/typography";
 import { getTrendingPosts } from "@/lib/api/post/getTrendingPosts";
 import { PostWithAuthor } from "@/types/post";
 
-export default async function TredingPosts() {
+export default async function WhoToFollow() {
     const posts: PostWithAuthor[] = await getTrendingPosts();
     return(
-        <Card title="Trending" className="w-full">
+        <Card>
             <CardHeader>
-                <CardTitle>Trending right now</CardTitle>
+                <CardTitle>Who to follow</CardTitle>
                 <CardDescription>Posts trending right now.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -31,3 +31,4 @@ export default async function TredingPosts() {
 
     );
 }
+

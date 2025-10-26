@@ -9,7 +9,7 @@ import { formatNumber } from "@/utils/number";
 import { isPostLiked, likePost } from "@/lib/api/post/likePost";
 import { MouseEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
-import Loading from "../Loading";
+import Loading from "@/components/common/Loading";
 import PostCard from "../cards/PostCard";
 import { isReply } from "@/lib/isReply";
 import { PostOrReply } from "@/types/post";

@@ -49,7 +49,7 @@ export default function UpdatesCard(){
                                 <div className="w-px flex-1 bg-[var(--border)]"></div>
                             </div>
                             <div className="flex flex-col justify-start pb-2">
-                                <small className="leading-tight">{formatISO(commitData.commit.author.date)}</small>
+                                <small className="leading-tight text-muted">{formatISO(commitData.commit.author.date)}</small>
                                 <Link href={commitData.html_url} target="_blank" className="line-clamp-2 text-[16px] text-primary overflow-ellipsis">{commitData.commit?.message}</Link>
                             </div>
                         </li>))}
