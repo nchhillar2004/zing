@@ -25,8 +25,11 @@ export async function getUserPosts(username: string, page: number = 1, limit: nu
                             id: true,
                             name: true,
                             username: true,
+                            bio: true,
                             profilePic: true,
-                            isVerified: true
+                            premiumTier: true,
+                            isVerified: true,
+                            createdAt: true,
                         }
                     },
                     _count: {

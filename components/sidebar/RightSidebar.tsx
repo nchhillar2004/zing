@@ -42,7 +42,7 @@ export default async function RightSidebar() {
                 <P className="leading-none">
                     This is an{" "}
                     <Link target="_blank" 
-                        href={`${siteConfig.url.github}/${siteConfig.github.repo}`} className="text-primary">
+                        href={`${siteConfig.url.github}`} className="text-primary">
                         open source</Link>{" "}project.
                 </P>
                 <P className="leading-none">

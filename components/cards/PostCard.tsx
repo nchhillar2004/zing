@@ -18,6 +18,7 @@ import { isReply } from "@/lib/isReply";
 import { PostOrReply } from "@/types/post";
 import Link from "next/link";
 import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
+import { HoverProfileCard } from "./HoverProfileCard";
 
 export default function PostCard({post, isParent}: {post: PostOrReply, isParent?: boolean}) {
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
@@ -91,14 +92,14 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
                                         <BadgeCheck className="ml-1 text-primary" strokeWidth={2} size={14} />
                                     )}
                                 </P>
-                                <Muted className="text-sm max-sm:hidden">@{post.author.username}</Muted>
+                                <Muted className="text-sm max-sm:hidden"><HoverProfileCard user={post.author} /></Muted>
                                 <Muted className="text-sm max-sm:hidden">·</Muted>
                                 <Muted className="text-sm">{formatRelativeTime(post.createdAt)}</Muted>
                                 {isReply(post) && post.parent && <Muted className={`flex space-x-1 items-center text-sm`}> 
                                     <span>
                                         Replied to
                                     </span>
-                                    <Link href={`/user/${post.parent.author.username}`} className="text-primary">@{post.parent.author.username}</Link>
+                                    <Link href={`/user/${post.parent.author.username}`}><HoverProfileCard user={post.parent.author} /></Link>
                                 </Muted>}
 
                             </div>

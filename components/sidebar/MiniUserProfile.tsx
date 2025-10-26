@@ -8,7 +8,6 @@ import Link from "next/link";
 import { formatNumber } from "@/utils/number";
 
 export default function MiniUserProfile({user}: {user: UserWithCounts}) {
-    console.log("follows: "+formatNumber(+user._count.follows));
     return(
         <div className="border overflow-hidden border-border bg-background rounded-[var(--radius)]">
             {user ? (

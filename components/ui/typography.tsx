@@ -24,9 +24,9 @@ export function H3({className, children}: {className?: string, children: React.R
     )
 }
 
-export function H4({children}: {children: React.ReactNode}) {
+export function H4({className, children}: {className?:string, children: React.ReactNode}) {
     return (
-        <h4 className="scroll-m-20 text-secondary-fg text-xl font-semibold tracking-tight">
+        <h4 className={`scroll-m-20 text-secondary-fg text-xl font-semibold tracking-tight ${className}`}>
             {children}
         </h4>
     )

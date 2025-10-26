@@ -13,8 +13,11 @@ export type AuthorLite = {
     id: string;
     name: string;
     username: string;
+    bio: string;
+    premiumTier: string;
     profilePic: string;
     isVerified: boolean;
+    createdAt: Date;
 };
 
 export type PostWithAuthor = Post & {

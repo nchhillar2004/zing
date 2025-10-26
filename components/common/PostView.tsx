@@ -15,6 +15,7 @@ import { isReply } from "@/lib/isReply";
 import { PostOrReply } from "@/types/post";
 import { P } from "../ui/typography";
 import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
+import { HoverProfileCard } from "../cards/HoverProfileCard";
 
 export type LikeType = "LIKED" | "UNLIKED" ;
 export type BookType = "BOOK" | "UNBOOK" ;
@@ -85,8 +86,8 @@ export default function PostView({post}: {post: PostOrReply}) {
             }
             <div className="py-2 px-4 space-y-2 border-b border-border">
                 {isReply(post) && post.parent && <P className="flex space-x-1 items-center text-sm mb-1 pl-14">
-                    <span>Replied to</span><Link className="text-primary" href={`/user/${post.parent.author.username}`}>
-                        @{post.parent.author.username}
+                    <span>Replied to</span><Link href={`/user/${post.parent.author.username}`}>
+                        <HoverProfileCard user={post.parent.author}/>
                     </Link>
                 </P>
                 }
