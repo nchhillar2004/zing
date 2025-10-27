@@ -23,10 +23,14 @@ export async function getUserBookmarks(username: string, page: number = 1, limit
                                 include:{
                                     author: {
                                         select: {
+                                            id: true,
                                             name: true,
                                             username: true,
+                                            bio: true,
                                             profilePic: true,
+                                            premiumTier: true,
                                             isVerified: true,
+                                            createdAt: true,
                                         }
                                     },
                                     _count: {
@@ -41,10 +45,14 @@ export async function getUserBookmarks(username: string, page: number = 1, limit
                             },
                             author: {
                                 select: {
+                                    id: true,
                                     name: true,
                                     username: true,
+                                    bio: true,
                                     profilePic: true,
+                                    premiumTier: true,
                                     isVerified: true,
+                                    createdAt: true,
                                 }
                             },
                             _count: {

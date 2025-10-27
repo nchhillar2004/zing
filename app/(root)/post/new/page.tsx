@@ -1,6 +1,5 @@
 import { logout } from "@/actions/logout";
 import CreatePostForm from "@/components/forms/CreatePostForm";
-import Header from "@/components/Header";
 import { H4 } from "@/components/ui/typography";
 import { getCurrentUser } from "@/lib/dal";
 
@@ -14,7 +13,6 @@ export default async function NewPostPage() {
 
     return(
         <>
-            <Header variant="title" title="Create a post" />
             <div>
                 <CreatePostForm user={currentUser} />
                 <div className="p-4">

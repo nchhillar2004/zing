@@ -11,17 +11,19 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { siteConfig } from "@/config/site-config"
-import SiteLogo from "../SiteLogo"
-import { useActionState, useState } from "react";
+import SiteLogo from "@/components/common/SiteLogo"
+import React, { useActionState, useState } from "react";
 import { registerAction } from "@/actions/register";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function RegisterForm() {
     const [state, action, pending] = useActionState(registerAction, undefined);
     const router = useRouter();
     const [redirecting, setRedirecting] = useState(false);
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const [formData, setFormData] = useState({
         fname: "",
@@ -78,25 +80,39 @@ export default function RegisterForm() {
                                 /> {/* TODO: implement realtime username validations before submitting */}
                                 {state?.errors?.username && <small className="text-destructive">{state.errors.username}</small>}
                             </Field>
-                            <Field>
+                            <Field className="relative">
                                 <FieldLabel htmlFor="password">Create a Password</FieldLabel>
                                 <Input 
                                     id="password" 
                                     name="password" 
-                                    type="password" 
+                                    type={passwordVisible ? "text" : "password"}
                                     placeholder="Password" 
-                                    required />
+                                    required/>
+                                <Button variant={"ghost"} 
+                                    title={passwordVisible ? "Hide password" : "Show password"} 
+                                    size={"icon"} 
+                                    className="absolute block w-fit! right-3 top-[26px] cursor-pointerr"
+                                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {e.preventDefault(); setPasswordVisible(!passwordVisible)}}>
+                                    {passwordVisible ? <Eye/> : <EyeOff/>}
+                                </Button>
                                 {state?.errors?.password && <small className="text-destructive">{state.errors.password}</small>}
                             </Field>
-                            <Field>
+                            <Field className="relative">
                                 <FieldLabel htmlFor="cpassword">Confirm password</FieldLabel>
                                 <Input
                                     id="cpassword"
-                                    type="password"
+                                    type={passwordVisible ? "text" : "password"}
                                     name="cpassword"
                                     placeholder="Confirm password"
                                     required
                                 />
+                                <Button variant={"ghost"} 
+                                    title={passwordVisible ? "Hide password" : "Show password"} 
+                                    size={"icon"} 
+                                    className="absolute block w-fit! right-3 top-[26px] cursor-pointerr"
+                                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {e.preventDefault(); setPasswordVisible(!passwordVisible)}}>
+                                    {passwordVisible ? <Eye/> : <EyeOff/>}
+                                </Button>
                                 {state?.errors?.cpassword && <small className="text-destructive">{state.errors.cpassword}</small>}
                             </Field>
 

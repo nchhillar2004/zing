@@ -1,7 +1,7 @@
 "use client"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
-import Loading from "./Loading"
+import Loading from "@/components/common/Loading"
 
 export type Color = "red" | "rose" | "yellow" | "blue" | "green" | "purple"
 export type BgColor = "light-mint" | "light-ocean" | "dark-rose" | "dark-ocean" | "default"

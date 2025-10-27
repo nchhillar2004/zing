@@ -1,55 +1,26 @@
-import React from "react";
-import { H4 } from "./ui/typography";
-import { FaArrowLeft } from "react-icons/fa6";
+import { getCurrentUser } from "@/lib/dal";
+import NavigationLinks from "@/components/NavigationLinks";
+import { UserWithCounts } from "@/interfaces/user";
+import HeaderClient from "./HeaderClient";
+import { AiFillThunderbolt } from "react-icons/ai";
+import { siteConfig } from "@/config/site-config";
 import Link from "next/link";
-import { MdOutlineMenu, MdClose } from "react-icons/md";
-import { Button } from "./ui/button";
-import { Drawer, DrawerTrigger, DrawerTitle, DrawerClose, DrawerHeader, DrawerContent, DrawerFooter } from "@/components/ui/drawer";
-import NavigationLinks from "./NavigationLinks";
-import SiteLogo from "./SiteLogo";
-type HeaderVariant = "tabs" | "title";
 
-export default function Header({children, variant, title, fallback}: 
-    {children?: React.ReactNode, variant: HeaderVariant, title?: string, fallback?: string}) {
+export default async function Header(){ 
+    const currentUser: UserWithCounts | null = await getCurrentUser();
 
     return (
-        <header className="backdrop-blur-sm border-b border-[--border] sticky top-0 w-full z-10 h-[50px] px-2 flex items-center">
-            <div className="hidden max-lg:flex">
-                <Drawer direction="left">
-                    <DrawerTrigger asChild>
-                        <Button size={"icon-lg"} variant={"ghost"}>
-                            <MdOutlineMenu className="h-[1.5em]! w-[1.5em]!" />
-                        </Button>
-                    </DrawerTrigger>
-                    <DrawerContent>
-                        <DrawerHeader className="flex-row justify-between items-center">
-                            <DrawerTitle>
-                                <SiteLogo/>
-                            </DrawerTitle>
-                            <DrawerClose asChild>
-                                <Button size={"icon-lg"} variant="link">
-                                    <MdClose className="h-[1.5em]! w-[1.5em]!" />
-                                </Button>
-                            </DrawerClose>
-                        </DrawerHeader>
-                        <div className="px-4 h-full">
-                            <NavigationLinks/>
-                        </div>
-                        <DrawerFooter>
-                        </DrawerFooter>
-                    </DrawerContent>
-                </Drawer>
-            </div>
-            {variant==="title" ? 
-                <div className="flex space-x-8 h-full items-center">
-                    <Link href={fallback ? fallback : "/"} title="Go back" className="max-md:hidden">
-                        <FaArrowLeft size={36} className="transition-colors duration-250 hover:bg-[var(--border)] cursor-pointer rounded-full p-2" />
+        <header className="bg-background min-w-[320px] h-fit sticky z-20 top-0">
+            <nav className="container max-[600px]:px-[var(--space)] flex h-full items-center space-x-4 justify-between">
+                <NavigationLinks/>
+                <div className="flex flex-1 min-md:justify-center">
+                    <Link href={"/"}>
+                    <AiFillThunderbolt title={siteConfig.name} className="text-primary hover:cursor-pointer" size={24} />
                     </Link>
-                    <H4>{title}</H4>
                 </div>
-                :
-                <>{children}</>
-            }
+                {currentUser &&
+                <HeaderClient user={currentUser} />}
+            </nav>
         </header>
     );
 }

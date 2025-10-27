@@ -1,3 +1,4 @@
+"use server"
 import prisma from "@/lib//db";
 
 export async function getUserById(id: string) {
@@ -13,6 +14,7 @@ export async function getUserById(id: string) {
                 dob: true,
                 country: true,
                 profilePic: true,
+                profileBanner: true,
                 isVerified: true,
                 isSpam: true,
                 role: true,

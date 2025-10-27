@@ -1,3 +1,4 @@
+"use server"
 import { getCurrentUser } from "@/lib/dal";
 import prisma from "@/lib/db";
 import { PostOrReply } from "@/types/post";

@@ -20,8 +20,11 @@ export async function fetchRepliesByParent(parentId: string, page: number = 1, l
                             id: true,
                             name: true,
                             username: true,
+                            bio: true,
                             profilePic: true,
-                            isVerified: true
+                            premiumTier: true,
+                            isVerified: true,
+                            createdAt: true,
                         }
                     },
                     parent: {
@@ -46,8 +49,11 @@ export async function fetchRepliesByParent(parentId: string, page: number = 1, l
                                             id: true,
                                             name: true,
                                             username: true,
+                                            bio: true,
                                             profilePic: true,
-                                            isVerified: true
+                                            premiumTier: true,
+                                            isVerified: true,
+                                            createdAt: true,
                                         }
                                     }
 
@@ -66,8 +72,11 @@ export async function fetchRepliesByParent(parentId: string, page: number = 1, l
                                     id: true,
                                     name: true,
                                     username: true,
+                                    bio: true,
                                     profilePic: true,
-                                    isVerified: true
+                                    premiumTier: true,
+                                    isVerified: true,
+                                    createdAt: true,
                                 }
                             }
                         }

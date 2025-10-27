@@ -5,13 +5,13 @@ import {
     Bookmark
 } from "lucide-react";
 import PostCard from "./cards/PostCard";
-import { CurrentUser } from "@/interfaces/user";
-import Loading from "./Loading";
+import { UserWithCounts } from "@/interfaces/user";
+import Loading from "@/components/common/Loading";
 import { BookmarksData } from "@/types/post";
 import { getUserBookmarks } from "@/lib/api/user/getUserBookmarks";
 
 
-export default function BookmarksPageClient({currentUser}: {currentUser: CurrentUser}) {
+export default function BookmarksPageClient({currentUser}: {currentUser: UserWithCounts}) {
     const [bookmarks, setBookmarks] = useState<BookmarksData>();
     const [loading, setLoading] = useState(true);
 

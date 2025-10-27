@@ -1,3 +1,4 @@
+"use server"
 import { PostOrReply } from "@/types/post";
 import prisma from "@/lib/db";
 
@@ -11,8 +12,11 @@ export async function getPostById(postId: string): Promise<PostOrReply | null> {
                         id: true,
                         name: true,
                         username: true,
+                        bio: true,
                         profilePic: true,
+                        premiumTier: true,
                         isVerified: true,
+                        createdAt: true,
                     },
                 },
                 parent: {
@@ -22,8 +26,11 @@ export async function getPostById(postId: string): Promise<PostOrReply | null> {
                                 id: true,
                                 name: true,
                                 username: true,
+                                bio: true,
                                 profilePic: true,
+                                premiumTier: true,
                                 isVerified: true,
+                                createdAt: true,
                             },
                         },
                         _count: {

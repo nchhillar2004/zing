@@ -78,8 +78,8 @@ export default function AddFilesInPost() {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 bg-background border shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10"
-                                    onClick={() => removePreview(i)}
+                                    className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0 bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {e.preventDefault(); removePreview(i)}}
                                 >
                                     <X className="h-3 w-3" />
                                 </Button>
@@ -94,6 +94,8 @@ export default function AddFilesInPost() {
                                         <Image
                                             src={url}
                                             alt={`preview-${i}`}
+                                            width={500}
+                                            height={500}
                                             className="w-full h-full object-cover rounded-md"
                                         />
                                     ) : type === "application/pdf" ? (

@@ -31,8 +31,11 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                             id: true,
                             name: true,
                             username: true,
+                            bio: true,
                             profilePic: true,
-                            isVerified: true
+                            premiumTier: true,
+                            isVerified: true,
+                            createdAt: true,
                         }
                     },
                     _count: {

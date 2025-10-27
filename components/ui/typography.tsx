@@ -2,7 +2,7 @@ import React from "react"
 
 export function H1({className, children}: {className?: string, children: React.ReactNode}) {
     return (
-        <h1 className={`scroll-m-20 text-4xl font-extrabold tracking-tight text-balance ${className || ''}`}>
+        <h1 className={`scroll-m-20 text-secondary-fg text-4xl font-extrabold tracking-tight text-balance ${className || ''}`}>
             {children}
         </h1>
     )
@@ -10,7 +10,7 @@ export function H1({className, children}: {className?: string, children: React.R
 
 export function H2({className, children}: {className?: string, children: React.ReactNode}) {
     return (
-        <h2 className={`scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 ${className || ''}`}>
+        <h2 className={`scroll-m-20 text-secondary-fg border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 ${className || ''}`}>
             {children}
         </h2>
     )
@@ -18,15 +18,15 @@ export function H2({className, children}: {className?: string, children: React.R
 
 export function H3({className, children}: {className?: string, children: React.ReactNode}) {
     return (
-        <h3 className={`scroll-m-20 text-2xl font-semibold tracking-tight ${className || ''}`}>
+        <h3 className={`scroll-m-20 text-secondary-fg text-2xl font-semibold tracking-tight ${className || ''}`}>
             {children}
         </h3>
     )
 }
 
-export function H4({children}: {children: React.ReactNode}) {
+export function H4({className, children}: {className?:string, children: React.ReactNode}) {
     return (
-        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+        <h4 className={`scroll-m-20 text-secondary-fg text-xl font-semibold tracking-tight ${className}`}>
             {children}
         </h4>
     )
@@ -34,7 +34,7 @@ export function H4({children}: {children: React.ReactNode}) {
 
 export function P({className, children}: {className?: string, children: React.ReactNode}) {
     return (
-        <p className={`${className} leading-4 [&:not(:first-child)]:mt-4`}>
+        <p className={`${className} leading-4`}>
             {children}
         </p>
     )

@@ -1,4 +1,4 @@
-import { CurrentUser, UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/interfaces/user";
 import { Badge } from "../ui/badge";
 import { BadgeCheck, BadgeDollarSign, Users, UserPlus, MessageCircle, MapPin, CalendarDays, Ellipsis, Link as LinkIcon, Ban, Flag, Edit, TriangleAlert, Lock } from "lucide-react";
 import { formatDate } from "@/utils/time";
@@ -7,14 +7,16 @@ import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import Link from "next/link";
 import UserAvatar from "../common/UserAvatar";
+import Image from "next/image";
 
-export default function UserDetails({user, currentUser}: {user: UserWithCounts, currentUser: CurrentUser | null}) {
+export default function UserDetails({user, currentUser}: {user: UserWithCounts, currentUser: UserWithCounts | null}) {
     const currentUserOwner = currentUser && currentUser.id===user.id;
     return(
         <div>
+            <Image src={user.profileBanner ? user.profileBanner : "/banner.png"} alt="Profile banner" height={190} width={1440} className="h-52 w-auto object-cover" />
             <div className="p-4">
                 <div className="flex flex-col gap-4">
-                    <div className="flex justify-between flex-shrink-0">
+                    <div className="relative h-12 flex justify-between flex-shrink-0">
                         <UserAvatar user={user} size="md" />
                         {currentUserOwner ?
                             <div className="flex items-center">

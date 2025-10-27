@@ -18,6 +18,7 @@ import { isReply } from "@/lib/isReply";
 import { PostOrReply } from "@/types/post";
 import Link from "next/link";
 import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
+import { HoverProfileCard } from "./HoverProfileCard";
 
 export default function PostCard({post, isParent}: {post: PostOrReply, isParent?: boolean}) {
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
@@ -75,34 +76,34 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
     if (loading) return <Skeleton className="h-32 rounded-none mb-1" />;
     return(
         <>
-            <Card key={post.id} className={`hover:bg-accent/50 border-x-0 border-t-0 p-0 rounded-none transition-colors cursor-pointer ${isParent && "relative border-b-0"}`}
+            <Card key={post.id} className={`hover:bg-dark-background border-x-0 border-t-0 p-0 rounded-none transition-colors cursor-pointer ${isParent && "relative border-b-0"}`}
                 onClick={() => redirect(`/post/${post.id}`)}>
-                <CardContent className="py-1 px-2">
+                <CardContent className="py-1 px-2 max-md:px-0">
                     <div className="flex gap-2">
                         <div>
                             <UserAvatar user={post.author} size="sm" />
-                            {isParent && <div className="absolute w-[2px] left-8 h-full min-h-10 bg-border"></div>}
+                            {isParent && <div className="absolute w-[2px] left-4 h-full min-h-10 bg-border"></div>}
                         </div>
                         <div className="flex-1 space-y-2 overflow-auto">
-                            <div className="flex items-center gap-2">
-                                <P className="font-semibold flex items-center">
+                            <div className="flex items-center space-x-2 flex-wrap">
+                                <P className="font-semibold flex items-center text-nowrap">
                                     {post.author.name}
                                     {post.author.isVerified && (
                                         <BadgeCheck className="ml-1 text-primary" strokeWidth={2} size={14} />
                                     )}
                                 </P>
-                                <Muted className="text-sm max-sm:hidden">@{post.author.username}</Muted>
+                                <Muted className="text-sm max-sm:hidden"><HoverProfileCard user={post.author} /></Muted>
                                 <Muted className="text-sm max-sm:hidden">·</Muted>
                                 <Muted className="text-sm">{formatRelativeTime(post.createdAt)}</Muted>
                                 {isReply(post) && post.parent && <Muted className={`flex space-x-1 items-center text-sm`}> 
                                     <span>
                                         Replied to
                                     </span>
-                                    <Link href={`/user/${post.parent.author.username}`} className="text-primary">@{post.parent.author.username}</Link>
+                                    <Link href={`/user/${post.parent.author.username}`}><HoverProfileCard user={post.parent.author} /></Link>
                                 </Muted>}
 
                             </div>
-                            <pre className="line-clamp-5 text-wrap wrap-break-word text-ellipsis text-sm leading-[1.2]! mt-0! tracking-[0.02em]!">
+                            <pre className="line-clamp-[10] font-arial text-wrap wrap-break-word text-ellipsis text-sm leading-[1.2]! mt-0! tracking-wide">
                                 {post.content} 
                             </pre>
                             <div className="flex items-center gap-6 text-sm text-muted-foreground">

@@ -1,5 +1,6 @@
-import Loading from "@/components/Loading";
-import SidebarLayout from "@/components/SidebarLayout";
+import Header from "@/components/Header";
+import Loading from "@/components/common/Loading";
+import SidebarLayout from "@/components/sidebar/SidebarLayout";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -14,14 +15,17 @@ export default function RootLayout({
         children: React.ReactNode;
     }>) {
     return (
-        <div className="container">
-            <SidebarLayout>
-                <Suspense fallback={<Loading/>}>
-                    <div className="min-lg:border-x min-lg:border-l border-border flex-1 max-w-[660px] max-md:min-w-[320px] max-lg:w-full">
-                        {children}
-                    </div>
-                </Suspense>
-            </SidebarLayout>
-        </div>
+        <>
+            <Header/>
+            <div className="container min-[600px]:pt-[var(--space)]">
+                <SidebarLayout>
+                    <main className="max-[600px]:px-[var(--space)] max-[320px]:absolute max-[320px]:left-0 min-h-screen min-[600px]:border min-[600px]:rounded-[var(--radius)] bg-background border-border flex-1 max-w-[600px] min-w-[320px] max-lg:w-full">
+                        <Suspense fallback={<Loading/>}>
+                            {children}
+                        </Suspense>
+                    </main>
+                </SidebarLayout>
+            </div>
+        </>
     );
 }
