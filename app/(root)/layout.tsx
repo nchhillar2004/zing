@@ -19,7 +19,7 @@ export default function RootLayout({
             <Header/>
             <div className="container min-[600px]:pt-[var(--space)]">
                 <SidebarLayout>
-                    <main className="max-[600px]:px-[var(--space)] min-h-screen min-[600px]:border min-[600px]:rounded-[var(--radius)] bg-background border-border flex-1 max-w-[600px] min-w-[320px] max-lg:w-full">
+                    <main className="max-[600px]:px-[var(--space)] max-[320px]:absolute max-[320px]:left-0 min-h-screen min-[600px]:border min-[600px]:rounded-[var(--radius)] bg-background border-border flex-1 max-w-[600px] min-w-[320px] max-lg:w-full">
                         <Suspense fallback={<Loading/>}>
                             {children}
                         </Suspense>

@@ -93,7 +93,7 @@ export default function PostView({post}: {post: PostOrReply}) {
                 }
                 <div className="flex justify-between space-x-2">
                     <div className="flex space-x-2">
-                        <UserAvatar user={post.author} size="sm" />
+                        <UserAvatar user={post.author} size="md" />
                         <div>
                             <H4>
                                 <Link href={`/user/${post.author.username}`} className="flex text-nowrap items-center">
@@ -106,7 +106,7 @@ export default function PostView({post}: {post: PostOrReply}) {
                         </div>
                     </div>
                     <div>
-                        <Button variant={"ghost"} className="hover:bg-accent/50" size={"icon"}>
+                        <Button variant={"ghost"} className="hover:bg-dark-background" size={"icon"}>
                             <Ellipsis/>
                         </Button>
                     </div>

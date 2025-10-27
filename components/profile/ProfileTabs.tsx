@@ -76,7 +76,7 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
     }
 
     return(
-        <div className="p-0">
+        <div className="max-w-[600px]">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <div className="pt-2">
                     <TabsList className={`grid h-fit w-full ${currentUserOwner ? "grid-cols-3" : "grid-cols-2"}`}>

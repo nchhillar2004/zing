@@ -96,6 +96,20 @@ a:hover{
     text-decoration: underline;
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+    height: 3px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 999px;
+}
+
 @media only screen and (max-width: 600px) {
     .container {
         width: 100%;

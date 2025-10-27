@@ -11,7 +11,7 @@ export default async function LeftSidebar() {
     }
 
     return (
-        <aside className="h-fit sticky top-[58px] flex flex-col space-y-[var(--space)] w-[300px] max-lg:hidden items-start">
+        <aside className="h-fit sticky top-[50px] flex flex-col space-y-[var(--space)] w-[300px] max-lg:hidden items-start">
             <MiniUserProfile user={user} />
             <TredingPosts/>
         </aside>

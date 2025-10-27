@@ -76,13 +76,13 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
     if (loading) return <Skeleton className="h-32 rounded-none mb-1" />;
     return(
         <>
-            <Card key={post.id} className={`hover:bg-accent/50 border-x-0 border-t-0 p-0 rounded-none transition-colors cursor-pointer ${isParent && "relative border-b-0"}`}
+            <Card key={post.id} className={`hover:bg-dark-background border-x-0 border-t-0 p-0 rounded-none transition-colors cursor-pointer ${isParent && "relative border-b-0"}`}
                 onClick={() => redirect(`/post/${post.id}`)}>
                 <CardContent className="py-1 px-2 max-md:px-0">
                     <div className="flex gap-2">
                         <div>
                             <UserAvatar user={post.author} size="sm" />
-                            {isParent && <div className="absolute w-[2px] left-8 h-full min-h-10 bg-border"></div>}
+                            {isParent && <div className="absolute w-[2px] left-4 h-full min-h-10 bg-border"></div>}
                         </div>
                         <div className="flex-1 space-y-2 overflow-auto">
                             <div className="flex items-center space-x-2 flex-wrap">
@@ -103,7 +103,7 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
                                 </Muted>}
 
                             </div>
-                            <pre className="line-clamp-5 font-arial text-wrap wrap-break-word text-ellipsis text-sm leading-[1.2]! mt-0! tracking-wide">
+                            <pre className="line-clamp-[10] font-arial text-wrap wrap-break-word text-ellipsis text-sm leading-[1.2]! mt-0! tracking-wide">
                                 {post.content} 
                             </pre>
                             <div className="flex items-center gap-6 text-sm text-muted-foreground">

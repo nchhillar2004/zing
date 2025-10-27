@@ -1,28 +1,25 @@
 import { getCurrentUser } from "@/lib/dal";
-import NavigationLinks from "./sidebar/NavigationLinks";
-import { redirect } from "next/navigation";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import UserAvatar from "./common/UserAvatar";
+import NavigationLinks from "@/components/NavigationLinks";
+import { UserWithCounts } from "@/interfaces/user";
+import HeaderClient from "./HeaderClient";
+import { AiFillThunderbolt } from "react-icons/ai";
+import { siteConfig } from "@/config/site-config";
+import Link from "next/link";
 
 export default async function Header(){ 
-    const currentUser = await getCurrentUser();
-
-    if (!currentUser) redirect("/login");
+    const currentUser: UserWithCounts | null = await getCurrentUser();
 
     return (
-        <header className="bg-background max-[600px]:px-[var(--space)] border-b min-w-[320px] border-border h-12 sticky z-20 top-0">
-            <nav className="container flex h-full items-center justify-between">
-                <div>
-                    <NavigationLinks/>
+        <header className="bg-background min-w-[320px] h-fit sticky z-20 top-0">
+            <nav className="container max-[600px]:px-[var(--space)] flex h-full items-center space-x-4 justify-between">
+                <NavigationLinks/>
+                <div className="flex flex-1 min-md:justify-center">
+                    <Link href={"/"}>
+                    <AiFillThunderbolt title={siteConfig.name} className="text-primary hover:cursor-pointer" size={24} />
+                    </Link>
                 </div>
-                <div>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger className="outline-none">
-                            <UserAvatar user={currentUser} size="sm" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>See me</DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+                {currentUser &&
+                <HeaderClient user={currentUser} />}
             </nav>
         </header>
     );

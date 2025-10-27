@@ -16,7 +16,7 @@ export default async function RightSidebar() {
     if (!currentUser) redirect('/login');
 
     return (
-        <aside className="max-xl:hidden w-[300px] sticky top-[58px] h-fit right-0 z-10 flex flex-col space-y-[var(--space)]">
+        <aside className="max-xl:hidden w-[300px] sticky top-[50px] h-fit right-0 z-10 flex flex-col space-y-[var(--space)]">
             {currentUser.premiumTier==="NONE" &&
                 <Card title="Subscribe">
                     <CardHeader>

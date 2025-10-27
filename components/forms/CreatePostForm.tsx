@@ -96,7 +96,7 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
             <div className={`flex ${!isReply && "gap-1"}`}>
                 {!isReply &&
                     <Link href={`/user/${user.username}`} className={`hover:no-underline! h-fit`}>
-                        <UserAvatar user={user} size="sm" />
+                        <UserAvatar user={user} size="md" />
                     </Link>
                 }
                 <input type="hidden" name="postType" value={postType} />
