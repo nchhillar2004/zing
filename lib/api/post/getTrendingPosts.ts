@@ -29,6 +29,8 @@ export async function getTrendingPosts(): Promise<PostWithAuthor[]> {
                 const posts = await prisma.post.findMany({
                     where: {
                         id: { in: grouped.map((g) => g.postId) },
+                        postType: "POST",
+                        postPrivacy: "PUBLIC"
                     },
                     include: {
                         author: {

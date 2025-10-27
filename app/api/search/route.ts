@@ -20,7 +20,10 @@ export async function GET(request: Request) {
                     },
                 },
                 take: 5,
-                select: { id: true, content: true },
+                select: { 
+                    id: true, 
+                    content: true
+                },
             }),
             prisma.user.findMany({
                 where: {
@@ -29,7 +32,10 @@ export async function GET(request: Request) {
                     },
                 },
                 take: 5,
-                select: { id: true, username: true },
+                select: { 
+                    id: true, 
+                    username: true,
+                },
             })
         ]);
 

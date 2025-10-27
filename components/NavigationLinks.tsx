@@ -3,7 +3,7 @@ import { AiFillThunderbolt } from "react-icons/ai";
 import { usePathname, useRouter } from "next/navigation";
 import { GoHomeFill } from "react-icons/go";
 import { Button } from "@/components/ui/button";
-import { Bell, Menu } from "lucide-react";
+import { Bell } from "lucide-react";
 
 export default function NavigationLinks() {
     const pathname = usePathname();
