@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import UserAvatar from "../common/UserAvatar";
-import { CurrentUser, UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/interfaces/user";
 import { Textarea } from "../ui/textarea";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
@@ -55,7 +55,7 @@ export default function CreatePostForm({user, parent, type}: ICreatePostForm) {
         }else if (state?.error) {
             toast.error(state.error);
         }
-    }, [state, router]);
+    }, [state, router, postType]);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
