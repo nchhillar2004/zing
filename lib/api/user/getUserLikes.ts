@@ -23,10 +23,13 @@ export async function getUserLikes(username: string, page: number = 1, limit: nu
                                 include:{
                                     author: {
                                         select: {
+                                            id: true,
                                             name: true,
                                             username: true,
                                             profilePic: true,
                                             isVerified: true,
+                                            premiumTier: true,
+                                            createdAt: true,
                                         }
                                     },
                                     _count: {
@@ -41,10 +44,13 @@ export async function getUserLikes(username: string, page: number = 1, limit: nu
                             },
                             author: {
                                 select: {
+                                    id: true,
                                     name: true,
                                     username: true,
                                     profilePic: true,
                                     isVerified: true,
+                                    premiumTier: true,
+                                    createdAt: true
                                 }
                             },
                             _count: {
