@@ -10,6 +10,7 @@ import { Pen, Search } from "lucide-react";
 import { Input } from "./ui/input";
 import { Post, User } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 interface SearchResult {
     id: number;
@@ -91,7 +92,26 @@ export default function HeaderClient({user}: {user: UserWithCounts}) {
         setShowSearchResults(false);
         if (result.type==="user") replace(`/user/${result.name}`);
         if (result.type==="post") replace(`/post/${result.id}`);
-    }
+    };
+
+    const handleLogout = async () => {
+        toast.promise<{message: string}>(
+            () => new Promise((resolve, reject) => {
+                logout().then(res => {
+                    if (res?.success) {
+                        resolve({message: res?.message});
+                        router.push("/login");
+                    }
+                    else reject({ message: res?.message });
+                })
+            }), {
+                loading: "Logging out...",
+                success: (data) => `${data.message}`,
+                error: (data) => `${data.message}`
+            }
+        );
+    };
+
 
     return(
         <div className="flex space-x-4 items-center py-1">
@@ -106,16 +126,16 @@ export default function HeaderClient({user}: {user: UserWithCounts}) {
                     onSubmit={() => handleSubmit}
                     minLength={2} required/>
                 {showSearchResults && results.length>0 && (
-                <div className="absolute top-8 w-full overflow-hidden bg-dark-background/95 border-x border-b border-border shadow-sm rounded-b-[var(--radius)]">
-                    {results.map((result: SearchResult) => (
-                        <div key={`${result.type}-${result.id}`}
-                            className="cursor-pointer text-muted py-1 overflow-ellipsis line-clamp-1 px-2 text-nowrap"
-                            onClick={() => handleSelect(result)}>
-                            {result.type}: <span className="text-primary">{result.name}</span>
-                        </div>
-                    ))}
-                </div>
-            )}
+                    <div className="absolute top-8 w-full overflow-hidden bg-dark-background/95 border-x border-b border-border shadow-sm rounded-b-[var(--radius)]">
+                        {results.map((result: SearchResult) => (
+                            <div key={`${result.type}-${result.id}`}
+                                className="cursor-pointer text-muted py-1 overflow-ellipsis line-clamp-1 px-2 text-nowrap"
+                                onClick={() => handleSelect(result)}>
+                                {result.type}: <span className="text-primary">{result.name}</span>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
             <div>
                 <div className="hover:cursor-pointer" onClick={() => setDropdownOpen(!dropdownOpen)}>
@@ -141,7 +161,7 @@ bg-dark-background/95 border border-border shadow-sm z-20 ${dropdownOpen ? "bloc
                             Followers
                         </Button>
                         <Separator orientation="horizontal" className="my-1" />
-                        <Button onClick={() => logout()} variant={"ghost"} size={"sm"} className="hover:bg-primary text-foreground/80 hover:text-foreground gap-0 rounded-none flex flex-col justify-center items-start">
+                        <Button onClick={handleLogout} variant={"ghost"} size={"sm"} className="hover:text-red-500 dark:hover:text-red-400 text-foreground/80 gap-0 rounded-none flex flex-col justify-center items-start">
                             Logout
                         </Button>
                     </div>

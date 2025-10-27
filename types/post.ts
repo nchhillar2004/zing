@@ -13,7 +13,7 @@ export type AuthorLite = {
     id: string;
     name: string;
     username: string;
-    bio: string;
+    bio?: string | null;
     premiumTier: string;
     profilePic: string;
     isVerified: boolean;

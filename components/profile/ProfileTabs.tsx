@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import PostCard from "../cards/PostCard";
 import { MessageCircle } from "lucide-react";
-import { CurrentUser, UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/interfaces/user";
 import { getUserPosts } from "@/lib/api/user/getUserPosts";
 import { getUserReplies } from "@/lib/api/user/getUserReplies";
 import Loading from "@/components/common/Loading";
@@ -31,7 +31,7 @@ export interface LikesData{
     total: number;
 }
 
-export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, currentUser: CurrentUser | null}) {
+export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, currentUser: UserWithCounts | null}) {
     const [activeTab, setActiveTab] = useState("posts");
     const [posts, setPosts] = useState<PostData>();
     const [replies, setReplies] = useState<RepliesData>();

@@ -1,4 +1,4 @@
-import { CurrentUser, UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/interfaces/user";
 import { Badge } from "../ui/badge";
 import { BadgeCheck, BadgeDollarSign, Users, UserPlus, MessageCircle, MapPin, CalendarDays, Ellipsis, Link as LinkIcon, Ban, Flag, Edit, TriangleAlert, Lock } from "lucide-react";
 import { formatDate } from "@/utils/time";
@@ -9,7 +9,7 @@ import Link from "next/link";
 import UserAvatar from "../common/UserAvatar";
 import Image from "next/image";
 
-export default function UserDetails({user, currentUser}: {user: UserWithCounts, currentUser: CurrentUser | null}) {
+export default function UserDetails({user, currentUser}: {user: UserWithCounts, currentUser: UserWithCounts | null}) {
     const currentUserOwner = currentUser && currentUser.id===user.id;
     return(
         <div>
