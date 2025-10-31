@@ -16,6 +16,7 @@ import { PostOrReply } from "@/types/post";
 import { P } from "../ui/typography";
 import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
 import { HoverProfileCard } from "../cards/HoverProfileCard";
+import FormatPost from "@/components/common/FormatPost";
 
 export type LikeType = "LIKED" | "UNLIKED" ;
 export type BookType = "BOOK" | "UNBOOK" ;
@@ -112,7 +113,7 @@ export default function PostView({post}: {post: PostOrReply}) {
                     </div>
                 </div>
                 <pre className="py-2 text-wrap wrap-break-word font-arial tracking-wide">
-                    {post.content}
+                    <FormatPost content={post.content} />
                 </pre>
                 <Separator orientation="horizontal" />
                 <div className="flex items-center justify-between space-x-2 max-sm:overflow-x-scroll">

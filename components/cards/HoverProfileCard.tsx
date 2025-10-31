@@ -22,8 +22,8 @@ export function HoverProfileCard({user}: {user: AuthorLite | undefined}) {
             <HoverCardTrigger asChild>
                 <Button variant="link">@{user.username}</Button>
             </HoverCardTrigger>
-            <HoverCardContent className="min-w-70 max-w-80">
-                <div className="flex gap-4 justify-between">
+            <HoverCardContent className="min-w-64 w-fit max-w-80">
+                <div className="flex gap-4">
                     <Avatar>
                         <AvatarImage src={user.profilePic} />
                         <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>

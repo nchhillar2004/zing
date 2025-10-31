@@ -21,7 +21,7 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
     }
 
     return (
-        <>
+        <div className="bg-background">
             <UserDetails 
                 user={user} 
                 currentUser={currentUser} />
@@ -29,7 +29,7 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
                 user={user}
                 currentUser={currentUser}
             />
-        </>
+        </div>
     );
 }
 

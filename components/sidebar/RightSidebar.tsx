@@ -6,18 +6,15 @@ import { Button } from "@/components/ui/button";
 import UpdatesCard from "@/components/cards/UpdatesCard";
 import StatusCard from "@/components/cards/StatusCard";
 import { getCurrentUser } from "@/lib/dal";
-import { redirect } from "next/navigation";
 import WhoToFollow from "../cards/WhoToFollow";
 import { siteConfig } from "@/config/site-config";
 
 export default async function RightSidebar() {
     const currentUser = await getCurrentUser();
 
-    if (!currentUser) redirect('/login');
-
     return (
         <aside className="max-xl:hidden w-[300px] sticky top-[50px] h-fit right-0 z-10 flex flex-col space-y-[var(--space)]">
-            {currentUser.premiumTier==="NONE" &&
+            {currentUser && currentUser.premiumTier==="NONE" &&
                 <Card title="Subscribe">
                     <CardHeader>
                         <CardTitle>Subscribe to premium</CardTitle>

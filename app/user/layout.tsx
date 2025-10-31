@@ -17,7 +17,7 @@ export default function RootLayout({
         <>
             <Header/>
             <div className="container">
-                <main className="max-[600px]:px-[var(--space)] min-[600px]:rounded-[var(--radius)] bg-background w-full min-w-[320px] max-lg:w-full">
+                <main className="max-[600px]:px-[var(--space)] min-[600px]:rounded-[var(--radius)] w-full min-w-[320px] max-lg:w-full">
                     <Suspense fallback={<Loading/>}>
                         {children}
                     </Suspense>

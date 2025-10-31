@@ -28,6 +28,5 @@ export default async function TredingPosts() {
                 <Small><Link href={"/trending"} className="text-primary">View all</Link></Small>
             </CardFooter>
         </Card>
-
     );
 }
