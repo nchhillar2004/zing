@@ -38,6 +38,8 @@ export async function getCurrentUser() {
                 profilePic: true,
                 premiumTier: true,
                 accountType: true,
+                professionalCategories: true,
+                selectedCategories: true,
                 createdAt: true,
                 _count: {
                     select: {

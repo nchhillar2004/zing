@@ -1,3 +1,5 @@
+import { Category } from "@prisma/client";
+
 export interface UserCounts {
     posts: number;
     followers: number;
@@ -14,6 +16,8 @@ export interface UserBase {
     country?: string;
     profilePic: string;
     profileBanner?: string;
+    selectedCategories?: Category[];
+    professionalCategories?: Category[];
     isVerified: boolean;
     isSpam?: boolean;
     role?: string;

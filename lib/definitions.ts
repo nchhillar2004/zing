@@ -56,3 +56,7 @@ export type CreatePostFormState = | {
     post?: Post
 } | undefined;
 
+export type CategoriesFormState = | {
+    error?: string;
+    message?: string;
+} | undefined;
