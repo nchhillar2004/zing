@@ -10,7 +10,7 @@ export default async function WhoToFollow() {
         <Card>
             <CardHeader>
                 <CardTitle>Who to follow</CardTitle>
-                <CardDescription>Posts trending right now.</CardDescription>
+                <CardDescription>Top users to follow.</CardDescription>
             </CardHeader>
             <CardContent>
                 <ul className="space-y-2 list-item">

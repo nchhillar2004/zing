@@ -1,4 +1,13 @@
-import { Bookmark, Like, Post} from "@prisma/client";
+import { Bookmark, Like, Post, PostTag } from "@prisma/client";
+
+export type TaggedPost = PostTag & {
+    post: PostOrReply;
+}
+
+export interface TaggedPostsData {
+    taggedPosts: TaggedPost[];
+    total: number;
+}
 
 export type BookmarkedPost = Bookmark & {
     post: PostOrReply;

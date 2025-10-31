@@ -17,7 +17,7 @@ export default function UserDetails({user, currentUser}: {user: UserWithCounts, 
             <div className="p-4">
                 <div className="flex flex-col gap-4">
                     <div className="relative h-12 flex justify-between flex-shrink-0">
-                        <UserAvatar user={user} size="md" />
+                        <UserAvatar user={user} size="lg" />
                         {currentUserOwner ?
                             <div className="flex items-center">
                                 {!currentUser.dob || !currentUser.email && 

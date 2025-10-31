@@ -5,6 +5,7 @@ import HeaderClient from "./HeaderClient";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { siteConfig } from "@/config/site-config";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export default async function Header(){ 
     const currentUser: UserWithCounts | null = await getCurrentUser();
@@ -15,11 +16,13 @@ export default async function Header(){
                 <NavigationLinks/>
                 <div className="flex flex-1 min-md:justify-center">
                     <Link href={"/"}>
-                    <AiFillThunderbolt title={siteConfig.name} className="text-primary hover:cursor-pointer" size={24} />
+                        <AiFillThunderbolt title={siteConfig.name} className="text-primary hover:cursor-pointer" size={24} />
                     </Link>
                 </div>
-                {currentUser &&
-                <HeaderClient user={currentUser} />}
+                {currentUser ?
+                    <HeaderClient user={currentUser} />
+                    : <Link href={"/login"}><Button size={"sm"} className="border border-background/80">Login</Button></Link>
+                }
             </nav>
         </header>
     );

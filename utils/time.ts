@@ -1,5 +1,12 @@
 import { PollLength } from "@/components/forms/CreatePoll";
 
+
+export function maxDate(years: number): string {
+    const today = new Date();
+    today.setFullYear(today.getFullYear() - years);
+    return today.toISOString().split("T")[0];
+}
+
 export function getCurrentTime(): string {
     return new Date().toISOString();
 }
