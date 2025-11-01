@@ -25,6 +25,7 @@ model Post {
 
   postType    PostType    @default(POST)
   postPrivacy PostPrivacy @default(PUBLIC)
+  category    Category?
 
   author       User           @relation(fields: [authorId], references: [id])
   parent       Post?          @relation("replies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
