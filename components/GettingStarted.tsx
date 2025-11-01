@@ -8,11 +8,13 @@ import { Label } from "@/components/ui/label";
 import { H3, P } from "@/components/ui/typography";
 import { categories } from "@/lib/const";
 import { categoriesAction } from "@/actions/categories";
+import { useRouter } from "next/navigation";
 
 export default function GettingStarted({ currentUser }: { currentUser: UserWithCounts }) {
     const [selected, setSelected] = useState<string[]>([]);
     const [disable, setDisable] = useState(false);
     const [state, action, pending] = useActionState(categoriesAction, undefined);
+    const router = useRouter();
 
     useEffect(() => {
         if (selected.length>=8) {
@@ -34,7 +36,7 @@ export default function GettingStarted({ currentUser }: { currentUser: UserWithC
         }
     };
 
-    if (currentUser.selectedCategories?.length !== 0) return null;
+    if (currentUser.selectedCategories?.length !== 0) router.push("/");
 
     return (
         <div className="fixed bg-dark-background/50 flex items-center justify-center top-0 left-0 z-50 w-screen h-screen m-auto">

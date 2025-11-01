@@ -56,7 +56,7 @@ export function Small({className, children}: {className?: string, children: Reac
 
 export function Muted({className, children}: {className?: string, children: React.ReactNode}) {
     return (
-        <p className={`text-muted-foreground ${className || ''}`}>{children}</p>
+        <p className={`text-muted ${className || ''}`}>{children}</p>
     )
 }
 

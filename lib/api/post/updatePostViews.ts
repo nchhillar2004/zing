@@ -7,34 +7,52 @@ import { getCurrentTime } from "@/utils/time";
 export async function updatePostView(post: PostOrReply) {
     const currentUser = await getCurrentUser();
 
+    // Always increment total view count
     await prisma.post.update({
-        where: {
-            id: post.id
-        },
-        data: {
-            viewCount: post.viewCount+1
-        }
+        where: { id: post.id },
+        data: { viewCount: { increment: 1 } },
     });
 
-    if (!currentUser){
-        return { success: true, message: "login to add a valid view"};
+    // If user not logged in, stop here
+    if (!currentUser) {
+        return { success: true, message: "Login to record a valid view" };
     }
 
     try {
-        await prisma.postView.upsert({
+        // Check if this user already viewed the post
+        const existingView = await prisma.postView.findUnique({
             where: {
-                viewerId_postId: { viewerId: currentUser.id, postId: post.id }
+                viewerId_postId: { viewerId: currentUser.id, postId: post.id },
             },
-            update: {
-                lastViewedAt: getCurrentTime(),
-            },
-            create: {
-                viewerId: currentUser.id,
-                postId: post.id
-            }
         });
-        return { success: true, message: "updated post valid view" }
-    } catch(err) {
-        return {success: false, error: err};
+
+        if (existingView) {
+            // Just update the timestamp
+            await prisma.postView.update({
+                where: { viewerId_postId: { viewerId: currentUser.id, postId: post.id } },
+                data: { lastViewedAt: getCurrentTime() },
+            });
+        } else {
+            // First time valid view — record + increment valid count
+            await prisma.$transaction([
+                prisma.postView.create({
+                    data: {
+                        viewerId: currentUser.id,
+                        postId: post.id,
+                        lastViewedAt: getCurrentTime(),
+                    },
+                }),
+                prisma.post.update({
+                    where: { id: post.id },
+                    data: { validViewCount: { increment: 1 } },
+                }),
+            ]);
+        }
+
+        return { success: true, message: "Post view updated" };
+    } catch (err) {
+        console.error(err);
+        return { success: false, error: err };
     }
 }
+

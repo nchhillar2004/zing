@@ -15,6 +15,7 @@ export default function EditProfileForm({ user }: { user: UserWithCounts }) {
         username: user.username || "",
         email: user.email || "",
         dob: user.dob || "",
+        bio: user.bio || "",
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +75,7 @@ export default function EditProfileForm({ user }: { user: UserWithCounts }) {
                         value={formData.dob}
                         onChange={handleChange}
                     />
-                    <FieldDescription>Ignore the DOB if this account represents a comapany or an organization</FieldDescription>
+                    <FieldDescription>Ignore the DOB if this account represents a company or an organization</FieldDescription>
                 </Field>
                 <Field>
                     <Button type="submit">Save</Button>
