@@ -30,6 +30,7 @@ export async function getCurrentUser() {
                 id: true,
                 name: true,
                 username: true,
+                role: true,
                 email: true,
                 bio: true,
                 dob: true,
@@ -38,7 +39,8 @@ export async function getCurrentUser() {
                 profilePic: true,
                 premiumTier: true,
                 accountType: true,
-                professionalCategories: true,
+                interests: true,
+                professionalCategory: true,
                 selectedCategories: true,
                 createdAt: true,
                 _count: {

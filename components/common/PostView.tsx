@@ -17,7 +17,7 @@ import { P } from "../ui/typography";
 import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
 import { HoverProfileCard } from "../cards/HoverProfileCard";
 import FormatPost from "@/components/common/FormatPost";
-import { formatDate, formatISO, formatRelativeTime } from "@/utils/time";
+import { formatISO } from "@/utils/time";
 
 export type LikeType = "LIKED" | "UNLIKED" ;
 export type BookType = "BOOK" | "UNBOOK" ;

@@ -31,7 +31,6 @@ export const RegisterationFormSchema = z.object({
     .trim(),
     cpassword: z
     .string()
-    .min(8, { error: "Passwords do not match" })
     .trim(),
 })
 .refine((data) => data.password === data.cpassword, {

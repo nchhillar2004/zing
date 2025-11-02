@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Pen } from "lucide-react";
 import { toast } from "sonner";
 import SearchForm from "./forms/SearchForm";
+import Link from "next/link";
 
 export default function HeaderClient({user}: {user: UserWithCounts}) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -79,11 +80,12 @@ bg-dark-background/95 border border-border shadow-sm z-20 ${dropdownOpen ? "bloc
                     </div>
                 </div>
             </div>
-
-            <Button size={"sm"} className="border border-background/80">
-                <Pen/>
-                Post
-            </Button>
+            <Link href={"/post/new"}>
+                <Button size={"sm"} className="border border-background/80">
+                    <Pen/>
+                    Post
+                </Button>
+            </Link>
         </div>
     );
 }

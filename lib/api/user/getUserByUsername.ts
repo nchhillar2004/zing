@@ -56,6 +56,7 @@ export async function getUserByUsername(username: string) {
                 profilePic: true,
                 isSpam: true,
                 role: true,
+                interests: true,
                 premiumTier: true,
                 accountType: true,
                 accountPrivacy: true,
