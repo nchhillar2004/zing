@@ -11,13 +11,14 @@ import { MouseEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import Loading from "@/components/common/Loading";
 import PostCard from "../cards/PostCard";
-import { isReply } from "@/lib/isReply";
+import { isReply } from "@/lib/is-reply";
 import { PostOrReply } from "@/types/post";
 import { P } from "../ui/typography";
 import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
 import { HoverProfileCard } from "../cards/HoverProfileCard";
 import FormatPost from "@/components/common/FormatPost";
 import { formatISO } from "@/utils/time";
+import { PostType } from "@prisma/client";
 
 export type LikeType = "LIKED" | "UNLIKED" ;
 export type BookType = "BOOK" | "UNBOOK" ;
@@ -80,14 +81,15 @@ export default function PostView({post}: {post: PostOrReply}) {
 
     return(
         <>
-            {isReply(post) && post.parent && 
+            {isReply(post) && post.parent && <>
                 <div className="relative h-fit">
-                    {isReply(post.parent) && post.parent.parent && <PostCard post={post.parent.parent} isParent={true} />}
+                    {isReply(post.parent) && post.parent.parent && <PostCard post={post.parent.parent} isParent={true} />} 
                     <PostCard post={post.parent} isParent={true} />
                 </div>
+            </>
             }
-            <div className="py-2 px-4 max-md:px-0 space-y-2 border-b border-border">
-                {isReply(post) && post.parent && <P className="flex space-x-1 items-center text-sm mb-1 pl-14">
+            <div className="py-1 px-3 max-md:px-0 space-y-1 border-b border-border">
+                {isReply(post) && post.parent && <P className="flex space-x-1 items-center text-sm pl-10">
                     <span>Replied to</span><Link href={`/user/${post.parent.author.username}`}>
                         <HoverProfileCard user={post.parent.author}/>
                     </Link>
@@ -95,7 +97,7 @@ export default function PostView({post}: {post: PostOrReply}) {
                 }
                 <div className="flex justify-between space-x-2">
                     <div className="flex space-x-2">
-                        <UserAvatar user={post.author} size="md" />
+                        <UserAvatar user={post.author} size={post.postType===PostType.REPLY ? "sm" : "md"} />
                         <div>
                             <H4>
                                 <Link href={`/user/${post.author.username}`} className="flex text-nowrap items-center">
@@ -119,10 +121,10 @@ export default function PostView({post}: {post: PostOrReply}) {
                 <div className="mt-2">
                     <Muted className="text-sm">{formatISO(post.createdAt.toISOString())}
                         <span title="Unique views">
-                        <b className="text-foreground mx-1">
-                            {formatNumber(post.validViewCount)}
-                        </b>
-                        Views
+                            <b className="text-foreground mx-1">
+                                {formatNumber(post.validViewCount)}
+                            </b>
+                            Views
                         </span>
                     </Muted>
                 </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { UserWithCounts } from "@/types/user";
+import { CurrentUser } from "@/types/user";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -10,7 +10,7 @@ import { categories } from "@/lib/const";
 import { categoriesAction } from "@/actions/categories";
 import { useRouter } from "next/navigation";
 
-export default function GettingStarted({ currentUser }: { currentUser: UserWithCounts }) {
+export default function GettingStarted({ currentUser }: { currentUser: CurrentUser }) {
     const [selected, setSelected] = useState<string[]>([]);
     const [disable, setDisable] = useState(false);
     const [state, action, pending] = useActionState(categoriesAction, undefined);

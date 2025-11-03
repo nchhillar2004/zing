@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import UserAvatar from "../common/UserAvatar";
-import { UserWithCounts } from "@/types/user";
+import { CurrentUser } from "@/types/user";
 import { Textarea } from "../ui/textarea";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
@@ -19,7 +19,7 @@ import { PostOrReply } from "@/types/post";
 import { HoverProfileCard } from "../cards/HoverProfileCard";
 
 interface ICreatePostForm{
-    user: UserWithCounts;
+    user: CurrentUser;
     parent?: PostOrReply;
     type?: PostType;
 }

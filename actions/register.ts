@@ -3,6 +3,7 @@ import prisma from "@/lib/db";
 import { RegisterationFormSchema, RegisterFormState } from "@/lib/definitions";
 import { getUserGeodata } from "@/utils/geodata";
 import { getCurrentTime } from "@/utils/time";
+import { Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 export async function registerAction(state: RegisterFormState, formData: FormData) {
@@ -42,10 +43,10 @@ export async function registerAction(state: RegisterFormState, formData: FormDat
             }
         })
         return { message: "User registered successfully", username: user.username };
-    } catch (err: any) {
-        if (err.code === "P2002") {
+    } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
             return { errors: { username: ["Username or email already exists"] } };
         }
-        throw err;
+        throw new Error("Error registering user");
     }
 }

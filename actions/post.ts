@@ -3,11 +3,13 @@ import prisma from "@/lib/db";
 import { getCurrentUser } from "@/lib/dal";
 import { CreatePostFormState } from "@/lib/definitions";
 import { PostType } from "@prisma/client";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export default async function createPostAction(state: CreatePostFormState, formData: FormData) {
     const content = formData.get("content") as string;
     const postType = formData.get("postType") as PostType;
     const parentId = formData.get("parentId") as string;
+    const safeContent = await sanitizeHtml(content);
     const user = await getCurrentUser();
 
     if (!content || !user) {
@@ -31,7 +33,7 @@ export default async function createPostAction(state: CreatePostFormState, formD
 
         const post = await prisma.post.create({
             data: {
-                content,
+                content: safeContent,
                 authorId: user.id,
                 postType,
                 parentId: parentId || null,

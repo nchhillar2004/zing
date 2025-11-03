@@ -42,8 +42,7 @@ export async function loginAction(state: LoginFormState, formData: FormData) {
         })
 
         return { message: "User logged in successfully", user: user };
-    } catch (err: any) {
-        if (err) return { error: "Error logging in." };
-        throw err;
+    } catch {
+        return { error: "Error logging in." };
     }
 }

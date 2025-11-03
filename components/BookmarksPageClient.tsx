@@ -3,14 +3,14 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { H3, P, Small } from "./ui/typography";
 import { Bookmark } from "lucide-react";
 import PostCard from "./cards/PostCard";
-import { UserWithCounts } from "@/types/user";
+import { CurrentUser } from "@/types/user";
 import Loading from "@/components/common/Loading";
 import { BookmarksData } from "@/types/post";
 import { getUserBookmarks } from "@/lib/api/user/getUserBookmarks";
 
 type SingleBookmark = BookmarksData["bookmarks"][0];
 
-export default function BookmarksPageClient({ currentUser }: { currentUser: UserWithCounts }) {
+export default function BookmarksPageClient({ currentUser }: { currentUser: CurrentUser }) {
     const [bookmarks, setBookmarks] = useState<SingleBookmark[]>([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);

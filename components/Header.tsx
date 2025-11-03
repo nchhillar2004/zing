@@ -1,6 +1,6 @@
 import { getCurrentUser } from "@/lib/dal";
 import NavigationLinks from "@/components/NavigationLinks";
-import { UserWithCounts } from "@/types/user";
+import { CurrentUser } from "@/types/user";
 import HeaderClient from "./HeaderClient";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { siteConfig } from "@/config/site-config";
@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 
 export default async function Header(){ 
-    const currentUser: UserWithCounts | null = await getCurrentUser();
+    const currentUser: CurrentUser | null = await getCurrentUser();
 
     return (
         <header className="bg-background min-w-[320px] h-fit sticky z-20 top-0">

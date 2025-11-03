@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { UserWithCounts } from "@/types/user";
+import { CurrentUser } from "@/types/user";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
@@ -10,7 +10,7 @@ import { Field, FieldGroup } from "../ui/field";
 import { maxDate } from "@/utils/time";
 import { Textarea } from "../ui/textarea";
 
-export default function EditProfileForm({ user }: { user: UserWithCounts }) {
+export default function EditProfileForm({ user }: { user: CurrentUser }) {
     const [formData, setFormData] = useState({
         name: user.name || "",
         username: user.username || "",

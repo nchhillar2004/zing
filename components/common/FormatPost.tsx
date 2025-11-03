@@ -34,7 +34,7 @@ export default function FormatPost({content}: {content: string}) {
             );
         }
 
-        return <span key={i}>{part}</span>;
+        return <span key={i} dangerouslySetInnerHTML={{ __html: part }} />;
     });
 }
 

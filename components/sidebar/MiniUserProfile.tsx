@@ -1,4 +1,4 @@
-import { UserWithCounts } from "@/types/user";
+import { CurrentUser } from "@/types/user";
 import Image from "next/image";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { H3, P } from "../ui/typography";
 import Link from "next/link";
 import { formatNumber } from "@/utils/number";
 
-export default function MiniUserProfile({user}: {user: UserWithCounts}) {
+export default function MiniUserProfile({user}: {user: CurrentUser}) {
     return(
         <div className="border overflow-hidden border-border bg-background rounded-[var(--radius)]">
             {user ? (

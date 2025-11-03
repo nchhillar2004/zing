@@ -1,4 +1,4 @@
-import { UserWithCounts } from "@/types/user";
+import { CurrentUser, UserWithCounts } from "@/types/user";
 import { Badge } from "../ui/badge";
 import { BadgeCheck, BadgeDollarSign, Users, UserPlus, MessageCircle, MapPin, CalendarDays, Ellipsis, Link as LinkIcon, Ban, Flag, Edit, TriangleAlert, Lock } from "lucide-react";
 import { formatDate } from "@/utils/time";
@@ -8,9 +8,11 @@ import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigge
 import Link from "next/link";
 import UserAvatar from "../common/UserAvatar";
 import Image from "next/image";
+import { sanitizeHtml } from "@/lib/sanitize";
 
-export default function UserDetails({user, currentUser}: {user: UserWithCounts, currentUser: UserWithCounts | null}) {
+export default async function UserDetails({user, currentUser}: {user: UserWithCounts, currentUser: CurrentUser | null}) {
     const currentUserOwner = currentUser && currentUser.id===user.id;
+    const safeBio = await sanitizeHtml(user.bio || "");
     return(
         <div>
             <Image src={user.profileBanner ? user.profileBanner : "/banner.png"} alt="Profile banner" height={190} width={1440} className="h-52 w-auto object-cover" />
@@ -25,10 +27,10 @@ export default function UserDetails({user, currentUser}: {user: UserWithCounts, 
                                         <TriangleAlert size={12} className="mr-1" /> Complete your profile
                                     </P>}
                                 <Link href="/user/settings">
-                                <Button variant={"outline"} size={"sm"}>
-                                    <Edit className="mr-2" size={16} />
-                                    Edit profile
-                                </Button>
+                                    <Button variant={"outline"} size={"sm"}>
+                                        <Edit className="mr-2" size={16} />
+                                        Edit profile
+                                    </Button>
                                 </Link>
                             </div> :
                             <div className="flex gap-2">
@@ -80,7 +82,7 @@ export default function UserDetails({user, currentUser}: {user: UserWithCounts, 
                                     <span className="select-none italic text-primary">{"@"}</span>{user.username}
                                 </P>
                                 {user.bio && (
-                                    <P className="text-sm max-w-[70%] mt-2">{user.bio}</P>
+                                    <p className="text-sm max-w-[70%] mt-2" dangerouslySetInnerHTML={{ __html: safeBio }} />
                                 )}
                             </div>
                         </div>
