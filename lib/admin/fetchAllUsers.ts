@@ -1,6 +1,6 @@
 "use server"
 import prisma from "@/lib/db";
-import { UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/types/user";
 
 export async function fetchAllUsers(page: number = 1, limit: number = 50): Promise<UserWithCounts[]> {
     const skip = (page - 1) * limit;

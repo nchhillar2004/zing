@@ -1,6 +1,7 @@
 "use server";
 import { PostData } from "@/components/profile/ProfileTabs";
 import prisma from "@/lib/db";
+import { PostWithAuthor, postInclude } from "@/types/post";
 
 export async function getUserPosts(username: string, page: number = 1, limit: number = 10): Promise<PostData> {
     try {
@@ -19,28 +20,7 @@ export async function getUserPosts(username: string, page: number = 1, limit: nu
                     authorId: user.id,
                     postType: 'POST'
                 },
-                include: {
-                    author: {
-                        select: {
-                            id: true,
-                            name: true,
-                            username: true,
-                            bio: true,
-                            profilePic: true,
-                            premiumTier: true,
-                            isVerified: true,
-                            createdAt: true,
-                        }
-                    },
-                    _count: {
-                        select: {
-                            likes: true,
-                            views: true,
-                            replies: true,
-                            bookmarks: true,
-                        }
-                    }
-                },
+                include: postInclude,
                 orderBy: { createdAt: 'desc' },
                 skip,
                 take: limit
@@ -53,7 +33,7 @@ export async function getUserPosts(username: string, page: number = 1, limit: nu
             })
         ]);
 
-        return { posts, total } as PostData;
+        return { posts, total };
     } catch (error) {
         console.error('Error fetching user posts:', error);
         return { posts: [], total: 0 };

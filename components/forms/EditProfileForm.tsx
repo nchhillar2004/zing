@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/types/user";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";

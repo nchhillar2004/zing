@@ -1,29 +1,15 @@
-export const authorSelect = {
-    id: true,
-    name: true,
-    username: true,
-    profilePic: true,
-    isVerified: true,
-};
+// Re-export post-related selects and includes from types/post.ts
+export {
+  authorSelect,
+  postCountSelect,
+  postInclude,
+  replyInclude,
+} from "@/types/post";
 
-export const countSelect = {
-    likes: true,
-    replies: true,
-    bookmarks: true,
-    views: true,
-};
-
-export const postInclude = {
-    author: { select: authorSelect },
-    _count: { select: countSelect },
-};
-
-export const replyInclude = {
-    ...postInclude,
-    parent: {
-        include: {
-            author: { select: authorSelect },
-        },
-    },
-};
-
+// Re-export user-related selects from interfaces/user.ts
+export {
+  userCountSelect,
+  userWithCountsSelect,
+  currentUserSelect,
+  authorLiteSelect,
+} from "@/types/user";

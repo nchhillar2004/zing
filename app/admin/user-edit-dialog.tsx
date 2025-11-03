@@ -19,7 +19,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { UserWithCounts } from "@/interfaces/user"
+import { UserWithCounts } from "@/types/user"
 import { UserRole, ModerationStatus } from "@prisma/client"
 import {
     updateUserModeration,

@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/db";
-import { LikesData } from "@/components/profile/ProfileTabs";
+import { LikesData, replyInclude } from "@/types/post";
 
 export async function getUserLikes(username: string, page: number = 1, limit: number = 10): Promise<LikesData> {
     try {
@@ -18,50 +18,7 @@ export async function getUserLikes(username: string, page: number = 1, limit: nu
                 where: { userId: user.id },
                 include: {
                     post: {
-                        include: {
-                            parent: {
-                                include:{
-                                    author: {
-                                        select: {
-                                            id: true,
-                                            name: true,
-                                            username: true,
-                                            profilePic: true,
-                                            isVerified: true,
-                                            premiumTier: true,
-                                            createdAt: true,
-                                        }
-                                    },
-                                    _count: {
-                                        select: {
-                                            likes: true,
-                                            views: true,
-                                            replies: true,
-                                            bookmarks: true,
-                                        }
-                                    }
-                                }
-                            },
-                            author: {
-                                select: {
-                                    id: true,
-                                    name: true,
-                                    username: true,
-                                    profilePic: true,
-                                    isVerified: true,
-                                    premiumTier: true,
-                                    createdAt: true
-                                }
-                            },
-                            _count: {
-                                select: {
-                                    likes: true,
-                                    views: true,
-                                    replies: true,
-                                    bookmarks: true,
-                                }
-                            }
-                        },
+                        include: replyInclude,
                     },
                 },
                 orderBy: { createdAt: "desc" },
@@ -73,7 +30,7 @@ export async function getUserLikes(username: string, page: number = 1, limit: nu
             })
         ]);
 
-        return { likes, total } as LikesData;
+        return { likes, total };
     } catch (error) {
         console.error("Error fetching user likes:", error);
         return { likes: [], total: 0 };

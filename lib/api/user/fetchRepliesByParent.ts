@@ -1,6 +1,7 @@
 "use server";
 import { RepliesData } from "@/components/profile/ProfileTabs";
 import prisma from "@/lib/db";
+import { replyInclude } from "@/types/post";
 
 export async function fetchRepliesByParent(parentId: string, page: number = 1, limit: number = 10): Promise<RepliesData> {
     try {
@@ -14,82 +15,7 @@ export async function fetchRepliesByParent(parentId: string, page: number = 1, l
                     parentId: parentId,
                     postType: 'REPLY'
                 },
-                include: {
-                    author: {
-                        select: {
-                            id: true,
-                            name: true,
-                            username: true,
-                            bio: true,
-                            profilePic: true,
-                            premiumTier: true,
-                            isVerified: true,
-                            createdAt: true,
-                        }
-                    },
-                    parent: {
-                        select: {
-                            id: true,
-                            content: true,
-                            files: true,
-                            createdAt: true,
-                            viewCount: true,
-                            parent: {
-                                include: {
-                                    _count: {
-                                        select: {
-                                            likes: true,
-                                            views: true,
-                                            replies: true,
-                                            bookmarks: true,
-                                        }
-                                    },
-                                    author: {
-                                        select: {
-                                            id: true,
-                                            name: true,
-                                            username: true,
-                                            bio: true,
-                                            profilePic: true,
-                                            premiumTier: true,
-                                            isVerified: true,
-                                            createdAt: true,
-                                        }
-                                    }
-
-                                }
-                            },
-                            _count: {
-                                select: {
-                                    likes: true,
-                                    views: true,
-                                    replies: true,
-                                    bookmarks: true,
-                                }
-                            },
-                            author: {
-                                select: {
-                                    id: true,
-                                    name: true,
-                                    username: true,
-                                    bio: true,
-                                    profilePic: true,
-                                    premiumTier: true,
-                                    isVerified: true,
-                                    createdAt: true,
-                                }
-                            }
-                        }
-                    },
-                    _count: {
-                        select: {
-                            likes: true,
-                            views: true,
-                            replies: true,
-                            bookmarks: true,
-                        }
-                    }
-                },
+                include: replyInclude,
                 orderBy: { createdAt: 'desc' },
                 skip,
                 take: limit
@@ -102,7 +28,7 @@ export async function fetchRepliesByParent(parentId: string, page: number = 1, l
             })
         ]);
 
-        return { replies, total } as RepliesData;
+        return { replies, total };
     } catch (error) {
         console.error('Error fetching replies for a parent:', error);
         return { replies: [], total: 0 };

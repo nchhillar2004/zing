@@ -13,7 +13,6 @@ import { isPostLiked } from "@/lib/api/post/likePost";
 import { likePost } from "@/lib/api/post/likePost";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { Skeleton } from "../ui/skeleton";
 import { isReply } from "@/lib/isReply";
 import { PostOrReply } from "@/types/post";
 import Link from "next/link";
@@ -74,7 +73,6 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
         setPending(false);
     };
 
-    if (loading) return <Skeleton />;
     return(
         <>
             <Card key={post.id} className={`hover:bg-dark-background border-x-0 border-t-0 p-0 rounded-none transition-colors cursor-pointer ${isParent && "relative border-b-0"}`}

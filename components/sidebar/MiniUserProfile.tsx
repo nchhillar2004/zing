@@ -1,4 +1,4 @@
-import { UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/types/user";
 import Image from "next/image";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";

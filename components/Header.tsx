@@ -1,6 +1,6 @@
 import { getCurrentUser } from "@/lib/dal";
 import NavigationLinks from "@/components/NavigationLinks";
-import { UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/types/user";
 import HeaderClient from "./HeaderClient";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { siteConfig } from "@/config/site-config";

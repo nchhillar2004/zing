@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/db";
-import { BookmarksData } from "@/types/post";
+import { BookmarksData, replyInclude } from "@/types/post";
 
 export async function getUserBookmarks(username: string, page: number = 1, limit: number = 10): Promise<BookmarksData> {
     try {
@@ -18,52 +18,7 @@ export async function getUserBookmarks(username: string, page: number = 1, limit
                 where: { userId: user.id },
                 include: {
                     post: {
-                        include: {
-                            parent: {
-                                include:{
-                                    author: {
-                                        select: {
-                                            id: true,
-                                            name: true,
-                                            username: true,
-                                            bio: true,
-                                            profilePic: true,
-                                            premiumTier: true,
-                                            isVerified: true,
-                                            createdAt: true,
-                                        }
-                                    },
-                                    _count: {
-                                        select: {
-                                            likes: true,
-                                            views: true,
-                                            replies: true,
-                                            bookmarks: true,
-                                        }
-                                    }
-                                }
-                            },
-                            author: {
-                                select: {
-                                    id: true,
-                                    name: true,
-                                    username: true,
-                                    bio: true,
-                                    profilePic: true,
-                                    premiumTier: true,
-                                    isVerified: true,
-                                    createdAt: true,
-                                }
-                            },
-                            _count: {
-                                select: {
-                                    likes: true,
-                                    views: true,
-                                    replies: true,
-                                    bookmarks: true,
-                                }
-                            }
-                        },
+                        include: replyInclude,
                     },
                 },
                 orderBy: { createdAt: "desc" },
@@ -75,7 +30,7 @@ export async function getUserBookmarks(username: string, page: number = 1, limit
             })
         ]);
 
-        return { bookmarks, total } as BookmarksData;
+        return { bookmarks, total };
     } catch (error) {
         console.error("Error fetching user bookmarks:", error);
         return { bookmarks: [], total: 0 };

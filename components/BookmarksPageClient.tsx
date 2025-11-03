@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { H3, P, Small } from "./ui/typography";
 import { Bookmark } from "lucide-react";
 import PostCard from "./cards/PostCard";
-import { UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/types/user";
 import Loading from "@/components/common/Loading";
 import { BookmarksData } from "@/types/post";
 import { getUserBookmarks } from "@/lib/api/user/getUserBookmarks";

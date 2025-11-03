@@ -9,12 +9,12 @@ import {
 } from "lucide-react";
 import PostCard from "../cards/PostCard";
 import { MessageCircle } from "lucide-react";
-import { UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/types/user";
 import { getUserPosts } from "@/lib/api/user/getUserPosts";
 import { getUserReplies } from "@/lib/api/user/getUserReplies";
 import Loading from "@/components/common/Loading";
 import { getUserLikes } from "@/lib/api/user/getUserLikes";
-import { LikedPost, PostWithAuthor, RepliesWithParent } from "@/types/post";
+import { LikedPost, PostWithAuthor, PostWithParent } from "@/types/post";
 
 export interface PostData {
     posts: PostWithAuthor[];
@@ -22,7 +22,7 @@ export interface PostData {
 }
 
 export interface RepliesData {
-    replies: RepliesWithParent[];
+    replies: PostWithParent[];
     total: number;
 }
 

@@ -1,7 +1,7 @@
 "use client";
 import UserAvatar from "./common/UserAvatar";
 import { useState, useEffect, useRef } from "react";
-import { UserWithCounts } from "@/interfaces/user";
+import { UserWithCounts } from "@/types/user";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { logout } from "@/actions/logout";

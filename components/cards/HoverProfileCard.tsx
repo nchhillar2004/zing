@@ -9,7 +9,7 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import { AuthorLite } from "@/types/post";
+import { AuthorLite } from "@/types/user";
 import { formatDate } from "@/utils/time";
 import React from "react";
 import { H4 } from "../ui/typography";

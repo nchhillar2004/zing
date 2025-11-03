@@ -4,7 +4,7 @@ import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
-import { UserWithCounts } from "@/interfaces/user"
+import { UserWithCounts } from "@/types/user"
 import { UserRole, ModerationStatus } from "@prisma/client"
 import { UserEditDialog } from "./user-edit-dialog"
 
