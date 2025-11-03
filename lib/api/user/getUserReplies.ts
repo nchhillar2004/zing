@@ -1,6 +1,7 @@
 "use server";
 import { RepliesData } from "@/components/profile/ProfileTabs";
 import prisma from "@/lib/db";
+import { replyInclude } from "@/types/post";
 
 export async function getUserReplies(username: string, page: number = 1, limit: number = 10): Promise<RepliesData> {
     try {
@@ -19,34 +20,7 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
                     authorId: user.id,
                     postType: 'REPLY'
                 },
-                include: {
-                    parent: {
-                        include: {
-                            author: true,
-                            _count: true,
-                        },
-                    },
-                    author: {
-                        select: {
-                            id: true,
-                            name: true,
-                            username: true,
-                            bio: true,
-                            profilePic: true,
-                            premiumTier: true,
-                            isVerified: true,
-                            createdAt: true,
-                        }
-                    },
-                    _count: {
-                        select: {
-                            likes: true,
-                            views: true,
-                            replies: true,
-                            bookmarks: true,
-                        }
-                    },
-                },
+                include: replyInclude,
                 orderBy: { createdAt: 'desc' },
                 skip,
                 take: limit
@@ -59,7 +33,7 @@ export async function getUserReplies(username: string, page: number = 1, limit: 
             })
         ]);
 
-        return { replies, total } as RepliesData;
+        return { replies, total };
     } catch (error) {
         console.error('Error fetching user replies:', error);
         return { replies: [], total: 0 };

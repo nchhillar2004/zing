@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { getSession } from './session';
 import prisma from './db';
-import { UserWithCounts } from '@/interfaces/user';
+import { CurrentUser, currentUserSelect } from '@/types/user';
 
 export async function verifySession() {
     const cookieStore = await cookies();
@@ -18,7 +18,7 @@ export async function verifySession() {
     return { isAuth: true, userId: session.userId };
 };
 
-export async function getCurrentUser() {
+export async function getCurrentUser(): Promise<CurrentUser | null> {
     const sessionData = await verifySession();
     
     if (!sessionData) return null;
@@ -26,30 +26,10 @@ export async function getCurrentUser() {
     try {
         const user = await prisma.user.findUnique({
             where: { id: sessionData.userId },
-            select: {
-                id: true,
-                name: true,
-                username: true,
-                email: true,
-                bio: true,
-                dob: true,
-                isVerified: true,
-                profileBanner: true,
-                profilePic: true,
-                premiumTier: true,
-                accountType: true,
-                createdAt: true,
-                _count: {
-                    select: {
-                        followers: true,
-                        follows: true,
-                        posts: true,
-                    }
-                }
-            }
+            select: currentUserSelect,
         });
 
-        return user as UserWithCounts;
+        return user;
     } catch (error) {
         console.error('Error fetching user:', error);
         return null;

@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/db";
-import { TaggedPostsData } from "@/types/post";
+import { TaggedPostsData, replyInclude } from "@/types/post";
 
 export async function getPostsByTagName(name: string, page: number = 1, limit: number = 20): Promise<TaggedPostsData> {
     try {
@@ -18,52 +18,7 @@ export async function getPostsByTagName(name: string, page: number = 1, limit: n
                 where: { tagId: tag.id },
                 include: {
                     post: {
-                        include: {
-                            parent: {
-                                include:{
-                                    author: {
-                                        select: {
-                                            id: true,
-                                            name: true,
-                                            username: true,
-                                            bio: true,
-                                            profilePic: true,
-                                            premiumTier: true,
-                                            isVerified: true,
-                                            createdAt: true,
-                                        }
-                                    },
-                                    _count: {
-                                        select: {
-                                            likes: true,
-                                            views: true,
-                                            replies: true,
-                                            bookmarks: true,
-                                        }
-                                    }
-                                }
-                            },
-                            author: {
-                                select: {
-                                    id: true,
-                                    name: true,
-                                    username: true,
-                                    bio: true,
-                                    profilePic: true,
-                                    premiumTier: true,
-                                    isVerified: true,
-                                    createdAt: true,
-                                }
-                            },
-                            _count: {
-                                select: {
-                                    likes: true,
-                                    views: true,
-                                    replies: true,
-                                    bookmarks: true,
-                                }
-                            }
-                        },
+                        include: replyInclude,
                     },
                 },
                 skip,
@@ -74,7 +29,7 @@ export async function getPostsByTagName(name: string, page: number = 1, limit: n
             })
         ]);
 
-        return { taggedPosts, total } as TaggedPostsData;
+        return { taggedPosts, total };
     } catch (error) {
         console.error("Error fetching posts from the tag:", error);
         return { taggedPosts: [], total: 0 };

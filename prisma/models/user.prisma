@@ -93,7 +93,7 @@ model User {
   totalProfileVisits  Int @default(0)
   uniqueProfileVisits Int @default(0)
 
-  professionalCategories Category[] @default([])
+  professionalCategory   Category?
   selectedCategories     Category[] @default([])
 
   showOnlineStatus Boolean   @default(true)
@@ -176,6 +176,8 @@ model UserInterest {
 
   user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   tag  Tag  @relation(fields: [tagId], references: [id])
+
+  interestUpdatedAt DateTime @updatedAt
 
   @@unique([userId, tagId])
   @@index([userId])

@@ -1,7 +1,7 @@
 "use client";
 import UserAvatar from "./common/UserAvatar";
 import { useState, useEffect, useRef } from "react";
-import { UserWithCounts } from "@/interfaces/user";
+import { CurrentUser } from "@/types/user";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { logout } from "@/actions/logout";
@@ -9,8 +9,9 @@ import { useRouter } from "next/navigation";
 import { Pen } from "lucide-react";
 import { toast } from "sonner";
 import SearchForm from "./forms/SearchForm";
+import Link from "next/link";
 
-export default function HeaderClient({user}: {user: UserWithCounts}) {
+export default function HeaderClient({user}: {user: CurrentUser}) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const router = useRouter();
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -79,11 +80,12 @@ bg-dark-background/95 border border-border shadow-sm z-20 ${dropdownOpen ? "bloc
                     </div>
                 </div>
             </div>
-
-            <Button size={"sm"} className="border border-background/80">
-                <Pen/>
-                Post
-            </Button>
+            <Link href={"/post/new"}>
+                <Button size={"sm"} className="border border-background/80">
+                    <Pen/>
+                    Post
+                </Button>
+            </Link>
         </div>
     );
 }

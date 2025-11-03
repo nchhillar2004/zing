@@ -1,5 +1,6 @@
 import { logout } from "@/actions/logout";
 import CreatePostForm from "@/components/forms/CreatePostForm";
+import GettingStarted from "@/components/GettingStarted";
 import { getCurrentUser } from "@/lib/dal";
 
 export default async function HomePage() {
@@ -11,7 +12,9 @@ export default async function HomePage() {
     }
 
     return (
-    <div>
+        <div>
+            {currentUser.selectedCategories?.length===0 &&
+                <GettingStarted currentUser={currentUser} />}
             <CreatePostForm user={currentUser} />
         </div>
     );

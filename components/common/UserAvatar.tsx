@@ -1,4 +1,4 @@
-import { CurrentUser, UserWithCounts } from "@/interfaces/user";
+import { CurrentUser, UserWithCounts } from "@/types/user";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { cn } from "@/lib/utils";
 

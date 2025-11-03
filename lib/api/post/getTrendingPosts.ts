@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/db";
-import { PostWithAuthor } from "@/types/post";
+import { PostWithAuthor, postInclude } from "@/types/post";
 
 export async function getTrendingPosts(): Promise<PostWithAuthor[]> {
     try {
@@ -32,28 +32,7 @@ export async function getTrendingPosts(): Promise<PostWithAuthor[]> {
                         postType: "POST",
                         postPrivacy: "PUBLIC"
                     },
-                    include: {
-                        author: {
-                            select: {
-                                id: true,
-                                name: true,
-                                username: true,
-                                bio: true,
-                                profilePic: true,
-                                premiumTier: true,
-                                isVerified: true,
-                                createdAt: true,
-                            }
-                        },
-                        _count: {
-                            select: {
-                                views: true,
-                                likes: true,
-                                bookmarks: true,
-                                replies: true,
-                            }
-                        }
-                    },
+                    include: postInclude,
                 });
 
                 const sorted = posts.sort(

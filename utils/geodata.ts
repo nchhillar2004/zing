@@ -13,9 +13,8 @@ export async function getUserGeodata(): Promise<{
         const geoData = `${data.region}, ${data.countryCode} (${data.zip})|${data.lat}-${data.lon}|${data.isp}|${data.query}`.trim();
 
         return { geodata: geoData, country: data.country, timezone: data.timezone };
-    } catch (error) {
-        console.error('Error fetching user location:', error);
-        throw error;
+    } catch {
+        throw new Error("error fetching geodata");
     }
 }
 

@@ -88,7 +88,7 @@ export default function RegisterForm() {
                                     type={passwordVisible ? "text" : "password"}
                                     placeholder="Password" 
                                     required/>
-                                <Button variant={"ghost"} 
+                                <Button type="button" variant={"ghost"} 
                                     title={passwordVisible ? "Hide password" : "Show password"} 
                                     size={"icon"} 
                                     className="absolute block w-fit! right-3 top-[26px] cursor-pointerr"
@@ -106,7 +106,7 @@ export default function RegisterForm() {
                                     placeholder="Confirm password"
                                     required
                                 />
-                                <Button variant={"ghost"} 
+                                <Button type="button" variant={"ghost"} 
                                     title={passwordVisible ? "Hide password" : "Show password"} 
                                     size={"icon"} 
                                     className="absolute block w-fit! right-3 top-[26px] cursor-pointerr"
@@ -115,7 +115,6 @@ export default function RegisterForm() {
                                 </Button>
                                 {state?.errors?.cpassword && <small className="text-destructive">{state.errors.cpassword}</small>}
                             </Field>
-
                             <Field>
                                 <Button type="submit" disabled={pending || redirecting}>{pending || redirecting ? "Registering..." : "Register"}</Button>
                             </Field>

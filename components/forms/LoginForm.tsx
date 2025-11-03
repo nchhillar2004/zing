@@ -65,7 +65,7 @@ export function LoginForm({
                                     <FieldLabel htmlFor="password">Password</FieldLabel>
                                 </div>
                                 <Input placeholder="password" name="password" id="password" type={passwordVisible ? "text" : "password"} required />
-                                <Button variant={"ghost"} 
+                                <Button type="button" variant={"ghost"} 
                                     title={passwordVisible ? "Hide password" : "Show password"} 
                                     size={"icon"} 
                                     className="absolute block w-fit! right-3 top-[26px] cursor-pointerr"

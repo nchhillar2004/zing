@@ -3,7 +3,7 @@ import { siteConfig } from '@/config/site-config';
 import Link from 'next/link';
 import PostCard from '@/components/cards/PostCard';
 import { PostWithAuthor } from '@/types/post';
-import { UserWithCounts } from '@/interfaces/user';
+import { UserWithCounts } from '@/types/user';
 import { getPostById } from '@/lib/api/post/getPostById';
 import { HoverProfileCard } from '@/components/cards/HoverProfileCard';
 import { getUserById } from '@/lib/api/user/getUserByUsername';

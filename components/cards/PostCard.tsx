@@ -13,8 +13,7 @@ import { isPostLiked } from "@/lib/api/post/likePost";
 import { likePost } from "@/lib/api/post/likePost";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { Skeleton } from "../ui/skeleton";
-import { isReply } from "@/lib/isReply";
+import { isReply } from "@/lib/is-reply";
 import { PostOrReply } from "@/types/post";
 import Link from "next/link";
 import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
@@ -25,11 +24,12 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
     const [bookedPost, setBookedPost] = useState<BookType>("UNBOOK");
     const [loading, setLoading] = useState(true);
-    const [isPending, setPending] = useState(false);
-    const [likeCount, setLikeCount] = useState(post._count.likes);
-    const [bookCount, setBookCount] = useState(post._count.bookmarks);
+    const [isPending, setPending] = useState(false); 
+    const [likeCount, setLikeCount] = useState(post?._count.likes ?? 0);
+    const [bookCount, setBookCount] = useState(post?._count.bookmarks ?? 0);
 
     useEffect(() => {
+        if (!post) return;
         async function fetchLiked() {
             const res = await isPostLiked(post);
             if (res) setLikedPost("LIKED");
@@ -74,7 +74,13 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
         setPending(false);
     };
 
-    if (loading) return <Skeleton />;
+    if (!post) return <div className="py-2 px-6">
+        <div className="relative">
+            {isParent && <div className="absolute w-[2px] h-full min-h-10 bg-border"></div>}
+        </div>
+        <b className="ml-2">Original post deleted</b>
+    </div>;
+
     return(
         <>
             <Card key={post.id} className={`hover:bg-dark-background border-x-0 border-t-0 p-0 rounded-none transition-colors cursor-pointer ${isParent && "relative border-b-0"}`}
@@ -106,7 +112,7 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
                             </div>
                             <pre
                                 onSelect={(e) => e.stopPropagation()}
-                                className="line-clamp-[10] font-arial text-wrap select-text wrap-break-word text-ellipsis text-sm leading-[1.2]! mt-0! tracking-wide">
+                                className="line-clamp-[10] font-arial text-wrap select-text wrap-break-word text-ellipsis leading-[1.2]! mt-0! tracking-wide">
                                 <FormatPost content={post.content} />
                             </pre>
                             <div className="flex items-center gap-6 text-sm text-muted-foreground">

@@ -1,3 +1,4 @@
+"use client";
 import {
     Avatar,
     AvatarFallback,
@@ -9,14 +10,26 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from "@/components/ui/hover-card"
-import { AuthorLite } from "@/types/post";
+import { AuthorLite } from "@/types/user";
 import { formatDate } from "@/utils/time";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { H4 } from "../ui/typography";
 import { BadgeCheck } from "lucide-react";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export function HoverProfileCard({user}: {user: AuthorLite | undefined}) {
-    if (!user) return;
+    const [bio, setBio] = useState("");
+
+    useEffect(() => {
+        const fetchBio = async () => {
+            const safeBio = await sanitizeHtml(user?.bio || "");
+            setBio(safeBio);
+        }
+        fetchBio();
+    }, []);
+
+    if(!user) return;
+
     return (
         <HoverCard>
             <HoverCardTrigger asChild>
@@ -31,9 +44,14 @@ export function HoverProfileCard({user}: {user: AuthorLite | undefined}) {
                     <div className="space-y-1">
                         <H4 className="flex text-nowrap leading-none items-center">{user.name}{user.isVerified && <BadgeCheck className="ml-1 text-primary" size={18} />}</H4>
                         <h4 className="text-sm font-semibold">@{user.username}</h4>
-                        <p className="text-sm line-clamp-2 overflow-ellipsis">
-                            {user.bio ? user.bio : "User has no bio."}
-                        </p>
+                        {user.bio ? (
+                            <p
+                                className="text-sm line-clamp-2 overflow-ellipsis"
+                                dangerouslySetInnerHTML={{ __html: bio }}
+                            />
+                        ) : (
+                                <p className="text-sm text-muted-foreground">User has no bio.</p>
+                            )}
                         <div className="text-muted text-xs">
                             Joined: {formatDate(user.createdAt)}
                         </div>

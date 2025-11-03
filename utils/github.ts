@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site-config";
+
 const TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_COMMITS_CAP = 4;
 const GITHUB_DEPLOYMENTS_CAP = 2;
@@ -23,9 +24,8 @@ async function githubFetch(endpoint: string) {
         }
 
         return response.data;
-    } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
+    } catch {
+        return { error: "error fetching from github" };
     }
 }
 

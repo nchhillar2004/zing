@@ -1,20 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { UserWithCounts } from "@/interfaces/user";
+import { CurrentUser } from "@/types/user";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { TriangleAlert } from "lucide-react";
-import { Field, FieldDescription, FieldGroup } from "../ui/field";
+import { Field, FieldGroup } from "../ui/field";
 import { maxDate } from "@/utils/time";
+import { Textarea } from "../ui/textarea";
 
-export default function EditProfileForm({ user }: { user: UserWithCounts }) {
+export default function EditProfileForm({ user }: { user: CurrentUser }) {
     const [formData, setFormData] = useState({
         name: user.name || "",
         username: user.username || "",
         email: user.email || "",
         dob: user.dob || "",
+        bio: user.bio || "",
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,21 +62,34 @@ export default function EditProfileForm({ user }: { user: UserWithCounts }) {
                         onChange={handleChange}
                     />
                 </Field>
+                {user.accountType==="PERSONAL" &&
+                    <Field>
+                        <Label htmlFor="dob">
+                            DOB {!formData.dob && <TriangleAlert className="inline ml-[2px] text-yellow-500" size={14} />}
+                        </Label>
+                        <Input
+                            name="dob"
+                            type="date"
+                            placeholder="Date of birth"
+                            min={maxDate(80)}
+                            max={maxDate(12)}
+                            pattern="\d{2}-\d{2}-\d{4}"
+                            value={formData.dob}
+                            onChange={handleChange}
+                        />
+                    </Field>}
                 <Field>
-                    <Label htmlFor="dob">
-                        DOB {!formData.dob && <TriangleAlert className="inline ml-[2px] text-yellow-500" size={14} />}
+                    <Label htmlFor="bio">
+                        Bio
                     </Label>
-                    <Input
-                        name="dob"
-                        type="date"
-                        placeholder="Date of birth"
-                        min={maxDate(80)}
-                        max={maxDate(12)}
-                        pattern="\d{2}-\d{2}-\d{4}"
-                        value={formData.dob}
-                        onChange={handleChange}
-                    />
-                    <FieldDescription>Ignore the DOB if this account represents a comapany or an organization</FieldDescription>
+                    <Textarea
+                        name="bio"
+                        placeholder="About you"
+                        maxLength={300}
+                        minLength={2}
+                        rows={2}
+                        value={formData.bio}
+                        onChange={(e) => setFormData(prev => ({ ...prev, bio: e.target.value }))}/>
                 </Field>
                 <Field>
                     <Button type="submit">Save</Button>

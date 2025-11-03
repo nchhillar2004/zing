@@ -9,12 +9,12 @@ import {
 } from "lucide-react";
 import PostCard from "../cards/PostCard";
 import { MessageCircle } from "lucide-react";
-import { UserWithCounts } from "@/interfaces/user";
+import { CurrentUser, UserWithCounts } from "@/types/user";
 import { getUserPosts } from "@/lib/api/user/getUserPosts";
 import { getUserReplies } from "@/lib/api/user/getUserReplies";
 import Loading from "@/components/common/Loading";
 import { getUserLikes } from "@/lib/api/user/getUserLikes";
-import { LikedPost, PostWithAuthor, RepliesWithParent } from "@/types/post";
+import { LikedPost, PostWithAuthor, PostWithParent } from "@/types/post";
 
 export interface PostData {
     posts: PostWithAuthor[];
@@ -22,7 +22,7 @@ export interface PostData {
 }
 
 export interface RepliesData {
-    replies: RepliesWithParent[];
+    replies: PostWithParent[];
     total: number;
 }
 
@@ -31,7 +31,7 @@ export interface LikesData{
     total: number;
 }
 
-export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, currentUser: UserWithCounts | null}) {
+export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, currentUser: CurrentUser | null}) {
     const [activeTab, setActiveTab] = useState("posts");
     const [posts, setPosts] = useState<PostData>();
     const [replies, setReplies] = useState<RepliesData>();
@@ -125,7 +125,8 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                         ) : (
                                 replies?.replies.map((reply) => (
                                     <div key={reply.id}>
-                                        <PostCard post={reply.parent} isParent={true} /> 
+                                        {reply.parent &&
+                                            <PostCard post={reply.parent} isParent={true} /> }
                                         <PostCard post={reply} /> 
                                     </div>
                                 ))
