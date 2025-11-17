@@ -165,7 +165,23 @@ export default function PostView({post}: {post: PostOrReply}) {
                         <span>{formatNumber(bookCount)}</span>
                     </div>
                     <div className="flex items-center">
-                        <Button variant={"ghost"} className="hover:bg-primary/20 group" size={"icon"} title="Share">
+                        <Button 
+                            variant={"ghost"} 
+                            className="hover:bg-primary/20 group" 
+                            size={"icon"} 
+                            title="Share"
+                            onClick={async (e) => {
+                                e.stopPropagation();
+                                const postUrl = `${window.location.origin}/post/${post.id}`;
+                                try {
+                                    await navigator.clipboard.writeText(postUrl);
+                                    toast.success("Post link copied to clipboard!");
+                                } catch (err) {
+                                    toast.error("Failed to copy link");
+                                    console.log(err)
+                                }
+                            }}
+                        >
                             <Share className="group-hover:text-primary" />
                         </Button>
                     </div>

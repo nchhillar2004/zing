@@ -40,20 +40,40 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
 
     const currentUserOwner = currentUser && currentUser.id===user.id;
 
-    useEffect(() => {
+    useEffect(() => { 
+        setLoading(true);
+        
         const fetchPosts = async () => {
-            const postData: PostData = await getUserPosts(user.username);
-            setPosts(postData);
+            try {
+                const postData: PostData = await getUserPosts(user.username);
+                setPosts(postData);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            } finally {
+                setLoading(false);
+            }
         }
 
         const fetchReplies = async () => {
-            const repliesData: RepliesData = await getUserReplies(user.username);
-            setReplies(repliesData);
+            try {
+                const repliesData: RepliesData = await getUserReplies(user.username);
+                setReplies(repliesData);
+            } catch (error) {
+                console.error("Error fetching replies:", error);
+            } finally {
+                setLoading(false);
+            }
         }
 
         const fetchLikes = async () => {
-            const likesData: LikesData = await getUserLikes(user.username);
-            setLikes(likesData);
+            try {
+                const likesData: LikesData = await getUserLikes(user.username);
+                setLikes(likesData);
+            } catch (error) {
+                console.error("Error fetching likes:", error);
+            } finally {
+                setLoading(false);
+            }
         }
 
         if (activeTab === "posts"){
@@ -63,7 +83,6 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
         } else if (activeTab === "likes") {
             fetchLikes();
         }
-        setLoading(false);
     }, [activeTab, user.username]);
 
     if (user.accountPrivacy==="PRIVATE" && (!currentUserOwner || !currentUser)) {
@@ -138,14 +157,14 @@ export default function ProfileTabs({user, currentUser}: {user: UserWithCounts, 
                     <TabsContent value="likes">
                         <Small className="text-muted-foreground">Liked posts are private to you.</Small>
                         {loading ? <Loading className="h-24" /> : <>
-                            {likes?.total === 0 ? (
+                            {!likes || likes.total === 0 ? (
                                 <div className="text-center py-12">
                                     <Heart className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                                     <P className="text-muted-foreground">No liked posts</P>
                                     <Small className="text-muted-foreground">Like a posts to see them here.</Small>
                                 </div>
                             ) : (
-                                    likes?.likes.map((like) => (
+                                    likes.likes.map((like) => (
                                         <PostCard key={like.id} post={like.post} /> 
                                     ))
                                 )}

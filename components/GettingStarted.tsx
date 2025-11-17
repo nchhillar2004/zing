@@ -14,42 +14,62 @@ export default function GettingStarted({ currentUser }: { currentUser: CurrentUs
     const [selected, setSelected] = useState<string[]>([]);
     const [disable, setDisable] = useState(false);
     const [state, action, pending] = useActionState(categoriesAction, undefined);
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
-        if (selected.length>=8) {
-            setDisable(true);
-        }else {
-            setDisable(false);
+        if (state?.success || currentUser.selectedCategories.length > 0) {
+            setIsSubmitted(true);
+            router.push("/");
         }
+    }, [state, currentUser, router]);
+
+    useEffect(() => {
+        setDisable(selected.length >= 8);
     }, [selected.length]);
 
     const toggleCategory = (category: string) => {
         if (selected.includes(category)) {
             setSelected(selected.filter((c) => c !== category));
+        } else if (selected.length < 8) {
+            setSelected([...selected, category]);
         } else {
-            if (selected.length < 8) {
-                setSelected([...selected, category]);
-            } else {
-                setDisable(true);
-            }
+            setDisable(true);
         }
     };
 
-    if (currentUser.selectedCategories?.length !== 0) router.push("/");
+    if (currentUser.selectedCategories?.length !== 0) {
+        router.push("/");
+        return null;
+    }
+
+    if (isSubmitted || pending) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <H3>Setting things up...</H3>
+            </div>
+        );
+    }
 
     return (
-        <div className="fixed bg-dark-background/50 flex items-center justify-center top-0 left-0 z-50 w-screen h-screen m-auto">
-            {!pending && <div className="py-4 px-6 max-sm:w-screen max-sm:h-screen max-sm:overflow-scroll bg-dark-background border border-border rounded-[var(--space)]">
+        <div className="flex items-center justify-center top-0 left-0 z-50 m-auto">
+            <div className="py-4 px-6 max-sm:w-screen max-sm:h-screen max-sm:overflow-scroll bg-dark-background border border-border rounded-[var(--space)]">
                 <H3>Getting started</H3>
-                <P className="mt-2 mb-4">Select at least 4 and at most 8 categories you are interested in.</P>
-                <form action={action}>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-lg">
+                <P className="mt-2 mb-4">
+                    Pick topics you&apos;d like to see in your home feed. Select at least 4 and at most 8.
+                </P>
+                <form
+                    action={(formData) => {
+                        setIsSubmitted(true);
+                        action(formData);
+                    }}
+                >
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                         {categories.map((c, index) => (
                             <Label
                                 key={index}
                                 htmlFor={c.category}
-                                className="flex items-center gap-2 cursor-pointer"
+                                className="flex items-center gap-2 cursor-pointer text-sm"
                             >
                                 <Checkbox
                                     disabled={!(selected.includes(c.category)) && disable}
@@ -63,8 +83,10 @@ export default function GettingStarted({ currentUser }: { currentUser: CurrentUs
                             </Label>
                         ))}
                     </div>
+
                     <input type="hidden" name="id" value={currentUser.id} />
                     <span className="text-red-500">{state?.error}</span>
+
                     <div className="w-full text-right">
                         <Button
                             className="mt-4 text-right"
@@ -76,7 +98,6 @@ export default function GettingStarted({ currentUser }: { currentUser: CurrentUs
                     </div>
                 </form>
             </div>
-            }
         </div>
     );
 }

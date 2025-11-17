@@ -4,9 +4,9 @@ import { getSession } from './lib/session';
 const protectedRoutes = [
     '/',
     '/post/new',
-    '/settings',
     '/bookmarks',
-    '/user/settings'
+    '/user/settings',
+    '/getting-started'
 ];
 
 const authRoutes = [
@@ -22,6 +22,7 @@ const publicRoutes = [
     '/search',
     '/trending',
     '/ads',
+    '/settings',
     '/robots.txt',
     '/sitemap.xml'
 ];

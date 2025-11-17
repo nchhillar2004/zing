@@ -55,11 +55,11 @@ export default function HeaderClient({user}: {user: CurrentUser}) {
                     <UserAvatar user={user} size="sm" />
                 </div>
                 <div ref={dropdownRef}
-                    className={`absolute top-10 -ml-10 max-md:-ml-20 w-fit h-fit max-w-40 max-h-60 rounded-[var(--radius)] overflow-hidden
+                    className={`absolute top-10 -ml-10 max-md:-ml-20 min-w-28 w-fit h-fit max-w-40 max-h-60 rounded-[var(--radius)] overflow-hidden
 bg-dark-background/95 border border-border shadow-sm z-20 ${dropdownOpen ? "block" : "hidden"}`}>
                     <div className="flex flex-col py-2">
                         <Button onClick={() => router.push(`/user/${user.username}`)} variant={"ghost"} 
-                            className="hover:bg-primary gap-0 h-fit rounded-none flex flex-col justify-center items-start">
+                            className="hover:bg-primary gap-0 h-fit rounded-none flex flex-col space-y-0 justify-center items-start">
                             <b className="leading-none line-clamp-1! overflow-ellipsis w-full">{user.name}</b>
                             <span className="leading-none text-[13px] text-foreground/80">Profile</span>
                         </Button>

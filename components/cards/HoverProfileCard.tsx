@@ -26,7 +26,7 @@ export function HoverProfileCard({user}: {user: AuthorLite | undefined}) {
             setBio(safeBio);
         }
         fetchBio();
-    }, []);
+    }, [user?.bio]);
 
     if(!user) return;
 

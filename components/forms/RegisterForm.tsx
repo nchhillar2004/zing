@@ -128,7 +128,7 @@ export default function RegisterForm() {
                     </div>
                 </CardContent>
             </Card>
-            <FieldDescription className="px-6 text-center">
+            <FieldDescription className="px-6 text-center text-muted">
                 By clicking continue, you agree to our <Link href="/terms">Terms of Service</Link>{" "}
                 and <Link href="/privacy">Privacy Policy</Link>.
             </FieldDescription>

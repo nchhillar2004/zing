@@ -1,7 +1,7 @@
 "use server";
 import { PostData } from "@/components/profile/ProfileTabs";
 import prisma from "@/lib/db";
-import { PostWithAuthor, postInclude } from "@/types/post";
+import { postInclude } from "@/types/post";
 
 export async function getUserPosts(username: string, page: number = 1, limit: number = 10): Promise<PostData> {
     try {

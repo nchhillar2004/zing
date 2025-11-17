@@ -46,7 +46,7 @@ export default async function RightSidebar() {
                     Created by{" "}
                     <Link target="_blank" 
                         href={`${siteConfig.BASE_URL}/user/nchhillar`} className="text-primary">
-                        @nchhillar</Link>
+                        @me</Link>
                 </P>
                 <ul className="flex text-center w-full flex-wrap items-center space-x-1">
                     <li><Small><Muted><Link href='/terms'>Terms of Service</Link></Muted></Small></li>
