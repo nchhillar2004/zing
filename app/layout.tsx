@@ -1,6 +1,8 @@
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function RootLayout({
     children,
@@ -21,6 +23,8 @@ export default function RootLayout({
                     {children}
                     <Toaster/>
                 </ThemeProvider>
+                <Analytics/>
+                <SpeedInsights/>
             </body>
         </html>
     );
