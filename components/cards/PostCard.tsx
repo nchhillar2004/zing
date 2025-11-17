@@ -19,6 +19,7 @@ import Link from "next/link";
 import { bookmarkPost, isPostBookmarked } from "@/lib/api/post/bookmarkPost";
 import { HoverProfileCard } from "./HoverProfileCard";
 import FormatPost from "@/components/common/FormatPost";
+import { Skeleton } from "../ui/skeleton";
 
 export default function PostCard({post, isParent}: {post: PostOrReply, isParent?: boolean}) {
     const [likedPost, setLikedPost] = useState<LikeType>("UNLIKED");
@@ -80,6 +81,8 @@ export default function PostCard({post, isParent}: {post: PostOrReply, isParent?
         </div>
         <b className="ml-2">Original post deleted</b>
     </div>;
+
+    if (loading) return <Skeleton className="h-10" />
 
     return(
         <>

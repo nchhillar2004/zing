@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
+import { getCurrentUser } from '@/lib/dal';
+import { toPublicUserDTO, PublicUserDTO } from '@/lib/user-dto';
+import { userWithCountsSelect, UserWithCounts } from '@/types/user';
 
 export async function GET(request: Request) {
     try {
@@ -11,6 +14,8 @@ export async function GET(request: Request) {
         }
 
         const q = query.trim();
+        const currentUser = await getCurrentUser();
+        const viewer = currentUser ? { role: currentUser.role } : null;
 
         const [posts, users] = await Promise.all([
             prisma.post.findMany({
@@ -32,14 +37,16 @@ export async function GET(request: Request) {
                     },
                 },
                 take: 5,
-                select: { 
-                    id: true, 
-                    username: true,
-                },
+                select: userWithCountsSelect,
             })
         ]);
 
-        return NextResponse.json({ posts, users });
+        // Safely parse users to DTOs
+        const safeUsers: PublicUserDTO[] = users
+            .map((user) => toPublicUserDTO(user as UserWithCounts, viewer, currentUser))
+            .filter((dto): dto is PublicUserDTO => dto !== null);
+
+        return NextResponse.json({ posts, users: safeUsers });
     } catch (err) {
         console.error('[API /search error]', err);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

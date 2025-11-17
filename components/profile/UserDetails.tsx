@@ -1,6 +1,6 @@
 import { CurrentUser, UserWithCounts } from "@/types/user";
 import { Badge } from "../ui/badge";
-import { BadgeCheck, BadgeDollarSign, Users, UserPlus, MessageCircle, MapPin, CalendarDays, Ellipsis, Link as LinkIcon, Ban, Flag, Edit, TriangleAlert, Lock } from "lucide-react";
+import { BadgeCheck, BadgeDollarSign, Users, UserPlus, MessageCircle, MapPin, CalendarDays, Ellipsis, Flag, Edit, TriangleAlert, Lock } from "lucide-react";
 import { formatDate } from "@/utils/time";
 import { P, Muted } from "../ui/typography";
 import { Button } from "../ui/button";
@@ -9,6 +9,7 @@ import Link from "next/link";
 import UserAvatar from "../common/UserAvatar";
 import Image from "next/image";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { FollowButton, BlockButton, CopyProfileLinkButton } from "./UserActions";
 
 export default async function UserDetails({user, currentUser}: {user: UserWithCounts, currentUser: CurrentUser | null}) {
     const currentUserOwner = currentUser && currentUser.id===user.id;
@@ -39,21 +40,30 @@ export default async function UserDetails({user, currentUser}: {user: UserWithCo
                                         <Button variant="outline" size="icon-sm"><Ellipsis/></Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className="p-0">
-                                        <DropdownMenuItem><Button variant="ghost" size="sm"><LinkIcon/> Copy profile link</Button></DropdownMenuItem>
-                                        <DropdownMenuItem><Button variant="ghost" size="sm"><Ban/> Block @{user.username}</Button></DropdownMenuItem>
-                                        <DropdownMenuItem><Button variant="ghost" size="sm"><Flag/> Report @{user.username}</Button></DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <CopyProfileLinkButton username={user.username} />
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem asChild>
+                                            <BlockButton 
+                                                userId={user.id} 
+                                                username={user.username}
+                                                currentUserId={currentUser?.id || null}
+                                            />
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <Button variant="ghost" size="sm">
+                                                <Flag className="mr-2" size={16} />
+                                                Report @{user.username}
+                                            </Button>
+                                        </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
-                                {user.accountPrivacy==="PUBLIC" ?
-                                    <Button variant="outline" size="sm">
-                                        <UserPlus className="mr-2" size={16} />
-                                        Follow
-                                    </Button>
-                                    : <Button variant={"outline"} size={"sm"}>
-                                        <UserPlus className="my-2" size={16} />
-                                        Request
-                                    </Button>
-                                }
+                                <FollowButton 
+                                    userId={user.id}
+                                    username={user.username}
+                                    accountPrivacy={user.accountPrivacy}
+                                    currentUserId={currentUser?.id || null}
+                                />
                             </div>
                         }
                     </div>
