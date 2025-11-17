@@ -55,7 +55,7 @@ export default async function RightSidebar() {
                     <Separator orientation="vertical"/>
                     <li><Small><Muted><Link href='/about'>About</Link></Muted></Small></li>
                     <Separator orientation="vertical"/>
-                    <li><Small><Muted><Link href='/contact'>Contact Us</Link></Muted></Small></li>
+                    <li><Small><Muted><Link href='#'>Contact Us</Link></Muted></Small></li>
                 </ul>
                 <Muted className="text-center">&copy; 2025, Zing.</Muted>
             </footer>

@@ -42,8 +42,7 @@ export default function SearchForm() {
             fetch(`/api/search?query=${encodeURIComponent(query.trim())}`)
                 .then(async (res) => {
                     if(!res.ok){
-                        const text = await res.text();
-                        console.log(text)
+                        return;
                     }
                     return res.json();
                 })

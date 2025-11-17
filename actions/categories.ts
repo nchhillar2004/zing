@@ -11,7 +11,6 @@ export async function categoriesAction(state: CategoriesFormState, formData: For
     if (!id){
         return { success: false, error: "User not found." };
     }else if (categories.length < 4 || categories.length > 8) {
-        console.log(categories.length);
         return { success: false, error: "Select between 4 and 8 categories." };
     }
 
@@ -24,9 +23,7 @@ export async function categoriesAction(state: CategoriesFormState, formData: For
         });
 
         return { success: true, message: "User categories updated successfully", username: user.username };
-    } catch (err: any) {
-        console.error("Error updating categories:", err);
-
+    } catch (err) {
         return { success: false, error: "Something went wrong. Please try again later." };
     }
 }

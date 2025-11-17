@@ -50,7 +50,6 @@ export default async function createPostAction(state: CreatePostFormState, formD
 
         return { success: true, message: "Post created successfully", post: post };
     } catch (err) {
-        console.log(err);
         return { success: false, error: "Error creating post" };
     }
 }
