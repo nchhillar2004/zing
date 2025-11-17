@@ -2,7 +2,8 @@
 import prisma from "@/lib/db";
 import { getCurrentUser } from "@/lib/dal";
 import { AuthorLite, authorLiteSelect } from "@/types/user";
-import { toAuthorLiteDTO, toAuthorLiteDTOArray, AuthorLiteDTO } from "@/lib/user-dto";
+import { toAuthorLiteDTOArray, AuthorLiteDTO } from "@/lib/user-dto";
+import { Prisma } from "@prisma/client";
 
 export async function getUsersToFollow(limit: number = 4): Promise<AuthorLiteDTO[]> {
     try {
@@ -10,7 +11,7 @@ export async function getUsersToFollow(limit: number = 4): Promise<AuthorLiteDTO
         const currentUserId = currentUser?.id;
 
         // Get users with most followers (top followed)
-        const whereClause: any = {
+        const whereClause: Prisma.UserWhereInput = {
             moderationStatus: "ACTIVE",
             isSpam: false,
         };

@@ -22,7 +22,7 @@ export default function GettingStarted({ currentUser }: { currentUser: CurrentUs
             setIsSubmitted(true);
             router.push("/");
         }
-    }, [state, currentUser]);
+    }, [state, currentUser, router]);
 
     useEffect(() => {
         setDisable(selected.length >= 8);
@@ -56,7 +56,7 @@ export default function GettingStarted({ currentUser }: { currentUser: CurrentUs
             <div className="py-4 px-6 max-sm:w-screen max-sm:h-screen max-sm:overflow-scroll bg-dark-background border border-border rounded-[var(--space)]">
                 <H3>Getting started</H3>
                 <P className="mt-2 mb-4">
-                    Pick topics you'd like to see in your home feed. Select at least 4 and at most 8.
+                    Pick topics you&apos;d like to see in your home feed. Select at least 4 and at most 8.
                 </P>
                 <form
                     action={(formData) => {

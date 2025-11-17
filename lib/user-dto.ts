@@ -165,7 +165,7 @@ export function toPublicUserDTO(
     const canSeeEmail = canSeeEmailAddress(viewer, { id: user.id }, currentUser);
     const canSeeSensitive = canSeeSensitiveData(viewer, { id: user.id }, currentUser);
 
-    const dtoData: any = {
+    const dtoData: Partial<PublicUserDTO> = {
       id: user.id,
       name: user.name,
       username: user.username,

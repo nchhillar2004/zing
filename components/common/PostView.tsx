@@ -176,8 +176,9 @@ export default function PostView({post}: {post: PostOrReply}) {
                                 try {
                                     await navigator.clipboard.writeText(postUrl);
                                     toast.success("Post link copied to clipboard!");
-                                } catch (error) {
+                                } catch (err) {
                                     toast.error("Failed to copy link");
+                                    console.log(err)
                                 }
                             }}
                         >
