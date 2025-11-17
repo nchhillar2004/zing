@@ -13,7 +13,7 @@ export async function getPostsByTagName(name: string, page: number = 1, limit: n
 
         const skip = (page - 1) * limit;
 
-        const [taggedPosts, total] = await Promise.all([
+        const [rawPosts, total] = await Promise.all([
             prisma.postTag.findMany({
                 where: { tagId: tag.id },
                 include: {
@@ -29,7 +29,9 @@ export async function getPostsByTagName(name: string, page: number = 1, limit: n
             })
         ]);
 
-        return { taggedPosts, total };
+        const taggedPosts = rawPosts.filter(row => row.post !== null);
+
+        return { taggedPosts, total } as TaggedPostsData;
     } catch (error) {
         console.error("Error fetching posts from the tag:", error);
         return { taggedPosts: [], total: 0 };
